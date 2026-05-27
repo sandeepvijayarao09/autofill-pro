@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AutoFill Pro — Privacy Policy</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 720px; margin: 48px auto; padding: 0 24px; color: #1a1a2e; line-height: 1.7; }
+    h1 { font-size: 1.8rem; margin-bottom: 4px; }
+    h2 { font-size: 1.1rem; margin-top: 36px; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px; }
+    .meta { color: #64748b; font-size: 0.9rem; margin-bottom: 36px; }
+    ul { padding-left: 20px; }
+    li { margin-bottom: 6px; }
+    strong { color: #111; }
+    .notice { background: #f0f9ff; border-left: 4px solid #0ea5e9; padding: 12px 16px; border-radius: 4px; margin: 24px 0; font-size: 0.95rem; }
+  </style>
+</head>
+<body>
+
+<h1>AutoFill Pro — Privacy Policy</h1>
+<p class="meta">Last updated: May 2026 &nbsp;·&nbsp; Effective immediately upon installation</p>
+
+<div class="notice">
+  <strong>Short version:</strong> Your profile data never leaves your device unless you explicitly enable the AI feature. Even then, only unmatched field labels — never your personal values — are sent to the AI service. Sensitive fields (date of birth, race/ethnicity, disability, veteran status) are <em>never</em> transmitted under any circumstance.
+</div>
+
+<h2>1. What data we collect and store</h2>
+<p>AutoFill Pro stores the following data <strong>exclusively on your device</strong> using Chrome's <code>chrome.storage.local</code> API:</p>
+<ul>
+  <li>Profile information you enter in the extension popup (name, email, address, work history, education, etc.)</li>
+  <li>Your NVIDIA API key (if you choose to enable AI features)</li>
+  <li>Extension settings (AI on/off, floating button on/off, AI model preference)</li>
+  <li>Button position on screen (stored in <code>sessionStorage</code>, cleared when you close the browser tab)</li>
+</ul>
+<p>We do not operate any server. No data is synced to any cloud service controlled by us. The extension has no backend.</p>
+
+<h2>2. What data leaves your device</h2>
+<p>Data is sent to an external service <strong>only</strong> when all of the following are true:</p>
+<ul>
+  <li>You have explicitly enabled "AI matching" in Settings</li>
+  <li>You have provided an NVIDIA API key</li>
+  <li>The extension encounters form fields it cannot match using its built-in pattern library</li>
+</ul>
+<p>In that case, <strong>only the unmatched field labels</strong> (e.g. "Describe your leadership philosophy") and a sanitized subset of your profile are sent to <strong>NVIDIA's API</strong> (<code>integrate.api.nvidia.com</code>) to request a suggested answer.</p>
+
+<h2>3. What is NEVER transmitted</h2>
+<p>The following fields are permanently excluded from all external AI requests, regardless of settings:</p>
+<ul>
+  <li>Date of birth</li>
+  <li>Race / Ethnicity</li>
+  <li>Disability status</li>
+  <li>Veteran status</li>
+  <li>Gender / Pronouns</li>
+  <li>Security clearance level</li>
+  <li>Phone number</li>
+  <li>Expected salary</li>
+  <li>Visa / work authorization status</li>
+</ul>
+
+<h2>4. Third-party services</h2>
+<p>When AI is enabled, form field data is processed by <strong>NVIDIA NIM API</strong>. Their data handling is governed by <a href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/" target="_blank" rel="noopener">NVIDIA's Privacy Policy</a>. AutoFill Pro does not share data with any other third party.</p>
+
+<h2>5. Data retention</h2>
+<p>Your profile data is stored locally until you clear it in the extension popup or uninstall the extension. We have no ability to access or delete data on your behalf.</p>
+
+<h2>6. Permissions used</h2>
+<ul>
+  <li><strong>storage</strong> — stores your profile and settings locally on your device</li>
+  <li><strong>activeTab</strong> — reads and fills the currently active browser tab's form fields</li>
+  <li><strong>webNavigation</strong> — detects iframes on pages like Workday and Taleo so their embedded forms can also be filled</li>
+  <li><strong>&lt;all_urls&gt;</strong> — required because job applications exist across thousands of different websites; the extension must be able to run on any domain</li>
+</ul>
+
+<h2>7. Children's privacy</h2>
+<p>AutoFill Pro is not directed at children under 13. We do not knowingly collect personal information from children.</p>
+
+<h2>8. Changes to this policy</h2>
+<p>If we make material changes, we will update the "Last updated" date above. Continued use of the extension after changes constitutes acceptance.</p>
+
+<h2>9. Contact</h2>
+<p>Questions about this policy? Open an issue on the extension's support page or contact the developer directly through the Chrome Web Store listing.</p>
+
+</body>
+</html>

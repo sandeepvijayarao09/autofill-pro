@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AutoFill Pro</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="logo" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        AutoFill Pro
+      </div>
+      <nav role="tablist" aria-label="Extension sections">
+        <button class="tab active" data-tab="profile"  role="tab" aria-selected="true"  aria-controls="tab-profile"  id="tab-btn-profile">Profile</button>
+        <button class="tab"        data-tab="ask"      role="tab" aria-selected="false" aria-controls="tab-ask"      id="tab-btn-ask">Ask AI</button>
+        <button class="tab"        data-tab="settings" role="tab" aria-selected="false" aria-controls="tab-settings" id="tab-btn-settings">Settings</button>
+      </nav>
+    </header>
+
+    <!-- ── Profile Tab ── -->
+    <section id="tab-profile" class="tab-content active" role="tabpanel" aria-labelledby="tab-btn-profile">
+      <form id="profile-form" novalidate>
+        <div class="group-label">Import Resume <span class="ai-badge">AI</span></div>
+        <div class="import-section">
+          <div class="field">
+            <label for="resume-file">Upload PDF or .txt file</label>
+            <div class="file-drop" id="file-drop" role="button" tabindex="0" aria-label="Drop resume file here or click to browse">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <span id="file-drop-label">Drop file here or <u>browse</u></span>
+              <input type="file" id="resume-file" accept=".pdf,.txt" aria-label="Upload resume file" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="resume-paste">Or paste resume / LinkedIn text</label>
+            <textarea id="resume-paste" rows="3" placeholder="Paste your resume or LinkedIn profile text here…"></textarea>
+          </div>
+          <div class="actions" style="margin-top:8px;padding-top:8px;">
+            <button type="button" id="import-btn" class="btn-secondary">Import &amp; Fill Profile</button>
+            <span id="import-status" role="status" aria-live="polite"></span>
+          </div>
+        </div>
+        <div class="group-label">Personal</div>
+        <div class="row">
+          <div class="field"><label for="firstName">First Name</label><input id="firstName" name="firstName" placeholder="John" autocomplete="given-name" /></div>
+          <div class="field"><label for="lastName">Last Name</label><input id="lastName" name="lastName" placeholder="Doe" autocomplete="family-name" /></div>
+        </div>
+        <div class="row">
+          <div class="field"><label for="preferredName">Preferred / Goes-by Name</label><input id="preferredName" name="preferredName" placeholder="Johnny" /></div>
+          <div class="field"><label for="pronouns">Pronouns</label><input id="pronouns" name="pronouns" placeholder="he/him, she/her, they/them" /></div>
+        </div>
+        <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" placeholder="john@example.com" autocomplete="email" /></div>
+        <div class="row">
+          <div class="field"><label for="phone">Phone</label><input id="phone" name="phone" placeholder="+1 555 000 0000" autocomplete="tel" /></div>
+          <div class="field"><label for="dateOfBirth">Date of Birth</label><input id="dateOfBirth" name="dateOfBirth" placeholder="YYYY-MM-DD" autocomplete="bday" /></div>
+        </div>
+        <div class="field"><label for="gender">Gender</label><input id="gender" name="gender" placeholder="Male / Female / Other" /></div>
+
+        <div class="group-label">Address</div>
+        <div class="field"><label for="addressLine1">Street Address</label><input id="addressLine1" name="addressLine1" placeholder="123 Main St" autocomplete="address-line1" /></div>
+        <div class="field"><label for="addressLine2">Apt / Suite</label><input id="addressLine2" name="addressLine2" placeholder="Apt 4B" autocomplete="address-line2" /></div>
+        <div class="row">
+          <div class="field"><label for="city">City</label><input id="city" name="city" placeholder="Boston" autocomplete="address-level2" /></div>
+          <div class="field"><label for="state">State</label><input id="state" name="state" placeholder="MA" autocomplete="address-level1" /></div>
+        </div>
+        <div class="row">
+          <div class="field"><label for="zipCode">Zip Code</label><input id="zipCode" name="zipCode" placeholder="02101" autocomplete="postal-code" /></div>
+          <div class="field"><label for="country">Country</label><input id="country" name="country" placeholder="United States" autocomplete="country-name" /></div>
+        </div>
+
+        <div class="group-label">Professional</div>
+        <div class="field"><label for="currentTitle">Current Title / Headline</label><input id="currentTitle" name="currentTitle" placeholder="Software Engineer" autocomplete="organization-title" /></div>
+        <div class="field"><label for="currentCompany">Current Company</label><input id="currentCompany" name="currentCompany" placeholder="Acme Corp" autocomplete="organization" /></div>
+        <div class="field"><label for="yearsOfExp">Years of Experience</label><input id="yearsOfExp" name="yearsOfExp" placeholder="3" /></div>
+        <div class="field"><label for="skills">Skills</label><input id="skills" name="skills" placeholder="Python, React, SQL, AWS" /></div>
+        <div class="field"><label for="languages">Languages</label><input id="languages" name="languages" placeholder="English (fluent), Spanish (conversational)" /></div>
+        <div class="field"><label for="securityClearance">Security Clearance</label><input id="securityClearance" name="securityClearance" placeholder="None / Secret / Top Secret" /></div>
+        <div class="field"><label for="linkedInUrl">LinkedIn URL</label><input id="linkedInUrl" name="linkedInUrl" placeholder="https://linkedin.com/in/..." /></div>
+        <div class="field"><label for="githubUrl">GitHub URL</label><input id="githubUrl" name="githubUrl" placeholder="https://github.com/..." /></div>
+        <div class="field"><label for="portfolioUrl">Portfolio / Website</label><input id="portfolioUrl" name="portfolioUrl" placeholder="https://..." /></div>
+        <div class="field"><label for="twitterUrl">Twitter / X URL</label><input id="twitterUrl" name="twitterUrl" placeholder="https://x.com/..." /></div>
+
+        <div class="group-label">Education</div>
+        <div class="field"><label for="university">University</label><input id="university" name="university" placeholder="Northeastern University" /></div>
+        <div class="row">
+          <div class="field"><label for="degree">Degree</label><input id="degree" name="degree" placeholder="MS / BS / PhD" /></div>
+          <div class="field"><label for="major">Major</label><input id="major" name="major" placeholder="Computer Science" /></div>
+        </div>
+        <div class="row">
+          <div class="field"><label for="graduationYear">Graduation Year</label><input id="graduationYear" name="graduationYear" placeholder="2025" /></div>
+          <div class="field"><label for="gpa">GPA</label><input id="gpa" name="gpa" placeholder="3.8" /></div>
+        </div>
+        <div class="field"><label for="classYear">Class / School Year</label><input id="classYear" name="classYear" placeholder="Senior / Class of 2025 / Alumni" /></div>
+
+        <div class="group-label">Work Preferences</div>
+        <div class="field"><label for="visaStatus">Visa / Work Authorization</label><input id="visaStatus" name="visaStatus" placeholder="F-1 OPT / H1B / Green Card / Citizen" /></div>
+        <div class="row">
+          <div class="field"><label for="expectedSalary">Expected Salary</label><input id="expectedSalary" name="expectedSalary" placeholder="$120,000" /></div>
+          <div class="field"><label for="relocation">Open to Relocation?</label><input id="relocation" name="relocation" placeholder="Yes / No / Open to discuss" /></div>
+        </div>
+        <div class="row">
+          <div class="field"><label for="workArrangement">Work Arrangement</label><input id="workArrangement" name="workArrangement" placeholder="Remote / Hybrid / On-site" /></div>
+          <div class="field"><label for="jobFunction">Job Function / Area</label><input id="jobFunction" name="jobFunction" placeholder="Engineering / Product / Design" /></div>
+        </div>
+
+        <div class="group-label">Long-form</div>
+        <div class="field"><label for="summary">Professional Summary</label><textarea id="summary" name="summary" rows="4" placeholder="Brief professional bio..."></textarea></div>
+        <div class="field"><label for="coverLetter">Cover Letter Template</label><textarea id="coverLetter" name="coverLetter" rows="6" placeholder="Dear Hiring Manager..."></textarea></div>
+        <div class="field"><label for="messageToManager">Message to Hiring Manager</label><textarea id="messageToManager" name="messageToManager" rows="3" placeholder="Note or intro for recruiters..."></textarea></div>
+        <div class="field"><label for="referralSource">How did you hear about us?</label><input id="referralSource" name="referralSource" placeholder="LinkedIn / Job board / Referral / Company website" /></div>
+
+        <div class="group-label">EEOC / Diversity <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted);font-size:10px;">(US regulatory — optional)</span></div>
+        <div class="row">
+          <div class="field"><label for="raceEthnicity">Race / Ethnicity</label><input id="raceEthnicity" name="raceEthnicity" placeholder="e.g. Asian / Hispanic / White" /></div>
+          <div class="field"><label for="veteranStatus">Veteran Status</label><input id="veteranStatus" name="veteranStatus" placeholder="Not a veteran / Protected veteran" /></div>
+        </div>
+        <div class="field"><label for="disabilityStatus">Disability Status</label><input id="disabilityStatus" name="disabilityStatus" placeholder="No disability / Yes / Decline to self-identify" /></div>
+
+        <div class="actions">
+          <button type="submit" class="btn-primary">Save Profile</button>
+          <span id="save-status" role="status" aria-live="polite"></span>
+        </div>
+      </form>
+    </section>
+
+    <!-- ── Ask AI Tab ── -->
+    <section id="tab-ask" class="tab-content" role="tabpanel" aria-labelledby="tab-btn-ask">
+      <div class="ask-container">
+        <p class="hint">Ask anything using your profile as context. Powered by <a href="https://build.nvidia.com/google/gemma-4-31b-it" target="_blank" rel="noopener noreferrer" class="hint-link">Gemma 4 via NVIDIA API</a>.</p>
+        <label for="question-input" class="sr-only">Your question</label>
+        <textarea id="question-input" rows="3" placeholder="e.g. Write a one-paragraph intro for a software role..."></textarea>
+        <button id="ask-btn" class="btn-primary">Ask</button>
+        <div id="answer-box" class="answer-box hidden" role="region" aria-label="AI answer" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- ── Settings Tab ── -->
+    <section id="tab-settings" class="tab-content" role="tabpanel" aria-labelledby="tab-btn-settings">
+      <form id="settings-form" novalidate>
+        <div class="field">
+          <label for="api-key-input">NVIDIA API Key</label>
+          <input id="api-key-input" name="apiKey" type="password" placeholder="nvapi-..." autocomplete="off" />
+          <small>Stored locally on your device only. Never sent to any server except NVIDIA's API when AI is used.</small>
+        </div>
+        <div class="field">
+          <label for="model-input">AI Model</label>
+          <input id="model-input" name="model" placeholder="google/gemma-4-31b-it" />
+          <small>Change if the current model is deprecated. Leave blank for default.</small>
+        </div>
+        <div class="field toggle-row">
+          <label for="ai-toggle">Enable AI matching for unknown fields</label>
+          <input type="checkbox" name="aiEnabled" id="ai-toggle" />
+        </div>
+        <div class="field toggle-row">
+          <label for="btn-toggle">Show floating fill button on pages</label>
+          <input type="checkbox" name="showButton" id="btn-toggle" />
+        </div>
+
+        <div class="privacy-notice" role="note">
+          <strong>Privacy:</strong> When AI is on, only unmatched field labels are sent to NVIDIA's API — not your full profile. EEOC fields (race, disability, veteran) and date of birth are <em>never</em> transmitted to any external service.
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn-primary">Save Settings</button>
+          <span id="settings-status" role="status" aria-live="polite"></span>
+        </div>
+      </form>
+    </section>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
