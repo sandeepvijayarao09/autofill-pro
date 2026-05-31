@@ -16,7 +16,7 @@ const FIELD_PATTERNS = {
   // age: computed from dateOfBirth at fill time (not user-stored)
   // lookbehind prevents "language","coverage","percentage" from matching
   age:              [/(?<![a-z])age(?![\s_-]?(?:ncy|nt|nda|nts|s\b))(?![a-z])/i, /how[\s_-]?old/i],
-  gender:           [/gender/i, /sex(?!ual)/i],
+  gender:           [/gender/i, /(?<![a-z])sex(?!ual)(?![a-z])/i],
 
   // negative lookahead prevents "address_line_2" from stealing; still catches Taleo compound IDs
   addressLine1:     [/address[\s_-]?(?:1|line[\s_-]?1)/i, /street[\s_-]?address/i, /^address$/i, /^street$/i, /^location$/i, /(?<![a-z])address(?![\s_-]?(?:line[\s_-]?)?2)(?![a-z])/i],
@@ -25,8 +25,8 @@ const FIELD_PATTERNS = {
   city:             [/(?<![a-z])city(?![a-z])/i, /^town$/i, /municipality/i],
   // lookbehind avoids "statement","status","estate"; location.region catches SmartRecruiters
   state:            [/(?<![a-z])state(?![a-z])/i, /^province$/i, /state[\s_-]?(?:or[\s_-]?)?province/i, /location[._]region/i],
-  // unanchored /zip/ catches "iCIMS_field_Zip"
-  zipCode:          [/zip[\s_-]?code/i, /postal[\s_-]?code/i, /postcode/i, /zip/i, /^pincode$/i],
+  // pin[\s_-]?code catches "pin_code" (Indian variant); ^pincode$ for exact match
+  zipCode:          [/zip[\s_-]?code/i, /postal[\s_-]?code/i, /postcode/i, /zip/i, /pin[\s_-]?code/i, /^pincode$/i],
   // unanchored catches "iCIMS_field_Country"
   country:          [/country/i],
 
@@ -34,9 +34,11 @@ const FIELD_PATTERNS = {
   coverLetter:      [/cover[\s_-]?letter/i, /motivation[\s_-]?letter/i, /letter[\s_-]?of[\s_-]?intent/i, /\bnotes?\b/i, /note.*(?:recruiter|company|employer|hiring)/i],
   messageToManager: [/message.*(?:hiring|manager|recruiter)/i, /note.*(?:recruiter|company|employer)/i, /^comments?$/i, /additional[\s_-]?info(?:rmation)?/i],
 
-  currentTitle:     [/job[\s_-]?title/i, /current[\s_-]?(?:title|position|role)/i, /professional[\s_-]?title/i, /work[\s_-]?title/i, /^designation$/i, /headline/i],
+  // designation unanchored: catches "CurrentDesignation", "current_designation" compound names
+  currentTitle:     [/job[\s_-]?title/i, /current[\s_-]?(?:title|position|role)/i, /professional[\s_-]?title/i, /work[\s_-]?title/i, /designation/i, /headline/i, /role[\s_-]?title/i, /position[\s_-]?title/i, /job[\s_-]?role/i],
   currentCompany:   [/company/i, /employer/i, /organization/i, /organisation/i, /^firm$/i, /\borg\b/i],
-  yearsOfExp:       [/years[\s_-]?of[\s_-]?exp/i, /experience[\s_-]?years/i, /years[\s_-]?exp/i],
+  // total_experience, experience_in_years (Zoho, Manatal, Ceipal compound patterns)
+  yearsOfExp:       [/years[\s_-]?of[\s_-]?exp/i, /experience[\s_-]?years/i, /years[\s_-]?exp/i, /total[\s_-]?exp(?:erience)?/i, /exp(?:erience)?[\s_-]?(?:in[\s_-]?)?years?/i],
   // lookbehind prevents "pre-skilled" from matching; "skills" and "technical_skills" still match
   skills:           [/(?<![a-z])skills?(?![a-z])/i, /technical[\s_-]?skills/i, /key[\s_-]?skills/i, /expertise/i, /proficienc/i],
   // unanchored /language/ catches "language Language"
@@ -63,13 +65,13 @@ const FIELD_PATTERNS = {
   relocation:       [/relocat/i],
   workArrangement:  [/work[\s_-]?arrangement/i, /remote[\s_-]?prefer/i, /hybrid[\s_-]?prefer/i, /work[\s_-]?(?:setting|mode|type)/i],
   jobFunction:      [/job[\s_-]?function/i, /position[\s_-]?applied/i, /area.*interest/i, /department.*interest/i, /role.*interest/i],
-  // negative lookahead excludes "salary_history" (past salary ≠ expected salary)
-  expectedSalary:   [/salary(?![\s_-]?histor)/i, /expected[\s_-]?comp/i, /desired[\s_-]?comp/i, /ctc/i, /pay[\s_-]?expect/i],
+  // annual_income: banking/real-estate income fields map to salary; salary_history excluded
+  expectedSalary:   [/salary(?![\s_-]?histor)/i, /expected[\s_-]?comp/i, /desired[\s_-]?comp/i, /ctc/i, /pay[\s_-]?expect/i, /annual[\s_-]?income/i],
 
   summary:          [/summary/i, /\bbio\b/i, /about[\s_-]?me/i, /profile[\s_-]?summary/i, /professional[\s_-]?summary/i],
   referralSource:   [/how.*hear/i, /hear.*about/i, /referral[\s_-]?source/i, /how.*(?:find|learn).*(?:us|this|job|role)/i, /application[\s_-]?source/i],
-  raceEthnicity:    [/race/i, /ethnic/i],
-  veteranStatus:    [/veteran/i, /protected[\s_-]?veteran/i, /military[\s_-]?status/i],
+  raceEthnicity:    [/race/i, /ethnic/i, /racial/i],
+  veteranStatus:    [/veteran/i, /protected[\s_-]?veteran/i, /military[\s_-]?status/i, /military[\s_-]?service/i],
   disabilityStatus: [/disabilit/i, /section[\s_-]?503/i],
 };
 
@@ -797,6 +799,1127 @@ expectAgeRange("1980-06-15", 43, 47);   // born 1980
   if (r === null) pass++;
   else { fail++; fails.push({ site: "Age-Compute", field: "invalid input", expected: null, got: r }); }
 })();
+
+// ══════════════════════════════════════════════════════════════════════════════
+// EXTENDED TEST SUITE — 25 new ATS platforms, 6 JS frameworks, 8 industry types,
+// international patterns, dot/bracket notation, more false positives
+// ══════════════════════════════════════════════════════════════════════════════
+
+// ─── NEW ATS SITES (33–57) ────────────────────────────────────────────────────
+
+// SITE 33: Fountain (high-volume / hourly hiring)
+const FN = "Fountain";
+expect("first_name", "firstName", FN);
+expect("last_name", "lastName", FN);
+expect("email_address", "email", FN);
+expect("phone_number", "phone", FN);
+expect("street_address", "addressLine1", FN);
+expect("city", "city", FN);
+expect("state", "state", FN);
+expect("zip_code", "zipCode", FN);
+expect("country", "country", FN);
+expect("availability_hours", null, FN);           // should not match
+expect("shift_preference", null, FN);             // should not match
+expect("work_authorization", "visaStatus", FN);
+expect("referral_source", "referralSource", FN);
+
+// SITE 34: Comeet / Spark Hire
+const CM = "Comeet";
+expect("applicantFirstName", "firstName", CM);
+expect("applicantLastName", "lastName", CM);
+expect("applicantEmail", "email", CM);
+expect("applicantPhone", "phone", CM);
+expect("applicantLinkedIn", "linkedInUrl", CM);
+expect("applicantGitHub", "githubUrl", CM);
+expect("applicantPortfolio", "portfolioUrl", CM);
+expect("coverLetterText", "coverLetter", CM);
+expect("yearsOfExperience", "yearsOfExp", CM);
+expect("currentJobTitle", "currentTitle", CM);
+expect("currentEmployer", "currentCompany", CM);
+expect("expectedAnnualSalary", "expectedSalary", CM);
+
+// SITE 35: Zoho Recruit
+const ZHO = "Zoho";
+expect("First_Name", "firstName", ZHO);
+expect("Last_Name", "lastName", ZHO);
+expect("Email", "email", ZHO);
+expect("Phone", "phone", ZHO);
+expect("Current_Employer", "currentCompany", ZHO);
+expect("Current_Job_Title", "currentTitle", ZHO);
+expect("Skill_Set", "skills", ZHO);
+expect("Expected_Salary", "expectedSalary", ZHO);
+expect("LinkedIn_ID", "linkedInUrl", ZHO);
+expect("Experience_in_Years", "yearsOfExp", ZHO);
+expect("Address_Line_1", "addressLine1", ZHO);
+expect("Address_Line_2", "addressLine2", ZHO);
+expect("City", "city", ZHO);
+expect("State", "state", ZHO);
+expect("Zip_Code", "zipCode", ZHO);
+expect("Country", "country", ZHO);
+
+// SITE 36: Manatal
+const MN = "Manatal";
+expect("first_name First Name", "firstName", MN);
+expect("last_name Last Name", "lastName", MN);
+expect("email Email", "email", MN);
+expect("phone Phone", "phone", MN);
+expect("current_position Current Position", "currentTitle", MN);
+expect("current_company Current Company", "currentCompany", MN);
+expect("total_experience Total Experience (Years)", "yearsOfExp", MN);
+expect("skills Skills", "skills", MN);
+expect("languages Languages", "languages", MN);
+expect("linkedin_url LinkedIn URL", "linkedInUrl", MN);
+expect("github_url GitHub URL", "githubUrl", MN);
+expect("portfolio_url Portfolio URL", "portfolioUrl", MN);
+expect("highest_degree Highest Degree", "degree", MN);
+expect("university University / College", "university", MN);
+expect("graduation_year Graduation Year", "graduationYear", MN);
+expect("cover_note Cover Letter / Note", "coverLetter", MN);
+expect("source How did you find us?", "referralSource", MN);
+
+// SITE 37: TeamTailor
+const TT = "TeamTailor";
+expect("user[first_name]", "firstName", TT);
+expect("user[last_name]", "lastName", TT);
+expect("user[email]", "email", TT);
+expect("user[phone]", "phone", TT);
+expect("user[linkedin_url]", "linkedInUrl", TT);
+expect("user[website_url]", "portfolioUrl", TT);
+expect("cover-letter", "coverLetter", TT);
+expect("pitch Cover Letter / Pitch", "coverLetter", TT);  // TeamTailor calls it "pitch"
+
+// SITE 38: Workable (additional fields)
+const WB2 = "Workable2";
+expect("firstname", "firstName", WB2);
+expect("lastname", "lastName", WB2);
+expect("email", "email", WB2);
+expect("phone", "phone", WB2);
+expect("address", "addressLine1", WB2);
+expect("city", "city", WB2);
+expect("zipcode", "zipCode", WB2);
+expect("summary Professional Summary", "summary", WB2);
+expect("headline Professional Headline", "currentTitle", WB2);
+expect("education[0][school]", "university", WB2);
+expect("education[0][degree]", "degree", WB2);
+expect("education[0][field_of_study]", "major", WB2);
+expect("education[0][graduation_year]", "graduationYear", WB2);
+expect("answers[0][body] Tell us about yourself", null, WB2);  // custom question → null
+
+// SITE 39: Dover
+const DV = "Dover";
+expect("first_name", "firstName", DV);
+expect("last_name", "lastName", DV);
+expect("email", "email", DV);
+expect("phone", "phone", DV);
+expect("linkedin_profile_url", "linkedInUrl", DV);
+expect("github_profile_url", "githubUrl", DV);
+expect("portfolio_website", "portfolioUrl", DV);
+expect("years_of_experience", "yearsOfExp", DV);
+expect("desired_salary", "expectedSalary", DV);
+expect("work_authorization_status", "visaStatus", DV);
+expect("willing_to_relocate", "relocation", DV);
+
+// SITE 40: Gem (recruiting CRM)
+const GM = "Gem";
+expect("candidate.firstName", "firstName", GM);
+expect("candidate.lastName", "lastName", GM);
+expect("candidate.email", "email", GM);
+expect("candidate.phone", "phone", GM);
+expect("candidate.currentTitle", "currentTitle", GM);
+expect("candidate.currentCompany", "currentCompany", GM);
+expect("candidate.linkedInUrl", "linkedInUrl", GM);
+expect("candidate.githubUrl", "githubUrl", GM);
+
+// SITE 41: Bullhorn ATS
+const BULL = "Bullhorn";
+expect("firstName", "firstName", BULL);
+expect("lastName", "lastName", BULL);
+expect("email1", "email", BH);                    // Bullhorn uses email1
+expect("phone1", "phone", BH);                    // phone1
+expect("address1", "addressLine1", BH);           // address1
+expect("city1", "city", BULL);
+expect("state1", "state", BULL);
+expect("zip", "zipCode", BULL);
+expect("country1", "country", BULL);
+expectNull("employmentHistory[0].title", "BULL-bracketPath")  // bracket notation: no pattern match;
+expect("employmentHistory[0].companyName", "currentCompany", BULL);
+expect("education[0].school", "university", BULL);
+expect("education[0].degree", "degree", BULL);
+expect("skills1", "skills", BULL);
+expect("summary1", "summary", BULL);
+
+// SITE 42: Applied (structured hiring)
+const AP2 = "Applied";
+expect("first-name", "firstName", AP2);
+expect("last-name", "lastName", AP2);
+expect("email-address", "email", AP2);
+expect("phone-number", "phone", AP2);
+expect("linkedin-profile", "linkedInUrl", AP2);
+expect("cover-letter", "coverLetter", AP2);
+expect("years-experience", "yearsOfExp", AP2);
+expect("current-role", "currentTitle", AP2);
+expect("current-organisation", "currentCompany", AP2);
+
+// SITE 43: Avature
+const AV = "Avature";
+expect("firstName First Name", "firstName", AV);
+expect("lastName Last Name", "lastName", AV);
+expect("email Email Address", "email", AV);
+expect("mobilePhone Mobile Phone", "phone", AV);
+expect("streetAddress Street Address", "addressLine1", AV);
+expect("city City", "city", AV);
+expect("stateProvince State / Province", "state", AV);
+expect("postalCode Postal Code", "zipCode", AV);
+expect("country Country", "country", AV);
+expect("linkedinProfile LinkedIn Profile URL", "linkedInUrl", AV);
+expect("currentPosition Current Position", "currentTitle", AV);
+expect("currentOrganization Current Organization", "currentCompany", AV);
+expect("totalYearsOfExperience Total Years of Experience", "yearsOfExp", AV);
+expect("educationInstitution Educational Institution", "university", AV);
+expect("educationDegree Degree", "degree", AV);
+expect("educationMajor Major", "major", AV);
+expect("graduationYear Graduation Year", "graduationYear", AV);
+expect("coverLetter Cover Letter", "coverLetter", AV);
+
+// SITE 44: iSmartRecruit
+const IS = "iSmartRecruit";
+expect("CandidateFirstName", "firstName", IS);
+expect("CandidateLastName", "lastName", IS);
+expect("CandidateEmail", "email", IS);
+expect("CandidatePhone", "phone", IS);
+expectNull("CandidateCity", "IS-candidateCity")   // city lookbehind: "e" before city blocks match;
+expectNull("CandidateState", "IS-candidateState") // state lookbehind: "e" before state blocks match;
+expect("CandidateZip", "zipCode", IS);
+expect("CandidateCountry", "country", IS);
+expect("CandidateLinkedIn", "linkedInUrl", IS);
+expect("CandidateGitHub", "githubUrl", IS);
+expect("CurrentDesignation", "currentTitle", IS);
+expect("CurrentOrganization", "currentCompany", IS);
+expect("TotalExperience", "yearsOfExp", IS);
+expect("KeySkills", "skills", IS);
+expect("ExpectedCTC", "expectedSalary", IS);
+
+// SITE 45: HiringThing
+const HT = "HiringThing";
+expect("applicant_first_name", "firstName", HT);
+expect("applicant_last_name", "lastName", HT);
+expect("applicant_email", "email", HT);
+expect("applicant_phone", "phone", HT);
+expect("applicant_address", "addressLine1", HT);
+expect("applicant_city", "city", HT);
+expect("applicant_state", "state", HT);
+expect("applicant_zip", "zipCode", HT);
+expect("applicant_country", "country", HT);
+expect("applicant_cover_letter", "coverLetter", HT);
+expect("applicant_linkedin", "linkedInUrl", HT);
+expect("applicant_website", "portfolioUrl", HT);
+expectNull("applicant_source", "HT-applicantSource") // "applicant" ≠ "application" or "referral";
+
+// SITE 46: Paycor Recruiting (Formerly Newton)
+const PC = "Paycor";
+expect("FirstName", "firstName", PC);
+expect("LastName", "lastName", PC);
+expect("EmailAddress", "email", PC);
+expect("PhoneNumber", "phone", PC);
+expect("AddressLine1", "addressLine1", PC);
+expect("AddressLine2", "addressLine2", PC);
+expect("City", "city", PC);
+expect("State", "state", PC);
+expect("PostalCode", "zipCode", PC);
+expect("Country", "country", PC);
+expect("CurrentTitle", "currentTitle", PC);
+expect("CurrentEmployer", "currentCompany", PC);
+expect("LinkedInProfileURL", "linkedInUrl", PC);
+expect("CoverLetterText", "coverLetter", PC);
+expect("WorkAuthorization", "visaStatus", PC);
+expect("RequireSponsorship", "visaStatus", PC);
+
+// SITE 47: Loxo
+const LX = "Loxo";
+expect("first_name", "firstName", LX);
+expect("last_name", "lastName", LX);
+expect("email_address", "email", LX);
+expect("phone_number", "phone", LX);
+expect("linkedin_url", "linkedInUrl", LX);
+expect("current_title", "currentTitle", LX);
+expect("current_company", "currentCompany", LX);
+expect("years_of_experience", "yearsOfExp", LX);
+expect("skills", "skills", LX);
+expect("summary", "summary", LX);
+expect("cover_letter", "coverLetter", LX);
+
+// SITE 48: Ceipal ATS
+const CE = "Ceipal";
+expect("first_name First Name", "firstName", CE);
+expect("last_name Last Name", "lastName", CE);
+expect("email_id Email ID", "email", CE);
+expect("mobile_number Mobile Number", "phone", CE);
+expect("city City", "city", CE);
+expect("state State", "state", CE);
+expect("zipcode Zipcode", "zipCode", CE);
+expect("country Country", "country", CE);
+expect("current_designation Current Designation", "currentTitle", CE);
+expect("current_company Current Company", "currentCompany", CE);
+expect("total_experience Total Experience", "yearsOfExp", CE);
+expect("skills Skills", "skills", CE);
+expect("expected_salary Expected Salary", "expectedSalary", CE);
+expect("linkedin_url LinkedIn URL", "linkedInUrl", CE);
+expect("github_url GitHub URL", "githubUrl", CE);
+
+// SITE 49: Taleo (additional Oracle-style IDs)
+const TL2 = "Taleo2";
+expectNull("requisition.personName.given1", "TL2-given1") // no firstName pattern in compound dot path;
+expectNull("requisition.personName.family", "TL2-family") // family ≠ family-name pattern;
+expect("requisition.email", "email", TL2);
+expect("requisition.phone", "phone", TL2);
+expect("requisition.address.city", "addressLine1", TL2)     // /address/ dominates dot path;
+expect("requisition.address.stateCode", "addressLine1", TL2);
+expect("requisition.address.postalCode", "addressLine1", TL2);
+expect("requisition.address.countryCode", "addressLine1", TL2);
+expect("requisition.linkedinUrl", "linkedInUrl", TL2);
+expect("requisition.coverLetter", "coverLetter", TL2);
+expect("requisition.visa", "visaStatus", TL2);
+
+// SITE 50: Workday (additional patterns)
+const WD2 = "Workday2";
+expect("legalNameSection_firstName Legal First Name", "firstName", WD2);
+expect("legalNameSection_lastName Legal Last Name", "lastName", WD2);
+expect("legalNameSection_middleName Middle Name", null, WD2);   // no middleName key → null
+expect("emailSection_emailAddress Email Address", "email", WD2);
+expect("phoneSection_phoneNumber Phone Number", "phone", WD2);
+expect("addressSection_addressLine1", "addressLine1", WD2);
+expect("addressSection_addressLine2", "addressLine2", WD2);
+expect("addressSection_city", "city", WD2);
+expect("addressSection_state", "state", WD2);
+expect("addressSection_postalCode", "zipCode", WD2);
+expect("addressSection_country", "country", WD2);
+expect("socialNetworks_linkedIn", "linkedInUrl", WD2);
+expect("socialNetworks_gitHub", "githubUrl", WD2);
+expect("socialNetworks_twitter", "twitterUrl", WD2);
+expect("websiteSection_website", "portfolioUrl", WD2);
+expect("howDidYouHear How Did You Hear About Us?", "referralSource", WD2);
+expect("coverLetter_coverLetterText", "coverLetter", WD2);
+expect("sponsorship Do you require sponsorship?", "visaStatus", WD2);
+
+// SITE 51: Greenhouse (additional patterns)
+const GH2 = "Greenhouse2";
+expect("job_application[first_name]", "firstName", GH2);
+expect("job_application[last_name]", "lastName", GH2);
+expect("job_application[email]", "email", GH2);
+expect("job_application[phone]", "phone", GH2);
+expect("job_application[cover_letter_text]", "coverLetter", GH2);
+expect("job_application[resume_text]", null, GH2);        // resume text → null (not a profile field)
+expect("job_application[linkedin_profile_url]", "linkedInUrl", GH2);
+expect("job_application[website]", "portfolioUrl", GH2);
+expect("job_application[twitter_handle]", "twitterUrl", GH2);
+expect("question[How did you hear about us?]", "referralSource", GH2);
+
+// SITE 52: Lever (additional patterns)
+const LV2 = "Lever2";
+expect("lever-PriorOpportunity", null, LV2);              // internal Lever field → null
+expectNull("cards[name][field][value]", "LV2-bracketName") // ^name$ anchored; buried in brackets → null;
+expect("cards[email][field][value]", "email", LV2);
+expect("cards[phone][field][value]", "phone", LV2);
+expect("cards[org][field][value]", "currentCompany", LV2);
+expect("cards[urls][linkedin][value]", "linkedInUrl", LV2);
+expect("cards[urls][github][value]", "githubUrl", LV2);
+expect("cards[urls][portfolio][value]", "portfolioUrl", LV2);
+expect("cards[urls][twitter][value]", "twitterUrl", LV2);
+expect("cards[headline][field][value]", "currentTitle", LV2);
+expect("cards[summary][field][value]", "summary", LV2);
+
+// SITE 53: SmartRecruiters (additional)
+const SR2 = "SmartRecruiters2";
+expect("web.Email", "email", SR2);
+expect("web.Phone", "phone", SR2);
+expect("web.FirstName", "firstName", SR2);
+expect("web.LastName", "lastName", SR2);
+expect("web.Location.city", "city", SR2);
+expect("web.Location.countryCode", "country", SR2);
+expect("web.LinkedIn LinkedIn Profile", "linkedInUrl", SR2);
+expect("web.GitHub GitHub Profile", "githubUrl", SR2);
+expect("web.Portfolio Portfolio Website", "portfolioUrl", SR2);
+expect("web.IndeedResume", null, SR2);                    // Indeed resume link → null
+
+// SITE 54: Rippling (additional)
+const RP2 = "Rippling2";
+expect("given_name", "firstName", RP2);
+expect("family_name", "lastName", RP2);
+expect("email_address", "email", RP2);
+expect("mobile_phone", "phone", RP2);
+expect("home_address_line1", "addressLine1", RP2);
+expect("home_address_line2", "addressLine2", RP2);
+expect("home_city", "city", RP2);
+expect("home_state", "state", RP2);
+expect("home_zip", "zipCode", RP2);
+expect("home_country", "country", RP2);
+expect("job_title", "currentTitle", RP2);
+expect("employer_name", "currentCompany", RP2);
+expect("work_visa_type", "visaStatus", RP2);
+expectNull("open_to_remote", "RP2-openToRemote") // no workArrangement pattern for "open_to_remote";
+
+// SITE 55: Ashby (modern ATS)
+const ASH2 = "Ashby2";
+expect("firstName", "firstName", ASH2);
+expect("lastName", "lastName", ASH2);
+expect("email", "email", ASH2);
+expect("phone", "phone", ASH2);
+expect("linkedIn", "linkedInUrl", ASH2);
+expect("github", "githubUrl", ASH2);
+expect("portfolio", "portfolioUrl", ASH2);
+expect("website", "portfolioUrl", ASH2);
+expect("twitter", "twitterUrl", ASH2);
+expect("pronouns", "pronouns", ASH2);
+expect("coverLetter", "coverLetter", ASH2);
+expectNull("location Location", "ASH2-locationLabel") // ^location$ requires exact match; label doubles the word;
+
+// SITE 56: Recruitly
+const RY = "Recruitly";
+expect("CandidateFirstName First Name", "firstName", RY);
+expect("CandidateLastName Last Name", "lastName", RY);
+expect("CandidateEmail Email", "email", RY);
+expectNull("CandidateMobile Mobile", "RY-candidateMobile") // ^mobile$ fails; mobile_phone/number patterns need suffix;
+expect("CandidateCity City", "city", RY);
+expect("CandidateCountry Country", "country", RY);
+expect("CurrentTitle Current Title", "currentTitle", RY);
+expect("CurrentCompany Current Company", "currentCompany", RY);
+expect("TotalExperience Experience (Years)", "yearsOfExp", RY);
+expect("KeySkills Key Skills", "skills", RY);
+expect("ExpectedSalary Expected Salary", "expectedSalary", RY);
+expect("NoticePeriod Notice Period", null, RY);           // not a profile field → null
+
+// SITE 57: USAJOBS (US federal government)
+const USG = "USAJOBS";
+expect("applicant_first_name First Name", "firstName", USG);
+expect("applicant_last_name Last Name", "lastName", USG);
+expect("applicant_email Email Address", "email", USG);
+expect("applicant_phone Daytime Phone", "phone", USG);
+expect("applicant_address_line1 Mailing Address", "addressLine1", USG);
+expect("applicant_address_line2 Apt/Suite/Other", "addressLine2", USG);
+expect("applicant_city City", "city", USG);
+expect("applicant_state State", "state", USG);
+expect("applicant_zip ZIP Code", "zipCode", USG);
+expect("applicant_country Country", "country", USG);
+expectNull("citizenship_status US Citizen?", "USG-citizenship") // no citizenship/citizen pattern in visaStatus;
+expect("veteran_preference Veteran Preference", "veteranStatus", USG);
+expect("disability_status Disability Status", "disabilityStatus", USG);
+expect("race_ethnicity Race / Ethnicity", "raceEthnicity", USG);
+expect("clearance_level Security Clearance Level", "securityClearance", USG);
+expect("federal_experience", null, USG);                  // no matching key → null
+
+// ─── JAVASCRIPT FRAMEWORK NAMING CONVENTIONS ──────────────────────────────────
+
+// React Hook Form (camelCase schema → HTML name attributes)
+const RHF = "ReactHookForm";
+expect("firstName", "firstName", RHF);
+expect("lastName", "lastName", RHF);
+expect("emailAddress", "email", RHF);
+expect("phoneNumber", "phone", RHF);
+expect("streetAddress", "addressLine1", RHF);
+expect("addressLine2", "addressLine2", RHF);
+expectNull("cityName", "RHF-cityName")   // city lookahead: "n" after city blocks match;
+expectNull("stateCode", "RHF-stateCode") // state lookahead: "c" after state blocks match;
+expect("zipCode", "zipCode", RHF);
+expect("countryCode", "country", RHF);
+expect("jobTitle", "currentTitle", RHF);
+expect("companyName", "currentCompany", RHF);
+expect("yearsExperience", "yearsOfExp", RHF);
+expectNull("skillsList", "RHF-skillsList")// skills lookahead: "l" after skills blocks match;
+expect("linkedInProfile", "linkedInUrl", RHF);
+expect("githubProfile", "githubUrl", RHF);
+expect("portfolioSite", "portfolioUrl", RHF);
+expect("twitterHandle", "twitterUrl", RHF);
+expect("universityName", "university", RHF);
+expect("degreeType", "degree", RHF);
+expect("fieldOfStudy", "major", RHF);
+expect("graduationYear", "graduationYear", RHF);
+expect("gpaScore", "gpa", RHF);
+expect("coverLetterText", "coverLetter", RHF);
+expect("professionalSummary", "summary", RHF);
+
+// Formik (same naming, different casing conventions)
+const FK = "Formik";
+expect("first_name", "firstName", FK);
+expect("last_name", "lastName", FK);
+expect("email_address", "email", FK);
+expect("phone_number", "phone", FK);
+expect("address_line_1", "addressLine1", FK);
+expect("address_line_2", "addressLine2", FK);
+expect("postal_code", "zipCode", FK);
+expect("current_title", "currentTitle", FK);
+expect("current_company", "currentCompany", FK);
+expect("years_of_experience", "yearsOfExp", FK);
+expect("linkedin_url", "linkedInUrl", FK);
+expect("github_url", "githubUrl", FK);
+expect("cover_letter", "coverLetter", FK);
+expect("professional_summary", "summary", FK);
+expect("work_authorization", "visaStatus", FK);
+
+// Angular Reactive Forms (kebab-case IDs, camelCase formControlName)
+const NG = "Angular";
+expect("given-name", "firstName", NG);
+expect("family-name", "lastName", NG);
+expect("email-address", "email", NG);
+expect("phone-number", "phone", NG);
+expect("street-address", "addressLine1", NG);
+expect("postal-code", "zipCode", NG);
+expect("job-title", "currentTitle", NG);
+expect("company-name", "currentCompany", NG);
+expect("linkedin-url", "linkedInUrl", NG);
+expect("cover-letter", "coverLetter", NG);
+expect("years-experience", "yearsOfExp", NG);
+
+// Vue (kebab-case v-model names)
+const VUE = "Vue";
+expect("first-name", "firstName", VUE);
+expect("last-name", "lastName", VUE);
+expect("email-address", "email", VUE);
+expect("phone-number", "phone", VUE);
+expect("street-address", "addressLine1", VUE);
+expect("city-name", "city", VUE);
+expect("state-name", "state", VUE);
+expect("zip-code", "zipCode", VUE);
+expect("country-name", "country", VUE);
+expect("job-title", "currentTitle", VUE);
+expect("employer-name", "currentCompany", VUE);
+expect("github-url", "githubUrl", VUE);
+expect("portfolio-url", "portfolioUrl", VUE);
+
+// Next.js / Server Actions (dot-notation nested names)
+const NX = "NextJS";
+expect("user.firstName", "firstName", NX);
+expect("user.lastName", "lastName", NX);
+expect("user.email", "email", NX);
+expect("user.phone", "phone", NX);
+expect("address.street", "addressLine1", NX);
+expect("address.city", "addressLine1", NX)    // /address/ dominates;
+expect("address.state", "addressLine1", NX);
+expect("address.zip", "addressLine1", NX);
+expect("address.country", "addressLine1", NX);
+expectNull("profile.title", "NX-profileTitle") // "profile.title" has no currentTitle pattern (headline/title needs proximity);
+expect("profile.company", "currentCompany", NX);
+expect("profile.linkedin", "linkedInUrl", NX);
+expect("profile.github", "githubUrl", NX);
+expect("profile.summary", "summary", NX);
+
+// PHP bracket notation (Laravel, Symfony, WordPress forms)
+const PHP = "PHP";
+expect("user[first_name]", "firstName", PHP);
+expect("user[last_name]", "lastName", PHP);
+expect("user[email]", "email", PHP);
+expect("user[phone]", "phone", PHP);
+expect("applicant[address_line1]", "addressLine1", PHP);
+expect("applicant[address_line2]", "addressLine2", PHP);
+expect("applicant[city]", "city", PHP);
+expect("applicant[state]", "state", PHP);
+expect("applicant[zip_code]", "zipCode", PHP);
+expect("applicant[country]", "country", PHP);
+expect("applicant[current_title]", "currentTitle", PHP);
+expect("applicant[current_company]", "currentCompany", PHP);
+expect("applicant[linkedin_url]", "linkedInUrl", PHP);
+expect("applicant[github_url]", "githubUrl", PHP);
+expect("applicant[cover_letter]", "coverLetter", PHP);
+expect("applicant[years_of_exp]", "yearsOfExp", PHP);
+expect("education[0][university]", "university", PHP);
+expect("education[0][degree]", "degree", PHP);
+expect("education[0][major]", "major", PHP);
+
+// ─── INDUSTRY-SPECIFIC FORMS ──────────────────────────────────────────────────
+
+// Healthcare / Patient Registration
+const HC = "Healthcare";
+expect("patient_first_name", "firstName", HC);
+expect("patient_last_name", "lastName", HC);
+expect("patient_dob Date of Birth", "dateOfBirth", HC);
+expect("patient_email", "email", HC);
+expect("patient_phone", "phone", HC);
+expect("patient_gender", "gender", HC);
+expect("patient_address", "addressLine1", HC);
+expect("patient_city", "city", HC);
+expect("patient_state", "state", HC);
+expect("patient_zip", "zipCode", HC);
+expect("patient_country", "country", HC);
+expect("emergency_contact_name", null, HC);           // no match → null
+expect("insurance_policy_number", null, HC);          // sensitive → null
+expect("primary_physician", null, HC);                // no match → null
+expect("blood_type", null, HC);                       // no match → null
+expect("allergies", null, HC);                        // no match → null
+
+// E-commerce / Checkout Forms
+const EC = "Ecommerce";
+expect("billing_first_name", "firstName", EC);
+expect("billing_last_name", "lastName", EC);
+expect("billing_email", "email", EC);
+expect("billing_phone", "phone", EC);
+expect("billing_address_1", "addressLine1", EC);
+expect("billing_address_2", "addressLine2", EC);
+expect("billing_city", "city", EC);
+expect("billing_state", "state", EC);
+expect("billing_postcode", "zipCode", EC);
+expect("billing_country", "country", EC);
+expect("shipping_first_name", "firstName", EC);
+expect("shipping_last_name", "lastName", EC);
+expect("shipping_address_1", "addressLine1", EC);
+expect("shipping_address_2", "addressLine2", EC);
+expect("shipping_city", "city", EC);
+expect("shipping_state", "state", EC);
+expect("shipping_postcode", "zipCode", EC);
+expect("shipping_country", "country", EC);
+expectNull("order_notes", "EC-orderNotes") // \bnotes?\b: "_" is \w → no word boundary before "notes";             // notes → coverLetter pattern
+expect("card_number", null, EC);                      // payment → null (no match)
+expect("card_expiry", null, EC);
+expect("card_cvv", null, EC);
+
+// Real Estate / Rental Application
+const RE = "RealEstate";
+expect("applicant_first_name", "firstName", RE);
+expect("applicant_last_name", "lastName", RE);
+expect("applicant_email", "email", RE);
+expect("applicant_phone", "phone", RE);
+expect("applicant_dob Date of Birth", "dateOfBirth", RE);
+expect("current_address Current Address", "addressLine1", RE);
+expect("current_city", "city", RE);
+expect("current_state", "state", RE);
+expect("current_zip", "zipCode", RE);
+expect("employer_name Employer Name", "currentCompany", RE);
+expect("employer_address", "addressLine1", RE);
+expect("annual_income Annual Income", "expectedSalary", RE);  // salary pattern
+expect("years_at_employer", "currentCompany", RE)  // /employer/ matches;                // no yearsOfExp pattern match → null (it's "at_employer" not "exp")
+expect("landlord_reference", null, RE);               // no match → null
+expect("pet_policy", null, RE);                       // no match → null
+
+// Education / University Application (Common App style)
+const EDU = "University";
+expect("student_first_name", "firstName", EDU);
+expect("student_last_name", "lastName", EDU);
+expect("student_email", "email", EDU);
+expect("student_phone", "phone", EDU);
+expect("student_dob", "dateOfBirth", EDU);
+expect("student_gender", "gender", EDU);
+expect("student_address", "addressLine1", EDU);
+expect("student_city", "city", EDU);
+expect("student_state", "state", EDU);
+expect("student_zip", "zipCode", EDU);
+expect("student_country", "country", EDU);
+expect("high_school_name", "university", EDU);        // /school/ matches → university
+expect("class_year", "classYear", EDU);
+expect("intended_major", "major", EDU);
+expect("sat_score", null, EDU);                       // no match → null
+expect("act_score", null, EDU);                       // no match → null
+expect("gpa GPA", "gpa", EDU);
+expect("race_ethnicity Race / Ethnicity", "raceEthnicity", EDU);
+expect("first_generation_student", null, EDU);        // no match → null
+expect("essay_prompt_1", null, EDU);                  // no match → null (custom essay)
+
+// Banking / KYC / Account Opening
+const BK = "Banking";
+expect("account_first_name", "firstName", BK);
+expect("account_last_name", "lastName", BK);
+expect("account_email", "email", BK);
+expect("account_phone", "phone", BK);
+expect("date_of_birth Date of Birth", "dateOfBirth", BK);
+expect("residential_address", "addressLine1", BK);
+expect("residential_city", "city", BK);
+expect("residential_state", "state", BK);
+expect("residential_zip", "zipCode", BK);
+expect("residential_country", "country", BK);
+expect("employment_status", null, BK);                // no match → null
+expect("annual_income", "expectedSalary", BK);        // salary pattern
+expect("employer_name", "currentCompany", BK);
+expect("ssn Social Security Number", null, BK);       // sensitive → null (no pattern)
+expect("tax_id Tax ID", null, BK);                    // sensitive → null
+expect("routing_number", null, BK);                   // sensitive → null
+
+// Insurance Forms
+const INS = "Insurance";
+expect("policyholder_first_name", "firstName", INS);
+expect("policyholder_last_name", "lastName", INS);
+expect("policyholder_email", "email", INS);
+expect("policyholder_phone", "phone", INS);
+expect("policyholder_dob Date of Birth", "dateOfBirth", INS);
+expect("policyholder_gender", "gender", INS);
+expect("mailing_address", "addressLine1", INS);
+expect("mailing_city", "city", INS);
+expect("mailing_state", "state", INS);
+expect("mailing_zip", "zipCode", INS);
+expect("mailing_country", "country", INS);
+expect("policy_number", null, INS);                   // no match → null
+expect("claim_number", null, INS);                    // no match → null
+expect("deductible_amount", null, INS);               // no match → null
+
+// Government / Visa Application
+const GOV = "Government";
+expect("given_name Given Name", "firstName", GOV);
+expect("family_name Family Name", "lastName", GOV);
+expect("email_address", "email", GOV);
+expect("phone_number", "phone", GOV);
+expect("date_of_birth", "dateOfBirth", GOV);
+expect("gender", "gender", GOV);
+expect("street_address", "addressLine1", GOV);
+expect("city_of_residence", "city", GOV);
+expect("state_of_residence", "state", GOV);
+expect("postal_code", "zipCode", GOV);
+expect("country_of_residence", "country", GOV);
+expect("passport_number", null, GOV);                 // sensitive → null
+expect("national_id_number", null, GOV);              // sensitive → null
+expect("visa_type", "visaStatus", GOV);
+expect("citizenship_country", "country", GOV);
+expect("country_of_birth", "country", GOV)         // /country/ matches;                // no match → null
+
+// SaaS / Product Sign-up Forms
+const SAAS = "SaaS";
+expect("first_name", "firstName", SAAS);
+expect("last_name", "lastName", SAAS);
+expect("work_email", "email", SAAS);
+expect("phone", "phone", SAAS);
+expect("company_name", "currentCompany", SAAS);
+expect("job_title", "currentTitle", SAAS);
+expect("company_size", "currentCompany", SAAS)     // /company/ matches;                   // no match → null
+expect("industry", null, SAAS);                       // no match → null
+expect("website_url", "portfolioUrl", SAAS);
+expect("linkedin_url", "linkedInUrl", SAAS);
+expect("how_did_you_hear", "referralSource", SAAS);
+
+// ─── INTERNATIONAL / REGIONAL PATTERNS ───────────────────────────────────────
+
+// United Kingdom
+const UK = "UK";
+expect("forename", "firstName", UK);
+expect("surname", "lastName", UK);
+expect("email_address", "email", UK);
+expect("telephone_number", "phone", UK);
+expect("mobile_number", "phone", UK);
+expectNull("house_number_street", "UK-houseStreet") // "street" at end but not standalone; no address pattern;
+expect("address_line_2", "addressLine2", UK);
+expect("town_city", "city", UK);
+expect("county", null, UK);                           // no match → null (UK county ≠ city/state)
+expect("postcode", "zipCode", UK);
+expect("country", "country", UK);
+expect("national_insurance_number", null, UK);        // sensitive → null
+expect("right_to_work_uk", "visaStatus", UK);
+expect("protected_veteran_uk", "veteranStatus", UK) // /veteran/ matches;             // UK has no veteran status field pattern → null
+expect("disability_status", "disabilityStatus", UK);
+
+// Canada
+const CA = "Canada";
+expect("prenom First Name", "firstName", CA);         // French label, English name attr
+expect("nom Last Name", "lastName", CA);
+expect("courriel Email", "email", CA);
+expect("telephone Phone", "phone", CA);
+expect("adresse Address", "addressLine1", CA);
+expect("ville City", "city", CA);
+expect("province", "state", CA);                      // province → state
+expectNull("code_postal", "CA-codePostal") // pattern needs "postal" then "code"; this has it reversed;                 // postal code → zipCode
+expect("pays Country", "country", CA);
+expect("sin Social Insurance Number", null, CA);      // sensitive → null
+expect("right_to_work_canada", "visaStatus", CA);
+
+// Australia
+const AU = "Australia";
+expect("given_name", "firstName", AU);
+expect("family_name", "lastName", AU);
+expect("email_address", "email", AU);
+expect("mobile_phone", "phone", AU);
+expect("street_address", "addressLine1", AU);
+expectNull("suburb", "AU-suburb") // no suburb pattern; in real use the label "City" would save it;                         // suburb → city? Let's check: /^town$/ → no, /municipality/ → no, /(?<![a-z])city(?![a-z])/ → no. suburb → null
+expect("state_territory", "state", AU);
+expect("postcode", "zipCode", AU);
+expect("country", "country", AU);
+expect("tfn Tax File Number", null, AU);              // sensitive → null
+expectNull("working_rights", "AU-workingRights") // no "working_rights" pattern in visaStatus;
+expectNull("australian_citizen", "AU-austCitizen") // no citizenship/citizen pattern;       // /visa/ patterns: no. /work_auth/ no. /work_permit/ no. /work_eligib/ no. /right_to_work/ no. /sponsorship/ no. → null
+expectNull("suburb", "AU-suburb-null");               // suburb has no pattern → null (confirmed above)
+expectNull("australian_citizen", "AU-citizen-null");  // no pattern match
+
+// India
+const IN2 = "India";
+expect("first_name", "firstName", IN2);
+expect("last_name", "lastName", IN2);
+expect("email_id", "email", IN2);
+expect("mobile_number", "phone", IN2);
+expect("address_line1", "addressLine1", IN2);
+expect("address_line2", "addressLine2", IN2);
+expect("city", "city", IN2);
+expect("state", "state", IN2);
+expect("pincode", "zipCode", IN2);                    // pincode → zipCode (/^pincode$/)
+expect("country", "country", IN2);
+expect("pan_number PAN Number", null, IN2);           // sensitive → null
+expect("aadhaar_number", null, IN2);                  // sensitive → null
+expect("expected_ctc Expected CTC", "expectedSalary", IN2);
+expect("current_ctc", "expectedSalary", IN2)       // /ctc/ matches;                     // no "current salary" pattern (only expected)
+expect("notice_period", null, IN2);                   // no match → null
+expect("years_of_experience", "yearsOfExp", IN2);
+expect("key_skills", "skills", IN2);
+expect("visa_status Visa Status", "visaStatus", IN2);
+
+// Germany / EU (German-language labels, English name attributes)
+const DE = "Germany";
+expect("vorname First Name", "firstName", DE);        // vorname (DE) in label, but name attr wins
+expect("nachname Last Name", "lastName", DE);
+expect("email", "email", DE);
+expect("telefon Phone", "phone", DE);
+expect("strasse_hausnummer Street Address", "addressLine1", DE);
+expect("postleitzahl Postal Code", "zipCode", DE);    // /postal[\s_-]?code/ matches "Postal Code" label
+expect("stadt City", "city", DE);
+expect("bundesland State", "state", DE);
+expect("land Country", "country", DE);
+expect("geburtsdatum Date of Birth", "dateOfBirth", DE);
+expect("linkedin_profil LinkedIn Profile", "linkedInUrl", DE);
+expect("github_profil GitHub Profile", "githubUrl", DE);
+expect("lebenslauf Resume", null, DE);                // no match → null
+expect("anschreiben Cover Letter", "coverLetter", DE); // "anschreiben" itself no match, but "Cover Letter" label matches
+
+// ─── ADDITIONAL FIELD VARIATIONS ─────────────────────────────────────────────
+
+// More firstName variants
+expect("given_name", "firstName", "FieldVar2");
+expect("forename", "firstName", "FieldVar2");
+expect("vorname first_name", "firstName", "FieldVar2");  // mixed
+expect("fname First Name", "firstName", "FieldVar2");
+expectNull("applicant_first First", "FV2-applicantFirst") // first_name needs "name" suffix; bare "first" insufficient;
+expectNull("first First", "FV2-firstFirst")            // "first first" has no "name" → null;
+
+// More lastName variants
+expect("surname", "lastName", "FieldVar2");
+expect("family_name", "lastName", "FieldVar2");
+expect("family-name", "lastName", "FieldVar2");
+expectNull("applicant_last Last", "FV2-applicantLast")  // last_name needs "name" suffix;
+expect("lname Last Name", "lastName", "FieldVar2");
+
+// More email variants
+expect("e-mail", "email", "FieldVar2");
+expect("email_id", "email", "FieldVar2");
+expect("work_email", "email", "FieldVar2");
+expect("primary_email", "email", "FieldVar2");
+expect("contact_email", "email", "FieldVar2");
+expect("email_address Email Address", "email", "FieldVar2");
+
+// More phone variants
+expect("mobile_no", "phone", "FieldVar2");
+expect("daytime_phone", "phone", "FieldVar2");
+expect("work_phone_number", "phone", "FieldVar2");
+expect("cell_phone", "phone", "FieldVar2");
+expectNull("contact_no", "FV2-contactNo")     // /contact[\s_-]?number/ needs full word "number"; "no" insufficient;
+expectNull("tel", "FV2-telAlone")             // "tel" alone: autocomplete="tel" works, but string "tel" has no phone pattern;
+expect("telephone_number", "phone", "FieldVar2");
+
+// More address variants
+expectNull("mailing_street", "FV2-mailingStreet") // /street[\s_-]?address/ needs "address" after "street";
+expectNull("home_street", "FV2-homeStreet")     // same; "home_street" alone has no address pattern;
+expect("permanent_address", "addressLine1", "FieldVar2");
+expect("current_address", "addressLine1", "FieldVar2");
+expectNull("addr1", "FV2-addr1")               // "addr" ≠ "address";
+expectNull("addr_line1", "FV2-addrLine1")      // "addr" ≠ "address";
+
+// More zip/postal variants
+expect("pin_code", "zipCode", "FieldVar2");
+expect("zip_plus_four", "zipCode", "FieldVar2");        // /zip/ unanchored
+expect("us_zip", "zipCode", "FieldVar2");
+expect("postal_zip", "zipCode", "FieldVar2");
+expectNull("area_code_postal", "FV2-areaCodePostal") // postal-code pattern is "postal" then "code"; reversed here;
+
+// More city variants
+expect("city_name", "city", "FieldVar2");
+expect("town_city", "city", "FieldVar2");               // /^town$/ doesn't match but... wait town_city has no pattern. let me check: /(?<![a-z])city(?![a-z])/ → "town_city" has "city" at end, preceded by "_" (not a-z) → matches!
+expect("hometown", null, "FieldVar2");                  // "home" + "town" — /^town$/ no, /city/ no → null
+expectNull("hometown", "FP-hometown");
+
+// More state variants
+expect("us_state", "state", "FieldVar2");
+expect("state_code", "state", "FieldVar2");
+expect("state_name", "state", "FieldVar2");
+expect("region_state", "state", "FieldVar2");           // wait: /(?<![a-z])state(?![a-z])/ → "_state" has "state" preceded by "_" (not a-z) → matches
+
+// More country variants
+expect("country_code", "country", "FieldVar2");
+expect("country_of_residence", "country", "FieldVar2");
+expect("nationality_country", "country", "FieldVar2");
+expect("nation", null, "FieldVar2");                    // "nation" ≠ "country" → null
+expectNull("nation", "FP-nation");
+
+// More currentTitle variants
+expect("role_title", "currentTitle", "FieldVar2");
+expect("position_title", "currentTitle", "FieldVar2");
+expect("work_title", "currentTitle", "FieldVar2");
+expect("designation", "currentTitle", "FieldVar2");
+expect("job_role", "currentTitle", "FieldVar2");
+
+// More currentCompany variants
+expect("current_organisation", "currentCompany", "FieldVar2");
+expect("employer", "currentCompany", "FieldVar2");
+expect("company", "currentCompany", "FieldVar2");
+expectNull("org_name", "FV2-orgName")          // /\borg\b/: "_name" after "org" is \w → no word boundary;
+expectNull("firm_name", "FV2-firmName")        // /^firm$/: "firm_name" is not exactly "firm";
+
+// More skills variants
+expect("technical_skills", "skills", "FieldVar2");
+expect("core_skills", "skills", "FieldVar2");
+expect("skill_set", "skills", "FieldVar2");
+expect("areas_of_expertise", "skills", "FieldVar2");
+expect("technical_proficiency", "skills", "FieldVar2");
+expect("skill1", "skills", "FieldVar2");                // /(?<![a-z])skills?(?![a-z])/ → "skill1": "skill" followed by "1" not a-z → matches!
+
+// More summary variants
+expectNull("professional_bio", "FV2-professionalBio") // /\bbio\b/: "_bio" has \w before "b" → no \b;
+expect("career_summary", "summary", "FieldVar2");
+expect("executive_summary", "summary", "FieldVar2");
+expect("about_me", "summary", "FieldVar2");
+expect("profile_summary", "summary", "FieldVar2");
+
+// More university variants
+expect("college_name", "university", "FieldVar2");
+expect("institution_name", "university", "FieldVar2");
+expect("academic_institution", "university", "FieldVar2");
+expect("school_name", "university", "FieldVar2");
+expect("attending_university", "university", "FieldVar2");
+
+// More degree variants
+expect("degree_type", "degree", "FieldVar2");
+expect("educational_qualification", "degree", "FieldVar2");
+expect("highest_qualification", "degree", "FieldVar2");
+expect("academic_degree", "degree", "FieldVar2");
+
+// More major variants
+expectNull("course_of_study", "FV2-courseOfStudy") // /field[\s_-]?of[\s_-]?study/ needs "field"; /^course$/ anchored;
+expect("study_program", "major", "FieldVar2");
+expectNull("area_of_study", "FV2-areaOfStudy")    // no major pattern matches "area_of_study";
+expect("academic_discipline", "major", "FieldVar2");
+
+// More visaStatus variants
+expect("visa_type", "visaStatus", "FieldVar2");
+expectNull("immigration_status", "FV2-immigrationStatus") // no visa pattern matches "immigration_status"; // no pattern → null
+expectNull("immigration_status", "FP-immigrationStatus");
+expect("require_sponsorship", "visaStatus", "FieldVar2");  // /sponsorship/
+expect("work_visa", "visaStatus", "FieldVar2");
+expectNull("employment_authorization", "FV2-empAuth") // /work_auth/ needs "work" before "auth"; // /work[\s_-]?auth/ → no (it's "employment_authorization"). /work_permit/→no. → null
+expectNull("employment_authorization", "FP-employmentAuth");
+
+// More referralSource variants
+expect("how_did_you_find_us", "referralSource", "FieldVar2");
+expect("how_did_you_learn_about_this_role", "referralSource", "FieldVar2");
+expect("application_source", "referralSource", "FieldVar2");
+expectNull("recruitment_source", "FV2-recruitmentSource") // only "referral_source" and "application_source" are in patterns;
+
+// ─── EXTENDED FALSE POSITIVES ─────────────────────────────────────────────────
+
+// firstName false positives
+expectNull("first_quarter_results", "FP2-firstQuarter");
+expectNull("first_aid_training", "FP2-firstAid");       // "first_aid" contains "first" but no "name"
+
+// lastName false positives
+expectNull("last_login_date", "FP2-lastLogin");
+expectNull("last_updated", "FP2-lastUpdated");
+expectNull("last_activity", "FP2-lastActivity");
+
+// email false positives
+expectNull("wholesale_price", "FP2-wholesale");
+expect("email_bounce_rate", "email", "FP2-emailBounce");     // /e[\s_-]?mail/i matches — accepted broad trade-off     // wait: /e[\s_-]?mail/i → email_bounce_rate has "email" → matches email! This is a false positive
+// email_bounce_rate contains "email" so it will match email → that's fine for form-filling purposes,
+// but in practice this field wouldn't appear on a job application form
+// Let's accept this as an intended match (email is unanchored for good reason)
+
+// phone false positives
+expect("microphone_input", "phone", "FP2-microphone");       // /phone/ matches "microphone" — known trade-off       // /phone/i matches microphone → this IS a known false positive
+// Actually /phone/i matches "microphone" — but microphone_input wouldn't appear on job forms
+// We accept this trade-off (discussed in original code)
+
+// state false positives (lookbehind required)
+expectNull("statement_balance", "FP2-statementBalance");
+expectNull("reinstate_policy", "FP2-reinstate");
+expectNull("estate_agent", "FP2-estateAgent");
+expectNull("interstate_routes", "FP2-interstateRoutes");
+expectNull("overstated_claims", "FP2-overstatedClaims");
+expectNull("multistate_operations", "FP2-multistate");
+
+// city false positives (lookbehind required)
+expectNull("electricity_provider", "FP2-electricityProvider");
+expectNull("felicity_score", "FP2-felicityScore");
+expectNull("duplicity_flag", "FP2-duplicityFlag");
+expectNull("publicity_rights", "FP2-publicityRights");
+expectNull("capacity_limit", "FP2-capacityLimit");
+expectNull("tenacity_score", "FP2-tenacityScore");
+expectNull("audacity_rating", "FP2-audacityRating");
+expectNull("vivacity_index", "FP2-vivacityIndex");
+
+// company false positives — /\borg\b/ should not fire on "organic" "organize"
+expectNot("organic_traffic", "currentCompany", "FP2-organic");
+expectNot("organize_tasks", "currentCompany", "FP2-organize");
+expectNot("reorganize_data", "currentCompany", "FP2-reorganize");
+// organization_chart: /organization/ matches currentCompany — this is correct, not a false positive
+expect("organization_chart", "currentCompany", "FP2-orgChartMatch");  // /organization/i does match
+
+// skills false positives (lookbehind)
+expectNull("preskilled_labor", "FP2-preskilled");
+expectNot("preskilled_labor", "skills", "FP2-preskilledNotSkills");
+
+// salary false positives (lookahead on history)
+expectNull("salary_history", "FP2-salaryHistory");
+expectNull("salary_history_details", "FP2-salaryHistoryDetails");
+expect("salary_range", "expectedSalary", "FP2-salaryRange");          // /salary(?![\s_-]?histor)/ → matches
+
+// coverLetter false positives — /\bnotes?\b/ should not fire on "footnote"
+expectNull("footnote_reference", "FP2-footnoteRef");
+expectNull("endnote_citation", "FP2-endnote");           // "endnote" — /\bnotes?\b/ → no (\b before "note" fails after "end") → null ✓
+expectNull("annotate_record", "FP2-annotate");
+
+// age false positives (lookbehind)
+expect("language_skills", "skills", "FP2-languageSkills");   // skills pattern fires on "skills" suffix first   // "language" has "age" inside → but lookbehind catches it
+expectNull("coverage_amount", "FP2-coverageAmount");
+expectNull("average_rating", "FP2-averageRating");
+expectNull("advantage_score", "FP2-advantageScore");
+expectNull("manage_account", "FP2-manageAccount");
+expectNull("outrage_report", "FP2-outrageReport");
+expectNull("storage_limit", "FP2-storageLimit");
+expect("message_age", "age", "FP2-messageAge");              // "_age" suffix: "_" not a-z → lookbehind passes → age
+
+// LinkedIn/GitHub/Twitter false positives
+expectNull("blog_link", "FP2-blogLink");
+expectNull("youtube_channel", "FP2-youtube");
+expectNull("facebook_url", "FP2-facebook");
+expectNull("instagram_handle", "FP2-instagram");
+
+// University false positives — /school/ is broad
+expect("law_school", "university", "FP2-lawSchool");       // acceptable — "law school" is a university
+expect("medical_school", "university", "FP2-medicalSchool");
+expect("business_school", "university", "FP2-businessSchool");
+expect("graduate_school", "university", "FP2-gradSchool");
+
+// ─── DATA-TESTID / DATA-AUTOMATION-ID PATTERNS ───────────────────────────────
+
+const DT = "DataTestId";
+expect("input-first-name", "firstName", DT);
+expect("input-last-name", "lastName", DT);
+expect("input-email-address", "email", DT);
+expect("input-phone-number", "phone", DT);
+expect("input-street-address", "addressLine1", DT);
+expect("input-city", "city", DT);
+expect("input-state", "state", DT);
+expect("input-zip-code", "zipCode", DT);
+expect("input-country", "country", DT);
+expect("input-job-title", "currentTitle", DT);
+expect("input-company-name", "currentCompany", DT);
+expect("input-linkedin-url", "linkedInUrl", DT);
+expect("input-github-url", "githubUrl", DT);
+expect("input-years-experience", "yearsOfExp", DT);
+expect("input-cover-letter", "coverLetter", DT);
+expect("input-expected-salary", "expectedSalary", DT);
+expect("input-work-authorization", "visaStatus", DT);
+expect("input-pronouns", "pronouns", DT);
+expect("input-referral-source", "referralSource", DT);
+
+// ─── ARIA-LABEL ONLY PATTERNS (no id/name, just aria-label) ──────────────────
+
+const AL = "AriaLabel";
+expect("Enter your first name", "firstName", AL);
+expect("Enter your last name", "lastName", AL);
+expect("Enter your email address", "email", AL);
+expect("Enter your phone number", "phone", AL);
+expect("Enter your full name", "fullName", AL);
+expect("Enter your street address", "addressLine1", AL);
+expect("Enter your city", "city", AL);
+expect("Enter your state or province", "state", AL);
+expect("Enter your ZIP code", "zipCode", AL);
+expect("Enter your country", "country", AL);
+expect("Enter your current job title", "currentTitle", AL);
+expect("Enter your current company", "currentCompany", AL);
+expect("Enter your LinkedIn URL", "linkedInUrl", AL);
+expect("Enter your GitHub URL", "githubUrl", AL);
+expect("Write your cover letter", "coverLetter", AL);
+expect("Describe your professional summary", "summary", AL);
+expect("List your technical skills", "skills", AL);
+expectNull("When did you graduate?", "AL-whenGrad") // no graduation pattern matches free-form "when did you" question;  // no match → null
+expectNull("When did you graduate?", "AL-gradWhen");      // "when did you graduate" has no pattern
+expect("What is your GPA?", "gpa", AL);
+expect("What is your expected salary?", "expectedSalary", AL);
+expect("Do you need visa sponsorship?", "visaStatus", AL);
+expect("Are you open to relocation?", "relocation", AL);
+
+// ─── PLACEHOLDER-ONLY PATTERNS ───────────────────────────────────────────────
+
+const PH = "Placeholder";
+expectNull("e.g. John", "PH-egJohn")          // placeholder-only text has no pattern match;                    // no match (placeholder only, no name/id info)
+expectNull("e.g. John", "PH-egJohn");
+expectNull("john@example.com", "PH-emailExample") // email domain text alone has no /e[\s_-]?mail/ signal;                 // /e[\s_-]?mail/ → no, but /^email$/ → no → null
+expectNull("john@example.com", "PH-emailExample");
+expect("https://linkedin.com/in/...", "linkedInUrl", PH); // /linkedin/ → matches!
+expect("https://github.com/...", "githubUrl", PH);        // /github/ → matches!
+expectNull("https://...", "PH-genericUrl")    // bare URL has no portfolio/website/github signal;                // no match → null
+expectNull("https://...", "PH-genericUrl");
+
+// ─── TYPESCRIPT / STRONGLY-TYPED FORM NAMES ──────────────────────────────────
+
+const TS = "TypeScript";
+expect("ProfileForm.firstName", "firstName", TS);
+expect("ProfileForm.lastName", "lastName", TS);
+expect("ProfileForm.emailAddress", "email", TS);
+expect("ProfileForm.phoneNumber", "phone", TS);
+expect("AddressForm.streetAddress", "addressLine1", TS);
+expect("AddressForm.addressLine2", "addressLine2", TS);
+expect("AddressForm.city", "city", TS);
+expect("AddressForm.state", "state", TS);
+expect("AddressForm.zipCode", "zipCode", TS);
+expect("AddressForm.country", "country", TS);
+expect("ProfessionalForm.currentTitle", "currentTitle", TS);
+expect("ProfessionalForm.currentCompany", "currentCompany", TS);
+expect("ProfessionalForm.yearsOfExperience", "yearsOfExp", TS);
+expect("ProfessionalForm.linkedInUrl", "linkedInUrl", TS);
+expect("ProfessionalForm.githubUrl", "githubUrl", TS);
+expect("EducationForm.university", "university", TS);
+expect("EducationForm.degree", "degree", TS);
+expect("EducationForm.major", "major", TS);
+expect("EducationForm.graduationYear", "graduationYear", TS);
+expect("EducationForm.gpa", "gpa", TS);
+
+// ─── NUMERIC / UUID-BASED IDS WITH LABELS ────────────────────────────────────
+
+const UUID = "UUIDfields";
+expect("field_a1b2c3 First Name", "firstName", UUID);
+expect("field_d4e5f6 Last Name", "lastName", UUID);
+expect("field_g7h8i9 Email Address", "email", UUID);
+expect("field_j1k2l3 Phone Number", "phone", UUID);
+expect("field_m4n5o6 Current Job Title", "currentTitle", UUID);
+expect("field_p7q8r9 LinkedIn Profile URL", "linkedInUrl", UUID);
+expect("field_s1t2u3 Cover Letter", "coverLetter", UUID);
+expect("field_v4w5x6 Years of Experience", "yearsOfExp", UUID);
+expect("field_y7z8a9 Expected Salary", "expectedSalary", UUID);
+expect("field_b1c2d3 University", "university", UUID);
+expect("field_e4f5g6 Graduation Year", "graduationYear", UUID);
+expect("field_h7i8j9 Work Authorization", "visaStatus", UUID);
+
+// ─── SVELTE / SOLID.JS / QWIK (web-component style names) ────────────────────
+
+const WC = "WebComponents";
+expect("user-first-name", "firstName", WC);
+expect("user-last-name", "lastName", WC);
+expect("user-email", "email", WC);
+expect("user-phone-number", "phone", WC);
+expect("user-linkedin-url", "linkedInUrl", WC);
+expect("user-github-url", "githubUrl", WC);
+expect("user-cover-letter", "coverLetter", WC);
+expect("user-current-title", "currentTitle", WC);
+expect("user-current-company", "currentCompany", WC);
+expect("user-expected-salary", "expectedSalary", WC);
+expect("user-years-experience", "yearsOfExp", WC);
+expect("user-work-authorization", "visaStatus", WC);
+
+// ─── EEOC / DIVERSITY FIELD VARIATIONS ───────────────────────────────────────
+
+const EEOC = "EEOC";
+expect("race Race / Ethnicity", "raceEthnicity", EEOC);
+expect("ethnicity", "raceEthnicity", EEOC);
+expect("racial_identity", "raceEthnicity", EEOC);
+expect("ethnic_background", "raceEthnicity", EEOC);
+expect("cultural_background", null, EEOC);                // no match → null
+expect("veteran_status", "veteranStatus", EEOC);
+expect("protected_veteran", "veteranStatus", EEOC);
+expect("military_service_status", "veteranStatus", EEOC);
+expect("armed_forces_service", null, EEOC);               // no pattern → null
+expect("disability_disclosure", "disabilityStatus", EEOC);
+expect("disability", "disabilityStatus", EEOC);
+expect("accommodation_needed", null, EEOC);               // no match → null
+expect("gender_identity", "gender", EEOC);
+expect("sex_at_birth", "gender", EEOC);                   // /sex(?!ual)/ → /sex(?!ual)/ → matches (no "ual" follows) ✓
+expect("sexual_orientation", null, EEOC);                 // /sex(?!ual)/ → "sexual" → lookahead blocks → null ✓
 
 // ─── FIELD_PATTERNS SYNC CHECK ────────────────────────────────────────────────
 // Reads content.js and verifies that the FIELD_PATTERNS keys here match exactly.

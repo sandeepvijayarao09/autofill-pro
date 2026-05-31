@@ -13,7 +13,8 @@ const FIELD_PATTERNS = {
   // age: computed from dateOfBirth at fill time (not stored in profile)
   // lookbehind prevents "language","coverage","percentage" from matching
   age:              [/(?<![a-z])age(?![\s_-]?(?:ncy|nt|nda|nts|s\b))(?![a-z])/i, /how[\s_-]?old/i],
-  gender:           [/gender/i, /sex(?!ual)/i],
+  // lookbehind+lookahead prevents "yearsexperience" (contains s-e-x) from false-matching gender
+  gender:           [/gender/i, /(?<![a-z])sex(?!ual)(?![a-z])/i],
 
   // ── Address ───────────────────────────────────────────────────────────────
   // /^location$/ added: Greenhouse uses "location" as a single address/city field
@@ -26,7 +27,8 @@ const FIELD_PATTERNS = {
   // lookbehind avoids "statement","status","estate"; location.region catches SmartRecruiters
   state:            [/(?<![a-z])state(?![a-z])/i, /^province$/i, /state[\s_-]?(?:or[\s_-]?)?province/i, /location[._]region/i],
   // /zip/ (no anchor) catches "iCIMS_field_Zip"
-  zipCode:          [/zip[\s_-]?code/i, /postal[\s_-]?code/i, /postcode/i, /zip/i, /^pincode$/i],
+  // pin[\s_-]?code catches "pin_code" (Indian variant); ^pincode$ for exact match
+  zipCode:          [/zip[\s_-]?code/i, /postal[\s_-]?code/i, /postcode/i, /zip/i, /pin[\s_-]?code/i, /^pincode$/i],
   // /country/ (no anchor) catches "iCIMS_field_Country", "location.country"
   country:          [/country/i],
 
@@ -36,9 +38,11 @@ const FIELD_PATTERNS = {
   messageToManager: [/message.*(?:hiring|manager|recruiter)/i, /note.*(?:recruiter|company|employer)/i, /^comments?$/i, /additional[\s_-]?info(?:rmation)?/i],
 
   // ── Professional ──────────────────────────────────────────────────────────
-  currentTitle:     [/job[\s_-]?title/i, /current[\s_-]?(?:title|position|role)/i, /professional[\s_-]?title/i, /work[\s_-]?title/i, /^designation$/i, /headline/i],
+  // designation unanchored: catches "CurrentDesignation", "current_designation" compound names
+  currentTitle:     [/job[\s_-]?title/i, /current[\s_-]?(?:title|position|role)/i, /professional[\s_-]?title/i, /work[\s_-]?title/i, /designation/i, /headline/i, /role[\s_-]?title/i, /position[\s_-]?title/i, /job[\s_-]?role/i],
   currentCompany:   [/company/i, /employer/i, /organization/i, /organisation/i, /^firm$/i, /\borg\b/i],
-  yearsOfExp:       [/years[\s_-]?of[\s_-]?exp/i, /experience[\s_-]?years/i, /years[\s_-]?exp/i],
+  // total_experience, experience_in_years (Zoho, Manatal, Ceipal, Bullhorn compound patterns)
+  yearsOfExp:       [/years[\s_-]?of[\s_-]?exp/i, /experience[\s_-]?years/i, /years[\s_-]?exp/i, /total[\s_-]?exp(?:erience)?/i, /exp(?:erience)?[\s_-]?(?:in[\s_-]?)?years?/i],
   // lookbehind prevents "pre-skilled" from matching; "skills" and "technical_skills" still match
   skills:           [/(?<![a-z])skills?(?![a-z])/i, /technical[\s_-]?skills/i, /key[\s_-]?skills/i, /expertise/i, /proficienc/i],
   // /language/ (no anchor) catches "language Language", "language Language"
@@ -67,15 +71,17 @@ const FIELD_PATTERNS = {
   workArrangement:  [/work[\s_-]?arrangement/i, /remote[\s_-]?prefer/i, /hybrid[\s_-]?prefer/i, /work[\s_-]?(?:setting|mode|type)/i],
   jobFunction:      [/job[\s_-]?function/i, /position[\s_-]?applied/i, /area.*interest/i, /department.*interest/i, /role.*interest/i],
   // negative lookahead excludes "salary_history" (past salary, not expected)
-  expectedSalary:   [/salary(?![\s_-]?histor)/i, /expected[\s_-]?comp/i, /desired[\s_-]?comp/i, /ctc/i, /pay[\s_-]?expect/i],
+  // annual_income: banking/real-estate income fields map to salary expectation
+  expectedSalary:   [/salary(?![\s_-]?histor)/i, /expected[\s_-]?comp/i, /desired[\s_-]?comp/i, /ctc/i, /pay[\s_-]?expect/i, /annual[\s_-]?income/i],
 
   // ── Remaining long-form ───────────────────────────────────────────────────
   summary:          [/summary/i, /\bbio\b/i, /about[\s_-]?me/i, /profile[\s_-]?summary/i, /professional[\s_-]?summary/i],
   referralSource:   [/how.*hear/i, /hear.*about/i, /referral[\s_-]?source/i, /how.*(?:find|learn).*(?:us|this|job|role)/i, /application[\s_-]?source/i],
 
   // ── EEOC / Diversity ──────────────────────────────────────────────────────
-  raceEthnicity:    [/race/i, /ethnic/i],
-  veteranStatus:    [/veteran/i, /protected[\s_-]?veteran/i, /military[\s_-]?status/i],
+  raceEthnicity:    [/race/i, /ethnic/i, /racial/i],
+  // military_service_status (USAJOBS style) — military[\s_-]?status was already present
+  veteranStatus:    [/veteran/i, /protected[\s_-]?veteran/i, /military[\s_-]?status/i, /military[\s_-]?service/i],
   disabilityStatus: [/disabilit/i, /section[\s_-]?503/i],
 };
 
