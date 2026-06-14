@@ -1,0 +1,46 @@
+{
+  "name": "autofill-pro",
+  "version": "1.1.0",
+  "description": "Privacy-first browser extension that auto-fills job applications across 50+ ATS platforms. Pattern-matches 44 profile fields locally; optional AI fallback for custom questions. All data stays on your device.",
+  "type": "commonjs",
+  "private": false,
+  "license": "MIT",
+  "author": "Sai Sandeep Kumar Vijayarao",
+  "homepage": "https://github.com/sandeepvijayarao09/autofill-pro#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sandeepvijayarao09/autofill-pro.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sandeepvijayarao09/autofill-pro/issues"
+  },
+  "keywords": [
+    "chrome-extension",
+    "browser-extension",
+    "manifest-v3",
+    "autofill",
+    "job-application",
+    "ats",
+    "form-filler",
+    "privacy",
+    "workday",
+    "greenhouse",
+    "lever"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node test.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "build": "node scripts/build.mjs",
+    "icons": "node scripts/generate-icons.js"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.9.0",
+    "canvas": "^3.2.3",
+    "eslint": "^9.9.0",
+    "globals": "^15.9.0"
+  }
+}

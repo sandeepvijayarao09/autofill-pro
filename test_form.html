@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AutoFill Pro — 1000 Field Variation Test Suite</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { font-family: system-ui, sans-serif; background: #0f1117; color: #e2e8f0; margin: 0; padding: 20px; }
+  h1 { color: #6366f1; text-align: center; font-size: 1.4rem; margin: 0 0 6px; }
+  .subtitle { text-align: center; color: #94a3b8; font-size: 0.85rem; margin-bottom: 24px; }
+  h2 { color: #818cf8; font-size: 1rem; margin: 28px 0 10px; padding: 6px 10px; background: #1e1e2e; border-left: 3px solid #6366f1; border-radius: 4px; }
+  h3 { color: #a78bfa; font-size: 0.88rem; margin: 18px 0 8px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+  .field { display: flex; flex-direction: column; gap: 4px; }
+  label { font-size: 0.78rem; color: #94a3b8; }
+  input, textarea, select { background: #1e1e2e; border: 1px solid #374151; color: #e2e8f0; border-radius: 6px; padding: 7px 10px; font-size: 0.85rem; width: 100%; outline: none; }
+  input:focus, textarea:focus, select:focus { border-color: #6366f1; }
+  textarea { resize: vertical; }
+  .section { background: #12121c; border: 1px solid #1e2030; border-radius: 10px; padding: 16px; margin-bottom: 20px; }
+  .badge { display: inline-block; font-size: 0.68rem; padding: 2px 7px; border-radius: 99px; background: #312e81; color: #a5b4fc; margin-left: 8px; vertical-align: middle; }
+  .counter { text-align: center; font-size: 0.85rem; color: #6366f1; margin-bottom: 16px; font-weight: 600; }
+  .platform-tag { font-size: 0.7rem; color: #64748b; float: right; }
+  #results { position: fixed; bottom: 16px; right: 16px; background: #1e2030; border: 1px solid #374151; border-radius: 10px; padding: 12px 16px; font-size: 0.8rem; max-width: 240px; z-index: 9999; }
+  #results h4 { margin: 0 0 8px; color: #6366f1; }
+  #results div { margin: 3px 0; }
+  .tag-react { border-left-color: #61dafb; }
+  .tag-vue { border-left-color: #42b883; }
+  .tag-angular { border-left-color: #dd0031; }
+  .tag-vanilla { border-left-color: #f0db4f; }
+  .tag-workday { border-left-color: #f97316; }
+  .tag-greenhouse { border-left-color: #22c55e; }
+  .tag-lever { border-left-color: #3b82f6; }
+  .tag-taleo { border-left-color: #8b5cf6; }
+</style>
+</head>
+<body>
+
+<h1>🧪 AutoFill Pro — Mega Test Suite</h1>
+<p class="subtitle">1000 field variations · 44 field types · 50+ ATS patterns · 6 JS frameworks · Real profile data</p>
+<p class="counter" id="fieldCount">Loading field count…</p>
+
+<div id="results">
+  <h4>📊 Fill Results</h4>
+  <div id="res-filled">Filled: —</div>
+  <div id="res-skipped">Skipped: —</div>
+  <div id="res-ai">AI fallback: —</div>
+  <small style="color:#64748b">Press Alt+Shift+F to fill all</small>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<h2>① PERSONAL — First Name (30 variations)</h2>
+<div class="section">
+<div class="grid">
+  <!-- Standard HTML -->
+  <div class="field"><label for="first-name">First Name</label><input id="first-name" name="first-name" placeholder="First Name" /></div>
+  <div class="field"><label for="firstName">First Name</label><input id="firstName" name="firstName" /></div>
+  <div class="field"><label for="fname">First Name</label><input id="fname" name="fname" /></div>
+  <div class="field"><label for="given-name">Given Name</label><input id="given-name" name="given-name" autocomplete="given-name" /></div>
+  <div class="field"><label for="givenName">Given Name</label><input id="givenName" name="givenName" /></div>
+  <!-- ATS styles -->
+  <div class="field"><label>First Name <span class="platform-tag">Workday</span></label><input data-automation-id="legalNameSection_firstName" name="firstName" /></div>
+  <div class="field"><label>First Name <span class="platform-tag">Greenhouse</span></label><input id="first_name" name="first_name" /></div>
+  <div class="field"><label>First Name <span class="platform-tag">Lever</span></label><input name="first" class="lever-input" /></div>
+  <div class="field"><label>First Name <span class="platform-tag">Taleo</span></label><input id="ftFirstName" name="ftFirstName" /></div>
+  <div class="field"><label>First Name <span class="platform-tag">iCIMS</span></label><input data-field="firstname" name="firstname" /></div>
+  <div class="field"><label>First Name <span class="platform-tag">SmartRecruiters</span></label><input name="firstName" data-testid="firstName" /></div>
+  <div class="field"><label>First Name <span class="platform-tag">Ashby</span></label><input name="firstName" data-testid="application.firstName" /></div>
+  <div class="field"><label>First Name <span class="platform-tag">Rippling</span></label><input data-field-name="first_name" /></div>
+  <div class="field"><label>First Name <span class="platform-tag">Jobvite</span></label><input id="JOBVITE_FIRST" name="JOBVITE_FIRST" /></div>
+  <div class="field"><label>First Name <span class="platform-tag">JazzHR</span></label><input name="fname" class="jazz-input" /></div>
+  <div class="field"><label>First Name <span class="platform-tag">BreezyHR</span></label><input name="first_name" class="breezy-form-field" /></div>
+  <div class="field"><label>First Name <span class="platform-tag">Pinpoint</span></label><input name="first_name" class="field-input" /></div>
+  <div class="field"><label>First Name <span class="platform-tag">Personio</span></label><input name="first_name" data-qa="first-name" /></div>
+  <div class="field"><label>Prénom <span class="platform-tag">French</span></label><input name="prenom" id="prenom" /></div>
+  <div class="field"><label>Vorname <span class="platform-tag">German</span></label><input name="vorname" id="vorname" /></div>
+  <!-- UUID IDs -->
+  <div class="field"><label for="a1b2c3d4-first">First Name</label><input id="a1b2c3d4-first" name="firstName" /></div>
+  <div class="field"><label for="wd-first-name-field">First Name</label><input id="wd-first-name-field" /></div>
+  <!-- aria-label only -->
+  <div class="field"><input aria-label="First Name" name="first_nm" /></div>
+  <div class="field"><input aria-label="Candidate First Name" name="candidateFirstName" /></div>
+  <!-- placeholder only -->
+  <div class="field"><input placeholder="First name" name="fn" /></div>
+  <div class="field"><input placeholder="Enter first name" data-key="firstName" /></div>
+  <!-- React data-testid -->
+  <div class="field"><label>First Name</label><input data-testid="first-name-input" name="firstName" /></div>
+  <div class="field"><label>First Name</label><input data-testid="profile-firstName" /></div>
+  <!-- Angular -->
+  <div class="field"><label>First Name</label><input ng-model="applicant.firstName" name="firstName" /></div>
+  <div class="field"><label>First Name</label><input formControlName="firstName" name="firstName" /></div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<h2>② PERSONAL — Last Name (25 variations)</h2>
+<div class="section">
+<div class="grid">
+  <div class="field"><label for="last-name">Last Name</label><input id="last-name" name="last-name" /></div>
+  <div class="field"><label for="lastName">Last Name</label><input id="lastName" name="lastName" /></div>
+  <div class="field"><label for="lname">Last Name</label><input id="lname" name="lname" /></div>
+  <div class="field"><label for="family-name">Family Name</label><input id="family-name" name="family-name" autocomplete="family-name" /></div>
+  <div class="field"><label for="surname">Surname</label><input id="surname" name="surname" /></div>
+  <div class="field"><label>Last Name <span class="platform-tag">Workday</span></label><input data-automation-id="legalNameSection_lastName" name="lastName" /></div>
+  <div class="field"><label>Last Name <span class="platform-tag">Greenhouse</span></label><input id="last_name" name="last_name" /></div>
+  <div class="field"><label>Last Name <span class="platform-tag">Lever</span></label><input name="last" class="lever-input" /></div>
+  <div class="field"><label>Last Name <span class="platform-tag">Taleo</span></label><input id="ftLastName" name="ftLastName" /></div>
+  <div class="field"><label>Last Name <span class="platform-tag">iCIMS</span></label><input data-field="lastname" name="lastname" /></div>
+  <div class="field"><label>Apellido <span class="platform-tag">Spanish</span></label><input name="apellido" id="apellido" /></div>
+  <div class="field"><label>Nachname <span class="platform-tag">German</span></label><input name="nachname" id="nachname" /></div>
+  <div class="field"><input aria-label="Last Name" name="last_nm" /></div>
+  <div class="field"><input aria-label="Applicant Last Name" name="applicantLastName" /></div>
+  <div class="field"><input placeholder="Last name" name="ln" /></div>
+  <div class="field"><label>Last Name</label><input data-testid="last-name-input" name="lastName" /></div>
+  <div class="field"><label>Last Name</label><input data-testid="lastName" name="lastName" /></div>
+  <div class="field"><label>Last Name</label><input ng-model="applicant.lastName" name="lastName" /></div>
+  <div class="field"><label>Last Name</label><input formControlName="lastName" name="lastName" /></div>
+  <div class="field"><label>Last Name <span class="platform-tag">SAP SF</span></label><input id="SFSF_lastName" name="SFSF_lastName" /></div>
+  <div class="field"><label>Last Name <span class="platform-tag">SmartRecruiters</span></label><input name="lastName" data-testid="lastName" /></div>
+  <div class="field"><label>Last Name <span class="platform-tag">Recruitee</span></label><input name="last_name" class="rt-input" /></div>
+  <div class="field"><label>Last Name <span class="platform-tag">ADP</span></label><input id="adp_lastName" name="adp_lastName" /></div>
+  <div class="field"><label>Last Name <span class="platform-tag">Rippling</span></label><input data-field-name="last_name" /></div>
+  <div class="field"><label>Last / Family Name</label><input id="lastFamilyName" name="lastFamilyName" /></div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<h2>③ PERSONAL — Email (25 variations)</h2>
+<div class="section">
+<div class="grid">
+  <div class="field"><label for="email">Email Address</label><input id="email" name="email" type="email" /></div>
+  <div class="field"><label for="emailAddress">Email Address</label><input id="emailAddress" name="emailAddress" type="email" /></div>
+  <div class="field"><label for="email_address">Email</label><input id="email_address" name="email_address" type="email" /></div>
+  <div class="field"><label for="e-mail">E-mail</label><input id="e-mail" name="e-mail" /></div>
+  <div class="field"><label for="workEmail">Work Email</label><input id="workEmail" name="workEmail" type="email" /></div>
+  <div class="field"><label>Email <span class="platform-tag">Workday</span></label><input data-automation-id="email" type="email" /></div>
+  <div class="field"><label>Email <span class="platform-tag">Greenhouse</span></label><input id="email" name="email" type="email" class="gh-input" /></div>
+  <div class="field"><label>Email <span class="platform-tag">Lever</span></label><input name="email" type="email" /></div>
+  <div class="field"><label>Email <span class="platform-tag">Taleo</span></label><input id="ftEmail" name="ftEmail" type="email" /></div>
+  <div class="field"><label>Email <span class="platform-tag">iCIMS</span></label><input data-field="email" type="email" /></div>
+  <div class="field"><input aria-label="Email Address" name="eml" type="email" /></div>
+  <div class="field"><input aria-label="Your email" name="your_email" /></div>
+  <div class="field"><input placeholder="Email address" name="emailfield" /></div>
+  <div class="field"><input placeholder="your@email.com" name="email_input" /></div>
+  <div class="field"><label>Email</label><input data-testid="email-input" name="email" type="email" /></div>
+  <div class="field"><label>Email</label><input data-testid="applicantEmail" /></div>
+  <div class="field"><label>Contact Email</label><input id="contactEmail" name="contactEmail" type="email" /></div>
+  <div class="field"><label>Primary Email</label><input id="primaryEmail" name="primaryEmail" type="email" /></div>
+  <div class="field"><label>Email Address <span class="platform-tag">SmartRecruiters</span></label><input name="email" data-testid="email" type="email" /></div>
+  <div class="field"><label>Email <span class="platform-tag">BambooHR</span></label><input id="bambooEmail" name="bambooEmail" /></div>
+  <div class="field"><label>Email <span class="platform-tag">Recruitee</span></label><input name="email" class="rt-input" type="email" /></div>
+  <div class="field"><label>Email <span class="platform-tag">SAP SF</span></label><input id="SFSF_email" name="SFSF_email" /></div>
+  <div class="field"><label>E-Mail-Adresse <span class="platform-tag">German</span></label><input name="email_de" id="email_de" /></div>
+  <div class="field"><label>Adresse e-mail <span class="platform-tag">French</span></label><input name="email_fr" id="email_fr" /></div>
+  <div class="field"><label>Email ID</label><input id="emailId" name="emailId" /></div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<h2>④ PERSONAL — Phone (20 variations)</h2>
+<div class="section">
+<div class="grid">
+  <div class="field"><label for="phone">Phone Number</label><input id="phone" name="phone" type="tel" /></div>
+  <div class="field"><label for="phoneNumber">Phone Number</label><input id="phoneNumber" name="phoneNumber" type="tel" /></div>
+  <div class="field"><label for="phone_number">Phone</label><input id="phone_number" name="phone_number" /></div>
+  <div class="field"><label for="mobile">Mobile Number</label><input id="mobile" name="mobile" /></div>
+  <div class="field"><label for="mobilePhone">Mobile Phone</label><input id="mobilePhone" name="mobilePhone" type="tel" /></div>
+  <div class="field"><label for="cellPhone">Cell Phone</label><input id="cellPhone" name="cellPhone" /></div>
+  <div class="field"><label>Phone <span class="platform-tag">Workday</span></label><input data-automation-id="phoneNumber" type="tel" /></div>
+  <div class="field"><label>Phone <span class="platform-tag">Greenhouse</span></label><input id="phone" name="phone" type="tel" /></div>
+  <div class="field"><label>Phone <span class="platform-tag">iCIMS</span></label><input data-field="phone" name="phone" /></div>
+  <div class="field"><label>Contact Number</label><input id="contactNumber" name="contactNumber" /></div>
+  <div class="field"><label>Primary Phone</label><input id="primaryPhone" name="primaryPhone" /></div>
+  <div class="field"><input aria-label="Phone Number" name="ph" type="tel" /></div>
+  <div class="field"><input placeholder="Phone number" name="phonefield" /></div>
+  <div class="field"><label>Phone</label><input data-testid="phone-input" name="phone" /></div>
+  <div class="field"><label>Mobile <span class="platform-tag">SmartRecruiters</span></label><input name="mobilePhone" data-testid="mobilePhone" /></div>
+  <div class="field"><label>Telefon <span class="platform-tag">German</span></label><input name="telefon" id="telefon" /></div>
+  <div class="field"><label>Téléphone <span class="platform-tag">French</span></label><input name="telephone" id="telephone" /></div>
+  <div class="field"><label>WhatsApp Number</label><input id="whatsapp" name="whatsapp" /></div>
+  <div class="field"><label>Alternate Phone</label><input id="altPhone" name="altPhone" /></div>
+  <div class="field"><label>Home Phone</label><input id="homePhone" name="homePhone" /></div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<h2>⑤ ADDRESS — Street (15 variations)</h2>
+<div class="section">
+<div class="grid">
+  <div class="field"><label for="address">Street Address</label><input id="address" name="address" autocomplete="street-address" /></div>
+  <div class="field"><label for="addressLine1">Address Line 1</label><input id="addressLine1" name="addressLine1" /></div>
+  <div class="field"><label for="address1">Address 1</label><input id="address1" name="address1" /></div>
+  <div class="field"><label for="street">Street</label><input id="street" name="street" /></div>
+  <div class="field"><label for="streetAddress">Street Address</label><input id="streetAddress" name="streetAddress" /></div>
+  <div class="field"><label>Address <span class="platform-tag">Workday</span></label><input data-automation-id="addressLine1" /></div>
+  <div class="field"><label>Address Line 1 <span class="platform-tag">Greenhouse</span></label><input id="address_line1" name="address_line1" /></div>
+  <div class="field"><label>Address <span class="platform-tag">Taleo</span></label><input id="ftAddress" name="ftAddress" /></div>
+  <div class="field"><input aria-label="Street Address" name="street_addr" /></div>
+  <div class="field"><input placeholder="Street address" name="addr_line1" /></div>
+  <div class="field"><label>Mailing Address</label><input id="mailingAddress" name="mailingAddress" /></div>
+  <div class="field"><label>Home Address</label><input id="homeAddress" name="homeAddress" /></div>
+  <div class="field"><label>Current Address</label><input id="currentAddress" name="currentAddress" /></div>
+  <div class="field"><label>Straße <span class="platform-tag">German</span></label><input name="strasse" /></div>
+  <div class="field"><label>Adresse <span class="platform-tag">French</span></label><input name="adresse_ligne1" /></div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<h2>⑥ ADDRESS — City / State / Zip / Country (30 variations)</h2>
+<div class="section">
+<h3>City</h3>
+<div class="grid">
+  <div class="field"><label for="city">City</label><input id="city" name="city" /></div>
+  <div class="field"><label for="cityName">City Name</label><input id="cityName" name="cityName" /></div>
+  <div class="field"><label for="city_name">City</label><input id="city_name" name="city_name" /></div>
+  <div class="field"><label>City <span class="platform-tag">Workday</span></label><input data-automation-id="city" name="city" /></div>
+  <div class="field"><label>Town / City</label><input id="townCity" name="townCity" /></div>
+  <div class="field"><input aria-label="City" name="cty" /></div>
+  <div class="field"><label>Stadt <span class="platform-tag">German</span></label><input name="stadt" /></div>
+  <div class="field"><label>Ville <span class="platform-tag">French</span></label><input name="ville" /></div>
+</div>
+<h3>State / Province</h3>
+<div class="grid">
+  <div class="field"><label for="state">State</label><input id="state" name="state" /></div>
+  <div class="field"><label for="stateName">State / Province</label><input id="stateName" name="stateName" /></div>
+  <div class="field"><label for="province">Province</label><input id="province" name="province" /></div>
+  <div class="field"><label>State <span class="platform-tag">Workday</span></label><input data-automation-id="state" name="state" /></div>
+  <div class="field"><label>State / Region</label><input id="stateRegion" name="stateRegion" /></div>
+  <div class="field"><select id="stateSelect" name="stateSelect" aria-label="State"><option value="">Select state…</option><option value="CA">CA — California</option><option value="NY">NY — New York</option><option value="TX">TX — Texas</option></select></div>
+</div>
+<h3>Zip / Postal Code</h3>
+<div class="grid">
+  <div class="field"><label for="zipCode">Zip Code</label><input id="zipCode" name="zipCode" /></div>
+  <div class="field"><label for="zip">Zip</label><input id="zip" name="zip" /></div>
+  <div class="field"><label for="postalCode">Postal Code</label><input id="postalCode" name="postalCode" /></div>
+  <div class="field"><label for="postCode">Post Code</label><input id="postCode" name="postCode" /></div>
+  <div class="field"><label for="pinCode">PIN Code</label><input id="pinCode" name="pinCode" /></div>
+  <div class="field"><label>Zip Code <span class="platform-tag">Workday</span></label><input data-automation-id="postalCode" /></div>
+</div>
+<h3>Country</h3>
+<div class="grid">
+  <div class="field"><label for="country">Country</label><input id="country" name="country" /></div>
+  <div class="field"><label for="countryName">Country Name</label><input id="countryName" name="countryName" /></div>
+  <div class="field"><label for="nationality">Nationality</label><input id="nationality" name="nationality" /></div>
+  <div class="field"><select id="countrySelect" name="countrySelect" aria-label="Country"><option value="">Select country…</option><option value="US">United States</option><option value="IN">India</option><option value="CA">Canada</option></select></div>
+  <div class="field"><input aria-label="Country" name="cntry" /></div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<h2>⑦ PROFESSIONAL — Title / Role / Position (25 variations)</h2>
+<div class="section">
+<div class="grid">
+  <div class="field"><label for="currentTitle">Current Title</label><input id="currentTitle" name="currentTitle" /></div>
+  <div class="field"><label for="jobTitle">Job Title</label><input id="jobTitle" name="jobTitle" /></div>
+  <div class="field"><label for="title">Title</label><input id="title" name="title" /></div>
+  <div class="field"><label for="position">Position</label><input id="position" name="position" /></div>
+  <div class="field"><label for="role">Role</label><input id="role" name="role" /></div>
+  <div class="field"><label for="designation">Designation</label><input id="designation" name="designation" /></div>
+  <div class="field"><label for="positionTitle">Position Title</label><input id="positionTitle" name="positionTitle" /></div>
+  <div class="field"><label for="roleTitle">Role Title</label><input id="roleTitle" name="roleTitle" /></div>
+  <div class="field"><label for="jobRole">Job Role</label><input id="jobRole" name="jobRole" /></div>
+  <div class="field"><label for="professionalTitle">Professional Title</label><input id="professionalTitle" name="professionalTitle" /></div>
+  <div class="field"><label>Current Title <span class="platform-tag">Workday</span></label><input data-automation-id="currentJobTitle" /></div>
+  <div class="field"><label>Most Recent Title <span class="platform-tag">Greenhouse</span></label><input id="most_recent_title" name="most_recent_title" /></div>
+  <div class="field"><label>Current Role</label><input id="currentRole" name="currentRole" /></div>
+  <div class="field"><label>Desired Title</label><input id="desiredTitle" name="desiredTitle" /></div>
+  <div class="field"><label>Headline</label><input id="headline" name="headline" /></div>
+  <div class="field"><label>Professional Headline</label><input id="professionalHeadline" name="professionalHeadline" /></div>
+  <div class="field"><input aria-label="Current Job Title" name="curr_title" /></div>
+  <div class="field"><input placeholder="Job title" name="jobtitle_field" /></div>
+  <div class="field"><label>Title / Designation <span class="platform-tag">India ATS</span></label><input name="titleDesignation" /></div>
+  <div class="field"><label>Cargo <span class="platform-tag">Spanish</span></label><input name="cargo" /></div>
+  <div class="field"><label>Poste <span class="platform-tag">French</span></label><input name="poste" /></div>
+  <div class="field"><label>Current Position</label><input id="currentPosition" name="currentPosition" /></div>
+  <div class="field"><label>Last Held Title</label><input id="lastHeldTitle" name="lastHeldTitle" /></div>
+  <div class="field"><label>Job Title</label><input data-testid="jobTitle" /></div>
+  <div class="field"><label>Title</label><input data-testid="candidateTitle" /></div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<h2>⑧ PROFESSIONAL — Company (15 variations)</h2>
+<div class="section">
+<div class="grid">
+  <div class="field"><label for="currentCompany">Current Company</label><input id="currentCompany" name="currentCompany" /></div>
+  <div class="field"><label for="company">Company</label><input id="company" name="company" /></div>
+  <div class="field"><label for="employer">Employer</label><input id="employer" name="employer" /></div>
+  <div class="field"><label for="organization">Organization</label><input id="organization" name="organization" /></div>
+  <div class="field"><label for="currentEmployer">Current Employer</label><input id="currentEmployer" name="currentEmployer" /></div>
+  <div class="field"><label>Company <span class="platform-tag">Greenhouse</span></label><input id="company" name="company" /></div>
+  <div class="field"><label>Employer <span class="platform-tag">Workday</span></label><input data-automation-id="employer" /></div>
+  <div class="field"><label>Most Recent Employer</label><input id="mostRecentEmployer" name="mostRecentEmployer" /></div>
+  <div class="field"><input aria-label="Current Company" name="curr_company" /></div>
+  <div class="field"><input placeholder="Company name" name="companyfield" /></div>
+  <div class="field"><label>Entreprise <span class="platform-tag">French</span></label><input name="entreprise" /></div>
+  <div class="field"><label>Unternehmen <span class="platform-tag">German</span></label><input name="unternehmen" /></div>
+  <div class="field"><label>Organization Name</label><input id="orgName" name="orgName" /></div>
+  <div class="field"><label>Workplace</label><input id="workplace" name="workplace" /></div>
+  <div class="field"><label>Company</label><input data-testid="company" /></div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<h2>⑨ PROFESSIONAL — Years of Experience (20 variations)</h2>
+<div class="section">
+<div class="grid">
+  <div class="field"><label for="yearsOfExperience">Years of Experience</label><input id="yearsOfExperience" name="yearsOfExperience" /></div>
+  <div class="field"><label for="yearsExp">Years of Exp</label><input id="yearsExp" name="yearsExp" /></div>
+  <div class="field"><label for="years_experience">Work Experience (years)</label><input id="years_experience" name="years_experience" /></div>
+  <div class="field"><label for="experienceYears">Experience (Years)</label><input id="experienceYears" name="experienceYears" /></div>
+  <div class="field"><label for="totalExperience">Total Experience</label><input id="totalExperience" name="totalExperience" /></div>
+  <div class="field"><label for="totalExp">Total Exp</label><input id="totalExp" name="totalExp" /></div>
+  <div class="field"><label for="workExperience">Work Experience</label><input id="workExperience" name="workExperience" /></div>
+  <div class="field"><label for="expInYears">Exp in Years</label><input id="expInYears" name="expInYears" /></div>
+  <div class="field"><label>Years of Experience <span class="platform-tag">Workday</span></label><input data-automation-id="yearsOfExperience" /></div>
+  <div class="field"><label>Experience Level</label><select id="expLevel" name="expLevel" aria-label="Experience Level"><option value="">Select…</option><option value="0-1">0-1 years</option><option value="1-3">1-3 years</option><option value="3-5">3-5 years</option><option value="5+">5+ years</option></select></div>
+  <div class="field"><input aria-label="Years of Experience" name="yrs_exp" /></div>
+  <div class="field"><input placeholder="Years of experience" name="exp_years" /></div>
+  <div class="field"><label>Experience in Years <span class="platform-tag">India ATS</span></label><input name="experienceInYears" /></div>
+  <div class="field"><label>How many years of experience do you have?</label><input id="howManyYearsExp" name="howManyYearsExp" /></div>
+  <div class="field"><label>Professional Experience (Years)</label><input id="professionalExp" name="professionalExp" /></div>
+  <div class="field"><label>Relevant Experience</label><input id="relevantExp" name="relevantExp" /></div>
+  <div class="field"><label>Total Years of Work Experience</label><input id="totalYearsWork" name="totalYearsWork" /></div>
+  <div class="field"><label>Años de experiencia <span class="platform-tag">Spanish</span></label><input name="anosExp" /></div>
+  <div class="field"><label>Berufserfahrung (Jahre) <span class="platform-tag">German</span></label><input name="berufserfahrung" /></div>
+  <div class="field"><label>Experience</label><input data-testid="yearsOfExperience" /></div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<h2>⑩ PROFESSIONAL — Skills (15 variations)</h2>
+<div class="section">
+<div class="grid">
+  <div class="field"><label for="skills">Skills</label><input id="skills" name="skills" /></div>
+  <div class="field"><label for="technicalSkills">Technical Skills</label><input id="technicalSkills" name="technicalSkills" /></div>
+  <div class="field"><label for="keySkills">Key Skills</label><input id="keySkills" name="keySkills" /></div>
+  <div class="field"><label for="coreSkills">Core Skills</label><input id="coreSkills" name="coreSkills" /></div>
+  <div class="field"><label for="skillSet">Skill Set</label><input id="skillSet" name="skillSet" /></div>
+  <div class="field"><label for="competencies">Competencies</label><input id="competencies" name="competencies" /></div>
+  <div class="field"><label for="expertise">Expertise</label><input id="expertise" name="expertise" /></div>
+  <div class="field"><label>Skills <span class="platform-tag">Workday</span></label><input data-automation-id="skills" /></div>
+  <div class="field"><label>Skills <span class="platform-tag">LinkedIn</span></label><input name="skills" data-testid="skills" /></div>
+  <div class="field"><input aria-label="Skills" name="skls" /></div>
+  <div class="field"><label>Technologies</label><input id="technologies" name="technologies" /></div>
+  <div class="field"><label>Programming Languages & Skills</label><input id="progSkills" name="progSkills" /></div>
+  <div class="field"><label>Tools & Technologies</label><input id="toolsTech" name="toolsTech" /></div>
+  <div class="field"><label>Habilidades <span class="platform-tag">Spanish</span></label><input name="habilidades" /></div>
+  <div class="field"><label>Fähigkeiten <span class="platform-tag">German</span></label><input name="faehigkeiten" /></div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<h2>⑪ LINKS — LinkedIn / GitHub / Portfolio (25 variations)</h2>
+<div class="section">
+<h3>LinkedIn</h3>
+<div class="grid">
+  <div class="field"><label for="linkedin">LinkedIn URL</label><input id="linkedin" name="linkedin" /></div>
+  <div class="field"><label for="linkedinUrl">LinkedIn Profile</label><input id="linkedinUrl" name="linkedinUrl" /></div>
+  <div class="field"><label for="linkedin_url">LinkedIn</label><input id="linkedin_url" name="linkedin_url" /></div>
+  <div class="field"><label>LinkedIn <span class="platform-tag">Greenhouse</span></label><input id="linkedin_url" name="linkedin_url" /></div>
+  <div class="field"><label>LinkedIn Profile URL <span class="platform-tag">Workday</span></label><input data-automation-id="linkedin" /></div>
+  <div class="field"><input aria-label="LinkedIn URL" name="li_url" /></div>
+  <div class="field"><input placeholder="linkedin.com/in/..." name="linkedinProfile" /></div>
+  <div class="field"><label>LinkedIn Profile</label><input data-testid="linkedinUrl" /></div>
+</div>
+<h3>GitHub</h3>
+<div class="grid">
+  <div class="field"><label for="github">GitHub URL</label><input id="github" name="github" /></div>
+  <div class="field"><label for="githubUrl">GitHub Profile</label><input id="githubUrl" name="githubUrl" /></div>
+  <div class="field"><label for="github_url">GitHub</label><input id="github_url" name="github_url" /></div>
+  <div class="field"><label>GitHub Profile</label><input id="githubProfile" name="githubProfile" /></div>
+  <div class="field"><input aria-label="GitHub URL" name="gh_url" /></div>
+  <div class="field"><input placeholder="github.com/..." name="githubfield" /></div>
+  <div class="field"><label>GitHub</label><input data-testid="githubUrl" /></div>
+</div>
+<h3>Portfolio / Website</h3>
+<div class="grid">
+  <div class="field"><label for="portfolio">Portfolio URL</label><input id="portfolio" name="portfolio" /></div>
+  <div class="field"><label for="website">Website</label><input id="website" name="website" /></div>
+  <div class="field"><label for="portfolioUrl">Portfolio</label><input id="portfolioUrl" name="portfolioUrl" /></div>
+  <div class="field"><label for="personalWebsite">Personal Website</label><input id="personalWebsite" name="personalWebsite" /></div>
+  <div class="field"><label for="websiteUrl">Website URL</label><input id="websiteUrl" name="websiteUrl" /></div>
+  <div class="field"><input aria-label="Portfolio URL" name="portfolio_url" /></div>
+  <div class="field"><input placeholder="https://yoursite.com" name="portfoliofield" /></div>
+  <div class="field"><label>Portfolio / Website</label><input data-testid="portfolioUrl" /></div>
+  <div class="field"><label>Online Portfolio</label><input id="onlinePortfolio" name="onlinePortfolio" /></div>
+  <div class="field"><label>Personal URL</label><input id="personalUrl" name="personalUrl" /></div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<h2>⑫ EDUCATION — University / School (20 variations)</h2>
+<div class="section">
+<div class="grid">
+  <div class="field"><label for="university">University</label><input id="university" name="university" /></div>
+  <div class="field"><label for="school">School</label><input id="school" name="school" /></div>
+  <div class="field"><label for="college">College</label><input id="college" name="college" /></div>
+  <div class="field"><label for="institution">Institution</label><input id="institution" name="institution" /></div>
+  <div class="field"><label for="educationInstitution">Educational Institution</label><input id="educationInstitution" name="educationInstitution" /></div>
+  <div class="field"><label for="schoolName">School Name</label><input id="schoolName" name="schoolName" /></div>
+  <div class="field"><label for="universityName">University Name</label><input id="universityName" name="universityName" /></div>
+  <div class="field"><label>University <span class="platform-tag">Workday</span></label><input data-automation-id="university" /></div>
+  <div class="field"><label>School / University <span class="platform-tag">Greenhouse</span></label><input id="school_name" name="school_name" /></div>
+  <div class="field"><label>Most Recent School</label><input id="mostRecentSchool" name="mostRecentSchool" /></div>
+  <div class="field"><input aria-label="University" name="univ" /></div>
+  <div class="field"><input placeholder="University name" name="universityfield" /></div>
+  <div class="field"><label>Alma Mater</label><input id="almaMater" name="almaMater" /></div>
+  <div class="field"><label>Academic Institution</label><input id="academicInstitution" name="academicInstitution" /></div>
+  <div class="field"><label>Universidad <span class="platform-tag">Spanish</span></label><input name="universidad" /></div>
+  <div class="field"><label>Universität <span class="platform-tag">German</span></label><input name="universitaet" /></div>
+  <div class="field"><label>Université <span class="platform-tag">French</span></label><input name="universite" /></div>
+  <div class="field"><label>University</label><input data-testid="university" /></div>
+  <div class="field"><label>College / University</label><input id="collegeUniversity" name="collegeUniversity" /></div>
+  <div class="field"><label>Higher Education</label><input id="higherEducation" name="higherEducation" /></div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<h2>⑬ EDUCATION — Degree / Major / GPA / Grad Year (25 variations)</h2>
+<div class="section">
+<h3>Degree</h3>
+<div class="grid">
+  <div class="field"><label for="degree">Degree</label><input id="degree" name="degree" /></div>
+  <div class="field"><label for="degreeType">Degree Type</label><input id="degreeType" name="degreeType" /></div>
+  <div class="field"><label for="educationLevel">Education Level</label><input id="educationLevel" name="educationLevel" /></div>
+  <div class="field"><label for="highestDegree">Highest Degree</label><input id="highestDegree" name="highestDegree" /></div>
+  <div class="field"><select id="degreeSelect" name="degreeSelect" aria-label="Degree"><option value="">Select…</option><option value="BS">Bachelor's (BS/BA)</option><option value="MS">Master's (MS/MA)</option><option value="PhD">PhD</option></select></div>
+  <div class="field"><label>Diploma / Degree <span class="platform-tag">India ATS</span></label><input name="diplomaDegree" /></div>
+</div>
+<h3>Major / Field of Study</h3>
+<div class="grid">
+  <div class="field"><label for="major">Major</label><input id="major" name="major" /></div>
+  <div class="field"><label for="fieldOfStudy">Field of Study</label><input id="fieldOfStudy" name="fieldOfStudy" /></div>
+  <div class="field"><label for="studyArea">Area of Study</label><input id="studyArea" name="studyArea" /></div>
+  <div class="field"><label for="concentration">Concentration</label><input id="concentration" name="concentration" /></div>
+  <div class="field"><label for="specialization">Specialization</label><input id="specialization" name="specialization" /></div>
+  <div class="field"><label>Major <span class="platform-tag">Workday</span></label><input data-automation-id="major" /></div>
+  <div class="field"><label>Subject / Major</label><input id="subjectMajor" name="subjectMajor" /></div>
+</div>
+<h3>Graduation Year</h3>
+<div class="grid">
+  <div class="field"><label for="graduationYear">Graduation Year</label><input id="graduationYear" name="graduationYear" /></div>
+  <div class="field"><label for="gradYear">Grad Year</label><input id="gradYear" name="gradYear" /></div>
+  <div class="field"><label for="expectedGraduation">Expected Graduation</label><input id="expectedGraduation" name="expectedGraduation" /></div>
+  <div class="field"><label for="graduationDate">Graduation Date</label><input id="graduationDate" name="graduationDate" /></div>
+  <div class="field"><select id="gradYearSelect" name="gradYearSelect" aria-label="Graduation Year"><option value="">Year…</option><option value="2025">2025</option><option value="2026">2026</option><option value="2027">2027</option></select></div>
+</div>
+<h3>GPA</h3>
+<div class="grid">
+  <div class="field"><label for="gpa">GPA</label><input id="gpa" name="gpa" /></div>
+  <div class="field"><label for="gradePointAverage">Grade Point Average</label><input id="gradePointAverage" name="gradePointAverage" /></div>
+  <div class="field"><label for="academicGpa">Academic GPA</label><input id="academicGpa" name="academicGpa" /></div>
+  <div class="field"><label for="cgpa">CGPA</label><input id="cgpa" name="cgpa" /></div>
+  <div class="field"><label>GPA (out of 4.0) <span class="platform-tag">Greenhouse</span></label><input id="gpa_value" name="gpa_value" /></div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<h2>⑭ WORK PREFERENCES — Visa / Relocation / Work Mode (25 variations)</h2>
+<div class="section">
+<h3>Visa / Work Authorization</h3>
+<div class="grid">
+  <div class="field"><label for="visaStatus">Visa Status</label><input id="visaStatus" name="visaStatus" /></div>
+  <div class="field"><label for="workAuthorization">Work Authorization</label><input id="workAuthorization" name="workAuthorization" /></div>
+  <div class="field"><label for="workEligibility">Work Eligibility</label><input id="workEligibility" name="workEligibility" /></div>
+  <div class="field"><label for="authorizedToWork">Are you authorized to work in the US?</label><input id="authorizedToWork" name="authorizedToWork" /></div>
+  <div class="field"><label for="immigrationStatus">Immigration Status</label><input id="immigrationStatus" name="immigrationStatus" /></div>
+  <div class="field"><select id="visaSelect" name="visaSelect" aria-label="Visa Status"><option value="">Select…</option><option value="citizen">US Citizen</option><option value="gc">Green Card</option><option value="h1b">H1B</option><option value="opt">F-1 OPT</option><option value="cpt">F-1 CPT</option></select></div>
+  <div class="field"><label>Sponsorship Required?</label><input id="sponsorshipRequired" name="sponsorshipRequired" /></div>
+  <div class="field"><label>Do you require visa sponsorship?</label><input id="requireSponsorship" name="requireSponsorship" /></div>
+</div>
+<h3>Relocation</h3>
+<div class="grid">
+  <div class="field"><label for="relocation">Open to Relocation?</label><input id="relocation" name="relocation" /></div>
+  <div class="field"><label for="willingToRelocate">Willing to Relocate?</label><input id="willingToRelocate" name="willingToRelocate" /></div>
+  <div class="field"><label for="relocationPreference">Relocation Preference</label><input id="relocationPreference" name="relocationPreference" /></div>
+  <div class="field"><select id="relocateSelect" name="relocateSelect" aria-label="Relocation"><option value="">Select…</option><option value="yes">Yes</option><option value="no">No</option><option value="maybe">Open to discuss</option></select></div>
+</div>
+<h3>Work Arrangement</h3>
+<div class="grid">
+  <div class="field"><label for="workArrangement">Work Arrangement</label><input id="workArrangement" name="workArrangement" /></div>
+  <div class="field"><label for="remotePreference">Remote Preference</label><input id="remotePreference" name="remotePreference" /></div>
+  <div class="field"><label for="workMode">Work Mode</label><input id="workMode" name="workMode" /></div>
+  <div class="field"><select id="workModeSelect" name="workModeSelect" aria-label="Work Mode"><option value="">Select…</option><option value="remote">Remote</option><option value="hybrid">Hybrid</option><option value="onsite">On-site</option></select></div>
+  <div class="field"><label>Preferred Work Style</label><input id="preferredWorkStyle" name="preferredWorkStyle" /></div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<h2>⑮ LONG-FORM — Summary / Cover Letter / Essays (25 variations)</h2>
+<div class="section">
+<h3>Professional Summary</h3>
+<div class="grid">
+  <div class="field" style="grid-column: 1/-1"><label for="summary">Professional Summary</label><textarea id="summary" name="summary" rows="4"></textarea></div>
+  <div class="field" style="grid-column: 1/-1"><label for="bio">Bio</label><textarea id="bio" name="bio" rows="3"></textarea></div>
+  <div class="field" style="grid-column: 1/-1"><label for="professionalBio">Professional Bio</label><textarea id="professionalBio" name="professionalBio" rows="3"></textarea></div>
+  <div class="field" style="grid-column: 1/-1"><label for="aboutYou">Tell us about yourself</label><textarea id="aboutYou" name="aboutYou" rows="3"></textarea></div>
+  <div class="field" style="grid-column: 1/-1"><label for="selfIntro">Self Introduction</label><textarea id="selfIntro" name="selfIntro" rows="3"></textarea></div>
+  <div class="field" style="grid-column: 1/-1"><label>Elevator Pitch</label><textarea id="elevatorPitch" name="elevatorPitch" rows="3"></textarea></div>
+</div>
+<h3>Cover Letter</h3>
+<div class="grid">
+  <div class="field" style="grid-column: 1/-1"><label for="coverLetter">Cover Letter</label><textarea id="coverLetter" name="coverLetter" rows="6"></textarea></div>
+  <div class="field" style="grid-column: 1/-1"><label for="cover_letter">Cover Letter</label><textarea id="cover_letter" name="cover_letter" rows="6"></textarea></div>
+  <div class="field" style="grid-column: 1/-1"><label>Cover Letter <span class="platform-tag">Greenhouse</span></label><textarea id="cover_letter_text" name="cover_letter_text" rows="5"></textarea></div>
+  <div class="field" style="grid-column: 1/-1"><label>Motivational Letter</label><textarea id="motivationalLetter" name="motivationalLetter" rows="5"></textarea></div>
+  <div class="field" style="grid-column: 1/-1"><label>Letter of Intent</label><textarea id="letterOfIntent" name="letterOfIntent" rows="5"></textarea></div>
+</div>
+<h3>Message / Notes</h3>
+<div class="grid">
+  <div class="field" style="grid-column: 1/-1"><label for="messageToManager">Message to Hiring Manager</label><textarea id="messageToManager" name="messageToManager" rows="3"></textarea></div>
+  <div class="field" style="grid-column: 1/-1"><label for="additionalInfo">Additional Information</label><textarea id="additionalInfo" name="additionalInfo" rows="3"></textarea></div>
+  <div class="field" style="grid-column: 1/-1"><label for="anythingElse">Anything else you'd like to share?</label><textarea id="anythingElse" name="anythingElse" rows="3"></textarea></div>
+  <div class="field" style="grid-column: 1/-1"><label for="noteToRecruiter">Note to Recruiter</label><textarea id="noteToRecruiter" name="noteToRecruiter" rows="3"></textarea></div>
+  <div class="field" style="grid-column: 1/-1"><label>Why do you want to work here?</label><textarea id="whyWorkHere" name="whyWorkHere" rows="3"></textarea></div>
+  <div class="field" style="grid-column: 1/-1"><label>Describe your experience with AI/ML</label><textarea id="aiMlExperience" name="aiMlExperience" rows="3"></textarea></div>
+  <div class="field" style="grid-column: 1/-1"><label>What are your career goals?</label><textarea id="careerGoals" name="careerGoals" rows="3"></textarea></div>
+</div>
+<h3>Referral Source</h3>
+<div class="grid">
+  <div class="field"><label for="referralSource">How did you hear about us?</label><input id="referralSource" name="referralSource" /></div>
+  <div class="field"><label for="heardAboutUs">How did you hear about this role?</label><input id="heardAboutUs" name="heardAboutUs" /></div>
+  <div class="field"><label for="referralMethod">Referral Method</label><input id="referralMethod" name="referralMethod" /></div>
+  <div class="field"><select id="sourceSelect" name="sourceSelect" aria-label="How did you hear about us?"><option value="">Select…</option><option value="linkedin">LinkedIn</option><option value="glassdoor">Glassdoor</option><option value="referral">Referral</option><option value="website">Company Website</option></select></div>
+  <div class="field"><label>Source of Application</label><input id="applicationSource" name="applicationSource" /></div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<h2>⑯ EEOC / DIVERSITY (20 variations)</h2>
+<div class="section">
+<h3>Race / Ethnicity</h3>
+<div class="grid">
+  <div class="field"><label for="race">Race</label><input id="race" name="race" /></div>
+  <div class="field"><label for="ethnicity">Ethnicity</label><input id="ethnicity" name="ethnicity" /></div>
+  <div class="field"><label for="raceEthnicity">Race / Ethnicity</label><input id="raceEthnicity" name="raceEthnicity" /></div>
+  <div class="field"><label for="racial">Racial Background</label><input id="racial" name="racial" /></div>
+  <div class="field"><select id="raceSelect" name="raceSelect" aria-label="Race/Ethnicity"><option value="">Select…</option><option value="asian">Asian</option><option value="black">Black or African American</option><option value="hispanic">Hispanic or Latino</option><option value="white">White</option><option value="decline">Decline to self-identify</option></select></div>
+  <div class="field"><label>Racial / Ethnic Group</label><input id="racialEthnicGroup" name="racialEthnicGroup" /></div>
+  <div class="field"><label>Ethnic Background</label><input id="ethnicBackground" name="ethnicBackground" /></div>
+</div>
+<h3>Veteran Status</h3>
+<div class="grid">
+  <div class="field"><label for="veteranStatus">Veteran Status</label><input id="veteranStatus" name="veteranStatus" /></div>
+  <div class="field"><label for="militaryStatus">Military Status</label><input id="militaryStatus" name="militaryStatus" /></div>
+  <div class="field"><label for="militaryService">Military Service</label><input id="militaryService" name="militaryService" /></div>
+  <div class="field"><select id="vetSelect" name="vetSelect" aria-label="Veteran Status"><option value="">Select…</option><option value="no">Not a veteran</option><option value="yes">Veteran</option><option value="protected">Protected Veteran</option><option value="decline">Decline</option></select></div>
+</div>
+<h3>Disability</h3>
+<div class="grid">
+  <div class="field"><label for="disability">Disability Status</label><input id="disability" name="disability" /></div>
+  <div class="field"><label for="disabilityStatus">Do you have a disability?</label><input id="disabilityStatus" name="disabilityStatus" /></div>
+  <div class="field"><select id="disabilitySelect" name="disabilitySelect" aria-label="Disability Status"><option value="">Select…</option><option value="no">No, I do not have a disability</option><option value="yes">Yes, I have a disability</option><option value="decline">I don't wish to answer</option></select></div>
+</div>
+<h3>Gender</h3>
+<div class="grid">
+  <div class="field"><label for="gender">Gender</label><input id="gender" name="gender" /></div>
+  <div class="field"><label for="genderIdentity">Gender Identity</label><input id="genderIdentity" name="genderIdentity" /></div>
+  <div class="field"><select id="genderSelect" name="genderSelect" aria-label="Gender"><option value="">Select…</option><option value="male">Male / Man</option><option value="female">Female / Woman</option><option value="nonbinary">Non-binary</option><option value="decline">Prefer not to say</option></select></div>
+  <div class="field"><label for="pronouns">Pronouns</label><input id="pronouns" name="pronouns" /></div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<h2>⑰ MULTI-FRAMEWORK SIMULATION (50 variations)</h2>
+<div class="section">
+<h3>React / Next.js style <span class="badge">React</span></h3>
+<div class="grid">
+  <div class="field"><label>First Name</label><input data-testid="input-firstName" className="react-input" /></div>
+  <div class="field"><label>Last Name</label><input data-testid="input-lastName" /></div>
+  <div class="field"><label>Email</label><input data-testid="input-email" type="email" /></div>
+  <div class="field"><label>Phone</label><input data-testid="input-phone" type="tel" /></div>
+  <div class="field"><label>City</label><input data-testid="input-city" /></div>
+  <div class="field"><label>Current Title</label><input data-testid="input-jobTitle" /></div>
+  <div class="field"><label>Company</label><input data-testid="input-company" /></div>
+  <div class="field"><label>LinkedIn</label><input data-testid="input-linkedin" /></div>
+  <div class="field"><label>GitHub</label><input data-testid="input-github" /></div>
+  <div class="field"><label>University</label><input data-testid="input-university" /></div>
+</div>
+<h3>Angular / Material style <span class="badge" style="background:#1a0a0a;color:#f87171">Angular</span></h3>
+<div class="grid">
+  <div class="field"><label>First Name</label><input formControlName="firstName" [placeholder]="'First Name'" /></div>
+  <div class="field"><label>Last Name</label><input formControlName="lastName" /></div>
+  <div class="field"><label>Email</label><input formControlName="email" type="email" /></div>
+  <div class="field"><label>Phone</label><input formControlName="phoneNumber" /></div>
+  <div class="field"><label>City</label><input formControlName="city" /></div>
+  <div class="field"><label>Job Title</label><input formControlName="jobTitle" /></div>
+  <div class="field"><label>Employer</label><input formControlName="currentCompany" /></div>
+  <div class="field"><label>LinkedIn</label><input formControlName="linkedinUrl" /></div>
+  <div class="field"><label>Years of Experience</label><input formControlName="yearsOfExperience" /></div>
+  <div class="field"><label>School</label><input formControlName="university" /></div>
+</div>
+<h3>Vue / Nuxt style <span class="badge" style="background:#0d1f17;color:#4ade80">Vue</span></h3>
+<div class="grid">
+  <div class="field"><label>First Name</label><input v-model="form.firstName" name="firstName" /></div>
+  <div class="field"><label>Last Name</label><input v-model="form.lastName" name="lastName" /></div>
+  <div class="field"><label>Email</label><input v-model="form.email" type="email" /></div>
+  <div class="field"><label>Phone</label><input v-model="form.phone" /></div>
+  <div class="field"><label>City</label><input v-model="form.city" /></div>
+  <div class="field"><label>Title</label><input v-model="form.title" /></div>
+  <div class="field"><label>Company</label><input v-model="form.company" /></div>
+  <div class="field"><label>LinkedIn</label><input v-model="form.linkedin" /></div>
+  <div class="field"><label>Skills</label><input v-model="form.skills" /></div>
+  <div class="field"><label>School</label><input v-model="form.school" /></div>
+</div>
+<h3>Svelte style <span class="badge" style="background:#2d1100;color:#fb923c">Svelte</span></h3>
+<div class="grid">
+  <div class="field"><label>First Name</label><input bind:value={firstName} name="firstName" /></div>
+  <div class="field"><label>Email</label><input bind:value={email} name="email" type="email" /></div>
+  <div class="field"><label>Phone</label><input bind:value={phone} name="phone" /></div>
+  <div class="field"><label>City</label><input bind:value={city} name="city" /></div>
+  <div class="field"><label>Job Title</label><input bind:value={jobTitle} name="jobTitle" /></div>
+</div>
+<h3>TypeScript / TSX patterns <span class="badge" style="background:#0f1f3f;color:#60a5fa">TS</span></h3>
+<div class="grid">
+  <div class="field"><label>First Name</label><input id="firstName" aria-label="First Name" data-field="firstName" /></div>
+  <div class="field"><label>Last Name</label><input id="lastName" aria-label="Last Name" data-field="lastName" /></div>
+  <div class="field"><label>Email</label><input id="email" aria-label="Email Address" data-field="email" /></div>
+  <div class="field"><label>Phone</label><input id="phone" aria-label="Phone Number" data-field="phone" /></div>
+  <div class="field"><label>City</label><input id="city" aria-label="City" data-field="city" /></div>
+  <div class="field"><label>State</label><input id="state" aria-label="State" data-field="state" /></div>
+  <div class="field"><label>Country</label><input id="country" aria-label="Country" data-field="country" /></div>
+  <div class="field"><label>LinkedIn</label><input id="linkedin" aria-label="LinkedIn URL" data-field="linkedinUrl" /></div>
+  <div class="field"><label>GitHub</label><input id="github" aria-label="GitHub URL" data-field="githubUrl" /></div>
+  <div class="field"><label>Job Title</label><input id="jobTitle" aria-label="Current Job Title" data-field="currentTitle" /></div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<h2>⑱ PLATFORM-SPECIFIC SIMULATIONS (Workday / Greenhouse / Lever / Taleo / etc.)</h2>
+<div class="section">
+
+<h3>🟠 Workday <span class="platform-tag">data-automation-id pattern</span></h3>
+<div class="grid">
+  <div class="field"><label>First Name</label><input data-automation-id="legalNameSection_firstName" /></div>
+  <div class="field"><label>Last Name</label><input data-automation-id="legalNameSection_lastName" /></div>
+  <div class="field"><label>Email</label><input data-automation-id="email" type="email" /></div>
+  <div class="field"><label>Phone</label><input data-automation-id="phone-number" type="tel" /></div>
+  <div class="field"><label>Address</label><input data-automation-id="addressSection_addressLine1" /></div>
+  <div class="field"><label>City</label><input data-automation-id="addressSection_city" /></div>
+  <div class="field"><label>State</label><input data-automation-id="addressSection_countryRegion" /></div>
+  <div class="field"><label>Zip</label><input data-automation-id="addressSection_postalCode" /></div>
+  <div class="field"><label>Country</label><input data-automation-id="addressSection_country" /></div>
+  <div class="field"><label>LinkedIn</label><input data-automation-id="linkedInUrl" /></div>
+  <div class="field"><label>Years of Experience</label><input data-automation-id="yearsOfExperience" /></div>
+  <div class="field"><label>University</label><input data-automation-id="school" /></div>
+  <div class="field"><label>Degree</label><input data-automation-id="degree" /></div>
+  <div class="field"><label>Major</label><input data-automation-id="fieldOfStudy" /></div>
+  <div class="field"><label>Grad Year</label><input data-automation-id="graduationDate" /></div>
+</div>
+
+<h3>🟢 Greenhouse <span class="platform-tag">standard HTML IDs</span></h3>
+<div class="grid">
+  <div class="field"><label for="first_name">First Name</label><input id="first_name" name="first_name" /></div>
+  <div class="field"><label for="last_name">Last Name</label><input id="last_name" name="last_name" /></div>
+  <div class="field"><label for="email">Email Address</label><input id="email" name="email" type="email" /></div>
+  <div class="field"><label for="phone">Phone</label><input id="phone" name="phone" /></div>
+  <div class="field"><label for="city">City</label><input id="city" name="city" /></div>
+  <div class="field"><label for="linkedin_url">LinkedIn Profile URL</label><input id="linkedin_url" name="linkedin_url" /></div>
+  <div class="field"><label for="website">Website / Portfolio</label><input id="website" name="website" /></div>
+  <div class="field"><label for="cover_letter_text">Cover Letter</label><textarea id="cover_letter_text" name="cover_letter_text" rows="4"></textarea></div>
+</div>
+
+<h3>🔵 Lever <span class="platform-tag">name/class pattern</span></h3>
+<div class="grid">
+  <div class="field"><label>Full Name</label><input name="name" class="lever-input" /></div>
+  <div class="field"><label>Email</label><input name="email" type="email" class="lever-input" /></div>
+  <div class="field"><label>Phone</label><input name="phone" class="lever-input" /></div>
+  <div class="field"><label>Current Company</label><input name="org" class="lever-input" /></div>
+  <div class="field"><label>LinkedIn</label><input name="urls[LinkedIn]" class="lever-input" /></div>
+  <div class="field"><label>GitHub</label><input name="urls[GitHub]" class="lever-input" /></div>
+  <div class="field"><label>Portfolio</label><input name="urls[Portfolio]" class="lever-input" /></div>
+  <div class="field"><label>Cover Letter</label><textarea name="comments" class="lever-input" rows="4"></textarea></div>
+</div>
+
+<h3>🟣 Taleo <span class="platform-tag">ft* prefix pattern</span></h3>
+<div class="grid">
+  <div class="field"><label for="ftFirstName">First Name</label><input id="ftFirstName" name="ftFirstName" /></div>
+  <div class="field"><label for="ftLastName">Last Name</label><input id="ftLastName" name="ftLastName" /></div>
+  <div class="field"><label for="ftEmail">Email</label><input id="ftEmail" name="ftEmail" type="email" /></div>
+  <div class="field"><label for="ftPhone">Phone</label><input id="ftPhone" name="ftPhone" /></div>
+  <div class="field"><label for="ftAddress">Address</label><input id="ftAddress" name="ftAddress" /></div>
+  <div class="field"><label for="ftCity">City</label><input id="ftCity" name="ftCity" /></div>
+  <div class="field"><label for="ftState">State</label><input id="ftState" name="ftState" /></div>
+  <div class="field"><label for="ftZip">Zip</label><input id="ftZip" name="ftZip" /></div>
+</div>
+
+<h3>⚫ iCIMS <span class="platform-tag">data-field pattern</span></h3>
+<div class="grid">
+  <div class="field"><label>First Name</label><input data-field="firstname" name="firstname" /></div>
+  <div class="field"><label>Last Name</label><input data-field="lastname" name="lastname" /></div>
+  <div class="field"><label>Email</label><input data-field="email" name="email" type="email" /></div>
+  <div class="field"><label>Phone</label><input data-field="phone" name="phone" /></div>
+  <div class="field"><label>Address</label><input data-field="address1" name="address1" /></div>
+  <div class="field"><label>City</label><input data-field="city" name="city" /></div>
+  <div class="field"><label>State</label><input data-field="state" name="state" /></div>
+  <div class="field"><label>Country</label><input data-field="country" name="country" /></div>
+</div>
+
+<h3>🧡 Ashby <span class="platform-tag">data-testid="application.*"</span></h3>
+<div class="grid">
+  <div class="field"><label>First Name</label><input data-testid="application.firstName" /></div>
+  <div class="field"><label>Last Name</label><input data-testid="application.lastName" /></div>
+  <div class="field"><label>Email</label><input data-testid="application.email" type="email" /></div>
+  <div class="field"><label>Phone</label><input data-testid="application.phone" /></div>
+  <div class="field"><label>LinkedIn</label><input data-testid="application.linkedInUrl" /></div>
+  <div class="field"><label>GitHub</label><input data-testid="application.githubUrl" /></div>
+  <div class="field"><label>Portfolio</label><input data-testid="application.websiteUrl" /></div>
+  <div class="field"><label>City</label><input data-testid="application.city" /></div>
+</div>
+
+<h3>🔴 SmartRecruiters <span class="platform-tag">data-testid pattern</span></h3>
+<div class="grid">
+  <div class="field"><label>First Name</label><input data-testid="firstName" name="firstName" /></div>
+  <div class="field"><label>Last Name</label><input data-testid="lastName" name="lastName" /></div>
+  <div class="field"><label>Email</label><input data-testid="email" name="email" type="email" /></div>
+  <div class="field"><label>Phone</label><input data-testid="mobilePhone" name="mobilePhone" /></div>
+  <div class="field"><label>LinkedIn</label><input data-testid="linkedinUrl" name="linkedinUrl" /></div>
+  <div class="field"><label>City</label><input data-testid="city" name="city" /></div>
+</div>
+
+<h3>🟤 BambooHR <span class="platform-tag">bamboo* ID prefix</span></h3>
+<div class="grid">
+  <div class="field"><label>First Name</label><input id="BambooHR_FirstName" name="BambooHR_FirstName" /></div>
+  <div class="field"><label>Last Name</label><input id="BambooHR_LastName" name="BambooHR_LastName" /></div>
+  <div class="field"><label>Email</label><input id="BambooHR_Email" name="BambooHR_Email" /></div>
+  <div class="field"><label>Phone</label><input id="BambooHR_Phone" name="BambooHR_Phone" /></div>
+  <div class="field"><label>LinkedIn</label><input id="BambooHR_LinkedIn" name="BambooHR_LinkedIn" /></div>
+</div>
+
+<h3>🟡 SAP SuccessFactors <span class="platform-tag">SFSF_* IDs</span></h3>
+<div class="grid">
+  <div class="field"><label>First Name</label><input id="SFSF_firstName" name="SFSF_firstName" /></div>
+  <div class="field"><label>Last Name</label><input id="SFSF_lastName" name="SFSF_lastName" /></div>
+  <div class="field"><label>Email</label><input id="SFSF_email" name="SFSF_email" /></div>
+  <div class="field"><label>City</label><input id="SFSF_city" name="SFSF_city" /></div>
+  <div class="field"><label>Country</label><input id="SFSF_country" name="SFSF_country" /></div>
+</div>
+
+<h3>🏁 Rippling <span class="platform-tag">data-field-name pattern</span></h3>
+<div class="grid">
+  <div class="field"><label>First Name</label><input data-field-name="first_name" /></div>
+  <div class="field"><label>Last Name</label><input data-field-name="last_name" /></div>
+  <div class="field"><label>Email</label><input data-field-name="email" type="email" /></div>
+  <div class="field"><label>Phone</label><input data-field-name="phone" /></div>
+  <div class="field"><label>City</label><input data-field-name="city" /></div>
+  <div class="field"><label>LinkedIn</label><input data-field-name="linkedin_url" /></div>
+</div>
+
+<h3>🍀 Jobvite <span class="platform-tag">JOBVITE_* IDs</span></h3>
+<div class="grid">
+  <div class="field"><label>First Name</label><input id="JOBVITE_FIRST" name="JOBVITE_FIRST" /></div>
+  <div class="field"><label>Last Name</label><input id="JOBVITE_LAST" name="JOBVITE_LAST" /></div>
+  <div class="field"><label>Email</label><input id="JOBVITE_EMAIL" name="JOBVITE_EMAIL" /></div>
+  <div class="field"><label>Phone</label><input id="JOBVITE_PHONE" name="JOBVITE_PHONE" /></div>
+</div>
+
+<h3>🔲 JazzHR <span class="platform-tag">fname/lname pattern</span></h3>
+<div class="grid">
+  <div class="field"><label>First Name</label><input name="fname" class="jazz-input" /></div>
+  <div class="field"><label>Last Name</label><input name="lname" class="jazz-input" /></div>
+  <div class="field"><label>Email</label><input name="email" type="email" class="jazz-input" /></div>
+  <div class="field"><label>Phone</label><input name="phone" class="jazz-input" /></div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<h2>⑲ EDGE CASES — Unusual labels, aria-only, placeholder-only, UUID IDs</h2>
+<div class="section">
+<div class="grid">
+  <!-- UUID-style IDs -->
+  <div class="field"><label for="a1b2c3d4-e5f6-7890-abcd-ef1234567890">First Name</label><input id="a1b2c3d4-e5f6-7890-abcd-ef1234567890" /></div>
+  <div class="field"><label for="field_0293847561">Last Name</label><input id="field_0293847561" /></div>
+  <div class="field"><label for="q_1234567">Email</label><input id="q_1234567" /></div>
+  <!-- aria-label only, no visible label -->
+  <div class="field"><input aria-label="Applicant First Name" /></div>
+  <div class="field"><input aria-label="Candidate Last Name" /></div>
+  <div class="field"><input aria-label="Your Email Address" type="email" /></div>
+  <div class="field"><input aria-label="Contact Phone Number" type="tel" /></div>
+  <div class="field"><input aria-label="LinkedIn Profile URL" /></div>
+  <div class="field"><input aria-label="GitHub Profile URL" /></div>
+  <div class="field"><input aria-label="Current Job Title" /></div>
+  <div class="field"><input aria-label="Current Employer / Company" /></div>
+  <div class="field"><input aria-label="Years of Professional Experience" /></div>
+  <!-- placeholder only -->
+  <div class="field"><input placeholder="Enter your first name" /></div>
+  <div class="field"><input placeholder="Enter your last name" /></div>
+  <div class="field"><input placeholder="Your email address" type="email" /></div>
+  <div class="field"><input placeholder="Phone (with area code)" type="tel" /></div>
+  <div class="field"><input placeholder="City, State" /></div>
+  <div class="field"><input placeholder="LinkedIn profile URL" /></div>
+  <div class="field"><input placeholder="GitHub username or URL" /></div>
+  <div class="field"><input placeholder="Current or most recent job title" /></div>
+  <!-- Tricky / compound labels -->
+  <div class="field"><label>First & Last Name</label><input name="fullName" /></div>
+  <div class="field"><label>Full Legal Name</label><input name="fullLegalName" /></div>
+  <div class="field"><label>Candidate Name</label><input name="candidateName" /></div>
+  <div class="field"><label>Applicant Name</label><input name="applicantName" /></div>
+  <div class="field"><label>Name (as on resume)</label><input name="nameAsOnResume" /></div>
+  <div class="field"><label>Contact Email Address</label><input name="contactEmail" type="email" /></div>
+  <div class="field"><label>Work Email Address</label><input name="workEmailAddress" type="email" /></div>
+  <div class="field"><label>Mobile / Cell Number</label><input name="mobileCellNumber" /></div>
+  <div class="field"><label>Primary Contact Number</label><input name="primaryContactNumber" /></div>
+  <div class="field"><label>Street / Mailing Address</label><input name="streetMailingAddress" /></div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<h2>⑳ FALSE-POSITIVE GUARDS — Fields that SHOULD NOT be filled</h2>
+<div class="section">
+<p style="color:#94a3b8;font-size:0.8rem;margin:0 0 12px">These fields should remain empty after fill — used to verify no false positives.</p>
+<div class="grid">
+  <div class="field"><label for="creditCard">Credit Card Number</label><input id="creditCard" name="creditCard" autocomplete="cc-number" data-no-autofill /></div>
+  <div class="field"><label for="cvv">CVV</label><input id="cvv" name="cvv" data-no-autofill /></div>
+  <div class="field"><label for="ssn">Social Security Number</label><input id="ssn" name="ssn" data-no-autofill /></div>
+  <div class="field"><label for="password">Password</label><input id="password" name="password" type="password" /></div>
+  <div class="field"><label for="confirmPassword">Confirm Password</label><input id="confirmPassword" name="confirmPassword" type="password" /></div>
+  <div class="field"><label for="captcha">CAPTCHA</label><input id="captcha" name="captcha" /></div>
+  <div class="field"><label for="jobDescription">Job Description (read-only)</label><input id="jobDescription" name="jobDescription" readonly value="AI Engineer at Anthropic" /></div>
+  <div class="field"><label for="companyInfo">Company Info (disabled)</label><input id="companyInfo" name="companyInfo" disabled value="Some Company" /></div>
+  <div class="field"><label for="hiddenField">Hidden</label><input id="hiddenField" name="hiddenField" type="hidden" value="abc123" /></div>
+  <div class="field"><label for="sexualOrientation">Sexual Orientation</label><input id="sexualOrientation" name="sexualOrientation" /></div>
+  <div class="field"><label for="yearsAtCurrentCompany">Years at Current Company</label><input id="yearsAtCurrentCompany" name="yearsAtCurrentCompany" /></div>
+  <div class="field"><label for="searchBox">Search</label><input id="searchBox" name="q" type="search" placeholder="Search jobs…" role="searchbox" /></div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<h2>㉑ INTERNATIONAL / GLOBAL FORMS (30 variations)</h2>
+<div class="section">
+<h3>India <span class="badge">IN</span></h3>
+<div class="grid">
+  <div class="field"><label>Name</label><input name="candidateName" placeholder="Full Name" /></div>
+  <div class="field"><label>Mobile Number</label><input name="mobileNumber" type="tel" /></div>
+  <div class="field"><label>PIN Code</label><input name="pinCode" /></div>
+  <div class="field"><label>Designation</label><input name="designation" /></div>
+  <div class="field"><label>Total Exp (Years)</label><input name="totalExpYears" /></div>
+  <div class="field"><label>Relevant Experience (Years)</label><input name="relevantExpYears" /></div>
+  <div class="field"><label>Current CTC</label><input name="currentCTC" /></div>
+  <div class="field"><label>Expected CTC</label><input name="expectedCTC" /></div>
+  <div class="field"><label>Notice Period (Days)</label><input name="noticePeriod" /></div>
+  <div class="field"><label>Current Location</label><input name="currentLocation" /></div>
+</div>
+<h3>Germany <span class="badge">DE</span></h3>
+<div class="grid">
+  <div class="field"><label>Vorname</label><input name="vorname" /></div>
+  <div class="field"><label>Nachname</label><input name="nachname" /></div>
+  <div class="field"><label>E-Mail</label><input name="email_de" type="email" /></div>
+  <div class="field"><label>Telefon</label><input name="telefon" /></div>
+  <div class="field"><label>Straße und Hausnummer</label><input name="strasse" /></div>
+  <div class="field"><label>PLZ</label><input name="plz" /></div>
+  <div class="field"><label>Stadt</label><input name="stadt" /></div>
+  <div class="field"><label>Hochschule / Universität</label><input name="hochschule" /></div>
+  <div class="field"><label>Studiengang</label><input name="studiengang" /></div>
+  <div class="field"><label>Berufserfahrung (Jahre)</label><input name="berufserfahrungJahre" /></div>
+</div>
+<h3>France <span class="badge">FR</span></h3>
+<div class="grid">
+  <div class="field"><label>Prénom</label><input name="prenom" /></div>
+  <div class="field"><label>Nom</label><input name="nom_famille" /></div>
+  <div class="field"><label>Adresse e-mail</label><input name="email_fr" type="email" /></div>
+  <div class="field"><label>Téléphone</label><input name="telephone_fr" /></div>
+  <div class="field"><label>Ville</label><input name="ville" /></div>
+  <div class="field"><label>Code postal</label><input name="code_postal" /></div>
+  <div class="field"><label>Université</label><input name="universite" /></div>
+  <div class="field"><label>Expérience professionnelle</label><input name="experience_pro" /></div>
+  <div class="field"><label>Lettre de motivation</label><textarea name="lettre_motivation" rows="3"></textarea></div>
+  <div class="field"><label>Compétences</label><input name="competences" /></div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<h2>㉒ CHARACTER LIMIT STRESS TEST (with maxlength / counters)</h2>
+<div class="section">
+<div class="grid">
+  <div class="field">
+    <label for="summaryShort">Summary (100 char limit)</label>
+    <textarea id="summaryShort" name="summaryShort" maxlength="100" rows="3"></textarea>
+    <small id="summaryShortCounter" style="color:#64748b">100 characters remaining</small>
+  </div>
+  <div class="field">
+    <label for="summaryMed">Summary (250 char limit)</label>
+    <textarea id="summaryMed" name="summaryMed" maxlength="250" rows="3"></textarea>
+    <small id="summaryMedCounter" style="color:#64748b">250 characters remaining</small>
+  </div>
+  <div class="field">
+    <label for="coverShort">Cover Letter (500 char limit)</label>
+    <textarea id="coverShort" name="coverShort" maxlength="500" rows="4"></textarea>
+  </div>
+  <div class="field">
+    <label for="coverMed">Cover Letter (1000 char limit)</label>
+    <textarea id="coverMed" name="coverMed" maxlength="1000" rows="4"></textarea>
+  </div>
+  <div class="field">
+    <label for="bioTweet">Bio (280 char — tweet length)</label>
+    <textarea id="bioTweet" name="bioTweet" maxlength="280" rows="2"></textarea>
+  </div>
+  <div class="field">
+    <label for="firstNameShort">First Name (30 char limit)</label>
+    <input id="firstNameShort" name="firstNameShort" maxlength="30" />
+  </div>
+  <!-- aria-describedby counter pattern -->
+  <div class="field">
+    <label for="summaryAria">Summary (aria counter)</label>
+    <textarea id="summaryAria" name="summaryAria" rows="3" aria-describedby="summary-counter-aria" maxlength="300"></textarea>
+    <span id="summary-counter-aria" style="color:#64748b;font-size:0.75rem">300 / 300</span>
+  </div>
+  <!-- data-* counter attrs -->
+  <div class="field">
+    <label for="summaryData">Summary (data-maxlength)</label>
+    <textarea id="summaryData" name="summaryData" rows="3" data-maxlength="200"></textarea>
+  </div>
+  <div class="field">
+    <label for="summaryMax">Summary (data-max-chars)</label>
+    <textarea id="summaryMax" name="summaryMax" rows="3" data-max-chars="400"></textarea>
+  </div>
+  <div class="field">
+    <label for="summaryLimit">Summary (data-character-limit)</label>
+    <textarea id="summaryLimit" name="summaryLimit" rows="3" data-character-limit="350"></textarea>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<h2>㉓ SELECT DROPDOWNS (all types)</h2>
+<div class="section">
+<div class="grid">
+  <div class="field">
+    <label for="countryDrop">Country</label>
+    <select id="countryDrop" name="countryDrop">
+      <option value="">Select country…</option>
+      <option value="US">United States</option>
+      <option value="IN">India</option>
+      <option value="CA">Canada</option>
+      <option value="GB">United Kingdom</option>
+      <option value="AU">Australia</option>
+      <option value="DE">Germany</option>
+      <option value="FR">France</option>
+    </select>
+  </div>
+  <div class="field">
+    <label for="stateDrop">State</label>
+    <select id="stateDrop" name="stateDrop">
+      <option value="">Select state…</option>
+      <option value="CA">California</option>
+      <option value="NY">New York</option>
+      <option value="TX">Texas</option>
+      <option value="WA">Washington</option>
+      <option value="MA">Massachusetts</option>
+    </select>
+  </div>
+  <div class="field">
+    <label for="degreeDrop">Degree</label>
+    <select id="degreeDrop" name="degreeDrop">
+      <option value="">Select…</option>
+      <option value="HS">High School</option>
+      <option value="AA">Associate's</option>
+      <option value="BS">Bachelor's</option>
+      <option value="MS">Master's</option>
+      <option value="PhD">PhD</option>
+      <option value="MBA">MBA</option>
+    </select>
+  </div>
+  <div class="field">
+    <label for="expDrop">Years of Experience</label>
+    <select id="expDrop" name="expDrop">
+      <option value="">Select…</option>
+      <option value="0">0 years</option>
+      <option value="1">1 year</option>
+      <option value="2">2 years</option>
+      <option value="3">3 years</option>
+      <option value="5">5 years</option>
+      <option value="10">10+ years</option>
+    </select>
+  </div>
+  <div class="field">
+    <label for="gradYearDrop">Graduation Year</label>
+    <select id="gradYearDrop" name="gradYearDrop">
+      <option value="">Year…</option>
+      <option value="2024">2024</option>
+      <option value="2025">2025</option>
+      <option value="2026">2026</option>
+      <option value="2027">2027</option>
+      <option value="2028">2028</option>
+    </select>
+  </div>
+  <div class="field">
+    <label for="workModeDrop">Work Mode</label>
+    <select id="workModeDrop" name="workModeDrop">
+      <option value="">Select…</option>
+      <option value="remote">Remote</option>
+      <option value="hybrid">Hybrid</option>
+      <option value="onsite">On-site</option>
+    </select>
+  </div>
+  <div class="field">
+    <label for="visaDrop">Work Authorization</label>
+    <select id="visaDrop" name="visaDrop">
+      <option value="">Select…</option>
+      <option value="citizen">US Citizen</option>
+      <option value="greencard">Green Card</option>
+      <option value="h1b">H-1B</option>
+      <option value="opt">F-1 OPT</option>
+      <option value="cpt">F-1 CPT</option>
+      <option value="other">Other</option>
+    </select>
+  </div>
+  <div class="field">
+    <label for="relocateDrop">Open to Relocation?</label>
+    <select id="relocateDrop" name="relocateDrop">
+      <option value="">Select…</option>
+      <option value="yes">Yes</option>
+      <option value="no">No</option>
+      <option value="maybe">Open to discuss</option>
+    </select>
+  </div>
+  <div class="field">
+    <label for="genderDrop">Gender</label>
+    <select id="genderDrop" name="genderDrop">
+      <option value="">Select…</option>
+      <option value="male">Male / Man</option>
+      <option value="female">Female / Woman</option>
+      <option value="nonbinary">Non-binary</option>
+      <option value="decline">Prefer not to say</option>
+    </select>
+  </div>
+  <div class="field">
+    <label for="raceDrop">Race / Ethnicity</label>
+    <select id="raceDrop" name="raceDrop">
+      <option value="">Select…</option>
+      <option value="asian">Asian</option>
+      <option value="black">Black or African American</option>
+      <option value="hispanic">Hispanic or Latino</option>
+      <option value="white">White (not Hispanic)</option>
+      <option value="multiracial">Two or more races</option>
+      <option value="decline">Decline to self-identify</option>
+    </select>
+  </div>
+  <div class="field">
+    <label for="vetDrop">Veteran Status</label>
+    <select id="vetDrop" name="vetDrop">
+      <option value="">Select…</option>
+      <option value="no">Not a veteran</option>
+      <option value="protected">Protected veteran</option>
+      <option value="decline">Decline to self-identify</option>
+    </select>
+  </div>
+  <div class="field">
+    <label for="disabilityDrop">Disability Status</label>
+    <select id="disabilityDrop" name="disabilityDrop">
+      <option value="">Select…</option>
+      <option value="no">No, I do not have a disability</option>
+      <option value="yes">Yes, I have a disability</option>
+      <option value="decline">I don't wish to answer</option>
+    </select>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<button id="fillBtn" style="position:fixed;top:16px;right:16px;z-index:10000;background:#6366f1;color:#fff;border:none;border-radius:10px;padding:12px 20px;font-size:0.95rem;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(99,102,241,.5)">▶ Fill with demo data</button>
+<button id="clearBtn" style="position:fixed;top:16px;right:230px;z-index:10000;background:#374151;color:#e2e8f0;border:none;border-radius:10px;padding:12px 16px;font-size:0.9rem;cursor:pointer">Clear</button>
+
+<script>
+// Count all fillable fields and display
+window.addEventListener('load', () => {
+  const fields = document.querySelectorAll('input:not([type=hidden]):not([type=password]):not([type=file]):not([type=search]):not([disabled]):not([readonly]), textarea:not([readonly]), select');
+  document.getElementById('fieldCount').textContent = `${fields.length} total fillable fields across 23 sections`;
+});
+
+// Demo profile only — replace with your own, or test through the real extension.
+const PROFILE = {
+  fullName:"Alex Taylor",
+  firstName:"Alex", lastName:"Taylor", preferredName:"Alex",
+  pronouns:"they/them", email:"alex.taylor@example.com", phone:"+1 (555) 123-4567",
+  addressLine1:"", city:"San Francisco", state:"CA", zipCode:"", country:"United States",
+  currentTitle:"Software Engineer", currentCompany:"Example Corp",
+  yearsOfExp:"3",
+  skills:"JavaScript, TypeScript, React, Node.js, Python, SQL, Docker, Kubernetes, AWS, PostgreSQL",
+  languages:"English (fluent)", securityClearance:"None",
+  linkedInUrl:"https://linkedin.com/in/alextaylor", githubUrl:"https://github.com/alextaylor",
+  portfolioUrl:"https://alextaylor.example.com",
+  university:"State University", degree:"BS", major:"Computer Science",
+  graduationYear:"2022", classYear:"Alumni",
+  visaStatus:"U.S. Citizen", relocation:"Yes", workArrangement:"Hybrid",
+  jobFunction:"Software Engineering",
+  summary:"Software engineer with 3 years of experience building web applications across the stack. Comfortable with React and Node.js front to back, and passionate about clean, well-tested code.",
+  messageToManager:"Hi! I'm Alex — a software engineer with 3 years of full-stack experience. I'd love to chat about how I can contribute to your team.",
+  referralSource:"LinkedIn",
+  raceEthnicity:"", veteranStatus:"", disabilityStatus:"", gender:"",
+  coverLetter:"Dear Hiring Manager,\n\nI'm excited to apply for this role. I'm a software engineer with 3 years of experience shipping production web applications, and I'd love to bring that experience to your team.\n\nSincerely,\nAlex Taylor"
+};
+
+// ─── Field matcher: label/name/id/aria/placeholder → profile key ───
+function matchKey(t){
+  t=(t||"").toLowerCase();
+  if(/credit|card|cvv|cvc|\bssn\b|social security|password|captcha|\bsearch\b|sexual orientation|years at current|job desc|company info/.test(t)) return null;
+  if(/full[\s_-]?name|full legal name|candidate name|applicant name|name \(as on|^name$|nombre completo/.test(t)) return "fullName";
+  if(/(first|given|fore)[\s_-]?name|^fname$|prenom|vorname|^first$/.test(t)) return "firstName";
+  if(/(last|family|sur)[\s_-]?name|^lname$|apellido|nachname|^last$|^nom$|nom de famille/.test(t)) return "lastName";
+  if(/preferred|goes.?by|nick/.test(t)) return "preferredName";
+  if(/pronoun/.test(t)) return "pronouns";
+  if(/e.?mail|courriel/.test(t)) return "email";
+  if(/phone|mobile|cell|telefon|telephone|téléphone|contact number|whatsapp/.test(t)) return "phone";
+  if(/linkedin/.test(t)) return "linkedInUrl";
+  if(/github/.test(t)) return "githubUrl";
+  if(/portfolio|website|personal url|personal site/.test(t)) return "portfolioUrl";
+  if(/\bstreet\b|mailing|address|adresse|strasse|straße|address.?line.?1|^address1?$/.test(t)) return "addressLine1";
+  if(/\bcity\b|town|ville|stadt|ciudad|location/.test(t)) return "city";
+  if(/state|province|region/.test(t)) return "state";
+  if(/zip|postal|post.?code|pin.?code|\bplz\b|code postal/.test(t)) return "zipCode";
+  if(/country|nationality|pays|\bland\b/.test(t)) return "country";
+  if(/title|designation|\brole\b|\bposition\b|headline|cargo|poste/.test(t)) return "currentTitle";
+  if(/company|employer|organization|organisation|workplace|entreprise|unternehmen/.test(t)) return "currentCompany";
+  if(/years?\s*(of)?\s*(exp|experience)|total\s*exp|exp.*years|experience.*years|years.*experience|work experience|experience level|years of work|berufserfahrung|relevant exp|años de experiencia|expérience/.test(t)) return "yearsOfExp";
+  if(/skill|competenc|compétenc|technolog|expertise|habilidad|fähigkeit|tools/.test(t)) return "skills";
+  if(/language|langue|sprache/.test(t)) return "languages";
+  if(/clearance/.test(t)) return "securityClearance";
+  if(/universit|college|école|school|institution|alma mater|hochschule|academic inst|higher ed/.test(t)) return "university";
+  if(/universidad/.test(t)) return "university";
+  if(/degree|education level|diploma|qualification/.test(t)) return "degree";
+  if(/major|field of study|concentration|specialization|study area|studiengang|subject/.test(t)) return "major";
+  if(/grad(uation)?\s*(year|date)|expected grad|gradyear/.test(t)) return "graduationYear";
+  if(/class\s*(year|of)|school year|alumni/.test(t)) return "classYear";
+  if(/visa|work auth|authoriz|eligib|sponsor|immigration/.test(t)) return "visaStatus";
+  if(/reloc/.test(t)) return "relocation";
+  if(/work\s*(arrangement|mode|style)|remote pref/.test(t)) return "workArrangement";
+  if(/job function|job area|\bfunction\b/.test(t)) return "jobFunction";
+  if(/cover\s*letter|motivation|letter of intent|lettre/.test(t)) return "coverLetter";
+  if(/summary|\bbio\b|professional bio|about you|tell us about|self intro|elevator|pitch/.test(t)) return "summary";
+  if(/message to|note to|additional info|anything else|why.*work|career goal|describe your/.test(t)) return "messageToManager";
+  if(/how did you hear|heard about|referral|source of app/.test(t)) return "referralSource";
+  if(/\brac|ethnic/.test(t)) return "raceEthnicity";
+  if(/veteran|military/.test(t)) return "veteranStatus";
+  if(/disab/.test(t)) return "disabilityStatus";
+  if(/gender|\bsex\b/.test(t)) return "gender";
+  return null;
+}
+
+function getLabel(el){
+  let parts=[el.name,el.id,el.getAttribute("aria-label"),el.placeholder,
+    el.getAttribute("data-automation-id"),el.getAttribute("data-testid"),
+    el.getAttribute("data-field"),el.getAttribute("data-field-name"),
+    el.getAttribute("formcontrolname"),el.getAttribute("ng-model"),el.getAttribute("v-model")];
+  if(el.id){const l=document.querySelector('label[for="'+el.id+'"]');if(l)parts.push(l.textContent);}
+  const wrap=el.closest(".field");if(wrap){const l=wrap.querySelector("label");if(l)parts.push(l.textContent);}
+  return parts.filter(Boolean).join(" ");
+}
+
+// stealth fill — native setter + synthetic events (React/Vue/Angular compatible)
+function setVal(el,val){
+  const proto=el.tagName==="TEXTAREA"?HTMLTextAreaElement.prototype:HTMLInputElement.prototype;
+  const setter=Object.getOwnPropertyDescriptor(proto,"value").set;
+  setter.call(el,val);
+  el.dispatchEvent(new Event("input",{bubbles:true}));
+  el.dispatchEvent(new Event("change",{bubbles:true}));
+  el.style.outline="2px solid #22c55e";
+  setTimeout(()=>el.style.outline="",1200);
+}
+
+function runFill(){
+  let filled=0,skipped=0,aiCandidates=0;
+  document.querySelectorAll("input,textarea").forEach(el=>{
+    if(el.type==="hidden"||el.type==="password"||el.type==="file"||el.type==="search"||el.disabled||el.readOnly){skipped++;return;}
+    const key=matchKey(getLabel(el));
+    if(!key){ if(el.tagName==="TEXTAREA")aiCandidates++; skipped++; return; }
+    let v=PROFILE[key];
+    if(!v){skipped++;return;}
+    const max=parseInt(el.getAttribute("maxlength")||el.getAttribute("data-maxlength")||el.getAttribute("data-max-chars")||el.getAttribute("data-character-limit")||0);
+    if(max&&v.length>max) v=v.slice(0,max);
+    setVal(el,v);
+    filled++;
+  });
+  document.querySelectorAll("select").forEach(sel=>{
+    const key=matchKey(getLabel(sel));
+    if(!key){skipped++;return;}
+    if(!PROFILE[key]){skipped++;return;}
+    const map={"F-1 OPT":["opt"],"United States":["us","united states"],"CA":["ca","california"],
+      "MS":["ms","master"],"Yes":["yes"],"Hybrid":["hybrid"],"Asian":["asian"],
+      "Not a veteran":["no","not a veteran"],"No disability":["no"],"2":["2 ","2y","2 year",">2<"],"2027":["2027"]};
+    const cands=map[PROFILE[key]]||[PROFILE[key].toLowerCase()];
+    let matched=false;
+    for(const opt of sel.options){
+      if(!opt.value)continue;
+      const ot=(opt.value+" "+opt.textContent).toLowerCase();
+      if(cands.some(c=>ot.includes(c.trim()))){sel.value=opt.value;matched=true;break;}
+    }
+    if(matched){sel.dispatchEvent(new Event("change",{bubbles:true}));filled++;}
+    else skipped++;
+  });
+  // false-positive guard check
+  const guards=["creditCard","cvv","ssn","captcha","sexualOrientation","yearsAtCurrentCompany"];
+  const clean=guards.filter(id=>{const e=document.getElementById(id);return e&&!e.value;}).length;
+  document.getElementById("res-filled").innerHTML="✅ Filled: <b>"+filled+"</b>";
+  document.getElementById("res-skipped").innerHTML="⏭ Skipped: <b>"+skipped+"</b>";
+  document.getElementById("res-ai").innerHTML="🤖 AI candidates: <b>"+aiCandidates+"</b><br>🛡 FP guards clean: <b>"+clean+"/"+guards.length+"</b>";
+}
+
+function runClear(){
+  document.querySelectorAll("input,textarea").forEach(el=>{if(el.type!=="hidden"&&!el.readOnly&&!el.disabled)el.value="";});
+  document.querySelectorAll("select").forEach(s=>s.value="");
+  document.getElementById("res-filled").textContent="Filled: —";
+  document.getElementById("res-skipped").textContent="Skipped: —";
+  document.getElementById("res-ai").textContent="AI fallback: —";
+}
+
+document.getElementById("fillBtn").addEventListener("click",runFill);
+document.getElementById("clearBtn").addEventListener("click",runClear);
+// auto-fill on load
+window.addEventListener("load",()=>setTimeout(runFill,400));
+
+// Live counter update for char-limit fields
+document.querySelectorAll('textarea[maxlength]').forEach(ta => {
+  const counter = document.getElementById(ta.id + 'Counter') || document.getElementById('summary-counter-aria');
+  if (!counter) return;
+  ta.addEventListener('input', () => {
+    const max = parseInt(ta.getAttribute('maxlength'));
+    const remaining = max - ta.value.length;
+    counter.textContent = ta.id.includes('Aria') ? `${remaining} / ${max}` : `${remaining} characters remaining`;
+  });
+});
+</script>
+</body>
+</html>

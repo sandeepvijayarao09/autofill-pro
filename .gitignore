@@ -1,7 +1,13 @@
+# Dependencies
 node_modules/
-package.json
-package-lock.json
-generate-icons.js
+
+# Build output
+dist/
 *.zip
+
+# Personal data — NEVER commit (contains a real profile)
+inject_profile.js
+
+# Editor / OS
 .claude/
 .DS_Store

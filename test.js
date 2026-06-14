@@ -110,10 +110,10 @@ function formatDOB(dob, hints = "", elType = "text", maxl = 0) {
   const h = hints.toUpperCase();
   const sep = h.includes("/") ? "/" : h.includes(".") ? "." : "-";
 
-  if (/DD[\s\/\-\.]MM[\s\/\-\.]YYYY/.test(h)) return `${dd}${sep}${mm}${sep}${yyyy}`;
-  if (/MM[\s\/\-\.]DD[\s\/\-\.]YYYY/.test(h)) return `${mm}${sep}${dd}${sep}${yyyy}`;
-  if (/YYYY[\s\/\-\.]MM[\s\/\-\.]DD/.test(h)) return `${yyyy}-${mm}-${dd}`;
-  if (/MM[\s\/\-\.]YYYY/.test(h))             return `${mm}${sep}${yyyy}`;
+  if (/DD[\s/.-]MM[\s/.-]YYYY/.test(h)) return `${dd}${sep}${mm}${sep}${yyyy}`;
+  if (/MM[\s/.-]DD[\s/.-]YYYY/.test(h)) return `${mm}${sep}${dd}${sep}${yyyy}`;
+  if (/YYYY[\s/.-]MM[\s/.-]DD/.test(h)) return `${yyyy}-${mm}-${dd}`;
+  if (/MM[\s/.-]YYYY/.test(h))             return `${mm}${sep}${yyyy}`;
   if (/YYYYMMDD/.test(h))                     return `${yyyy}${mm}${dd}`;
   if (/MMDDYYYY/.test(h))                     return `${mm}${dd}${yyyy}`;
   if (/DDMMYYYY/.test(h))                     return `${dd}${mm}${yyyy}`;

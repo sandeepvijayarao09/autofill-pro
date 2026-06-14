@@ -318,10 +318,10 @@ function formatDOB(dob, el) {
 
   const sep = hints.includes("/") ? "/" : hints.includes(".") ? "." : "-";
 
-  if (/DD[\s\/\-\.]MM[\s\/\-\.]YYYY/.test(hints)) return `${dd}${sep}${mm}${sep}${yyyy}`;
-  if (/MM[\s\/\-\.]DD[\s\/\-\.]YYYY/.test(hints)) return `${mm}${sep}${dd}${sep}${yyyy}`;
-  if (/YYYY[\s\/\-\.]MM[\s\/\-\.]DD/.test(hints)) return `${yyyy}-${mm}-${dd}`;
-  if (/MM[\s\/\-\.]YYYY/.test(hints))              return `${mm}${sep}${yyyy}`;
+  if (/DD[\s/.-]MM[\s/.-]YYYY/.test(hints)) return `${dd}${sep}${mm}${sep}${yyyy}`;
+  if (/MM[\s/.-]DD[\s/.-]YYYY/.test(hints)) return `${mm}${sep}${dd}${sep}${yyyy}`;
+  if (/YYYY[\s/.-]MM[\s/.-]DD/.test(hints)) return `${yyyy}-${mm}-${dd}`;
+  if (/MM[\s/.-]YYYY/.test(hints))              return `${mm}${sep}${yyyy}`;
   if (/YYYYMMDD/.test(hints))                      return `${yyyy}${mm}${dd}`;
   if (/MMDDYYYY/.test(hints))                      return `${mm}${dd}${yyyy}`;
   if (/DDMMYYYY/.test(hints))                      return `${dd}${mm}${yyyy}`;
@@ -370,7 +370,7 @@ function getCharLimit(el) {
     if (!desc) continue;
     const t = desc.textContent.trim();
     // "250/500" or "250 of 500"
-    let m = t.match(/(\d+)\s*[\/]\s*(\d+)/);
+    let m = t.match(/(\d+)\s*[/]\s*(\d+)/);
     if (m) return parseInt(m[2]);
     m = t.match(/(\d+)\s+of\s+(\d+)/i);
     if (m) return parseInt(m[2]);
@@ -390,7 +390,7 @@ function getCharLimit(el) {
         const counter = parent.querySelector(sel);
         if (!counter || counter.contains(el)) continue;
         const t = counter.textContent.trim();
-        let m = t.match(/(\d+)\s*[\/]\s*(\d+)/);
+        let m = t.match(/(\d+)\s*[/]\s*(\d+)/);
         if (m) return parseInt(m[2]);
         m = t.match(/(?:max|limit)[^\d]*(\d+)/i);
         if (m) return parseInt(m[1]);

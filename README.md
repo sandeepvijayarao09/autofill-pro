@@ -1,52 +1,90 @@
-# AutoFill Pro — Chrome Extension
+# AutoFill Pro
 
-Fill job applications instantly across 30+ ATS platforms. Pattern-matches 44 profile fields locally. AI fallback (NVIDIA Gemma 4) for custom questions only. All data stays on your device.
+A browser extension that fills out job applications and web forms for you.
 
-## Features
+You enter your details once (or import them from your resume), and from then on
+a single click — or `Alt+Shift+F` — fills the whole form on any site. It
+recognizes 44 common fields across 50+ application platforms. Everything you type
+stays on your own device.
 
-- **Instant fill** — one click or `Alt+Shift+F` fills the whole page
-- **Long-press preview** — hold the button 500ms to see what will be filled before committing
-- **Undo** — toast button restores the page to its state before fill
-- **Character limit aware** — detects `maxlength`, `aria-describedby` counters, sibling counter divs; AI compresses long-form text to fit
-- **Resume import** — drop a PDF or paste LinkedIn text; AI extracts all 44 profile fields
-- **Ask AI** — answer custom essay questions using your profile as context
-- **Privacy-first** — DOB, EEOC fields (race, disability, veteran), gender, salary never sent to any external API
-- **SPA support** — works across React, Angular, Vue Router single-page apps
-- **iframe support** — fills Workday and Taleo embedded form iframes
-- **WCAG 2.1 AA** — fully keyboard navigable, screen-reader compatible
+> **It's yours.** Install it, type in *your* data, and it fills forms with *your*
+> data. Anyone you share it with does the same with theirs — no accounts, no
+> sign-up, no server.
 
-## ATS platforms tested
+---
 
-Workday · Greenhouse · Lever · Taleo · iCIMS · SmartRecruiters · Ashby · Rippling · Jobvite · JazzHR · BreezyHR · SAP SuccessFactors · Recruitee · Pinpoint · Personio · Meta · Amazon · Microsoft · Apple · 15+ more
+## Install (2 minutes)
 
-## Installation (developer mode)
+1. Download or clone this folder to your computer.
+2. Open `chrome://extensions` in Chrome.
+3. Turn on **Developer mode** (top-right toggle).
+4. Click **Load unpacked** and select this folder.
+5. Pin the **AutoFill Pro** icon to your toolbar.
 
-1. Clone this repo
-2. Open `chrome://extensions`
-3. Enable **Developer mode**
-4. Click **Load unpacked** → select this folder
+> Works in Chrome, Edge, Brave, and any other Chromium browser.
 
-## Running tests
+## Add your data
+
+Click the AutoFill Pro icon to open the popup, then either:
+
+- **Type it in** — fill the Profile tab (name, contact, work, education, links)
+  and click **Save Profile**, or
+- **Import your resume** — drop a PDF or paste your LinkedIn text at the top of
+  the Profile tab and click **Import & Fill Profile**. Review what it pulled out,
+  then **Save**.
+
+That's it. Your data is stored locally on your device and never sent anywhere.
+
+## Use it
+
+On any application page:
+
+- Click the floating purple button, or press **`Alt+Shift+F`**.
+- **Long-press** the button (hold ~½ second) to *preview* what will be filled
+  before committing.
+- After a fill, an **Undo** button appears in case you want to revert.
+
+## Optional: AI for custom questions
+
+Some applications ask open-ended questions ("Why do you want to work here?")
+that can't be matched by a fixed field. If you want help with those:
+
+1. Get a free API key from [NVIDIA NIM](https://build.nvidia.com).
+2. Open the popup → **Settings** → paste the key → enable **AI matching**.
+
+When AI is on, only the *question text* (and non-sensitive profile details) are
+sent to draft an answer. Your date of birth, race/ethnicity, disability/veteran
+status, gender, phone, and salary are **never** sent. If you leave AI off,
+nothing ever leaves your device.
+
+## Privacy in one line
+
+No server, no tracking, no accounts. Your profile lives in your browser's local
+storage and only you can see it. Full details: [privacy_policy.html](./privacy_policy.html).
+
+---
+
+## For tinkerers
+
+Everything runs in plain JavaScript — no build step needed to *use* it. The
+tooling below is only if you want to modify or repackage it.
 
 ```bash
-node test.js
+npm install        # one-time: dev tooling (linter, icon generator)
+npm test           # runs the 1300-case field-matching test suite
+npm run lint       # style/consistency check
+npm run build      # makes a clean dist/autofill-pro-v<version>.zip
 ```
 
-424 test cases covering all ATS platforms, field variations, false positives, DOB format detection, age computation, and FIELD_PATTERNS sync between `test.js` and `content.js`.
+Two test pages you can open directly in your browser to see it work:
 
-## AI setup (optional)
+- `test_application.html` — a realistic single job application.
+- `test_form.html` — a stress test with 50+ platform variations of every field.
 
-1. Get a free API key from [NVIDIA NIM](https://build.nvidia.com)
-2. Open the extension popup → Settings → paste key
-3. Enable "AI matching for unknown fields"
-
-Only unmatched custom question labels are sent to the API — never your profile values, DOB, or EEOC data.
-
-## Privacy
-
-See [privacy_policy.html](./privacy_policy.html) or the live policy at:  
-`https://sandeepvijayarao09.github.io/autofill-pro/privacy_policy.html`
+The field rules live in `FIELD_PATTERNS` inside `content.js` (mirrored in
+`test.js`). To teach it a new field or platform, add a pattern and a test case —
+`npm test` will tell you if the two ever drift out of sync.
 
 ## License
 
-MIT
+[MIT](./LICENSE) — free to use, change, and share.

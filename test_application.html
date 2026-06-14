@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Senior AI Engineer — Application | TechCorp Careers</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  body{font-family:-apple-system,system-ui,sans-serif;background:#f1f5f9;color:#0f172a;margin:0;padding:0}
+  .topbar{background:#0f172a;color:#fff;padding:14px 24px;display:flex;align-items:center;gap:10px;font-weight:700}
+  .topbar .dot{width:22px;height:22px;border-radius:6px;background:#6366f1}
+  .wrap{max-width:760px;margin:0 auto;padding:24px}
+  .job-head{background:#fff;border-radius:14px;padding:24px;margin-bottom:20px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+  .job-head h1{margin:0 0 4px;font-size:1.5rem}
+  .job-head .meta{color:#64748b;font-size:0.9rem}
+  form{background:#fff;border-radius:14px;padding:28px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+  fieldset{border:none;padding:0;margin:0 0 30px}
+  legend{font-size:1.05rem;font-weight:700;color:#6366f1;padding:0 0 12px;border-bottom:2px solid #eef2ff;width:100%;margin-bottom:16px}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .field{margin-bottom:16px}
+  label{display:block;font-size:0.85rem;font-weight:600;color:#334155;margin-bottom:6px}
+  .req{color:#ef4444}
+  input,textarea,select{width:100%;border:1.5px solid #cbd5e1;border-radius:8px;padding:10px 12px;font-size:0.92rem;font-family:inherit;background:#fff;outline:none;transition:border .15s}
+  input:focus,textarea:focus,select:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.12)}
+  textarea{resize:vertical}
+  small{display:block;color:#94a3b8;font-size:0.76rem;margin-top:4px}
+  .submit{background:#6366f1;color:#fff;border:none;border-radius:8px;padding:13px 28px;font-size:1rem;font-weight:700;cursor:pointer;width:100%}
+  .toolbar{position:sticky;top:0;z-index:50;background:#eef2ff;border:1px solid #c7d2fe;border-radius:10px;padding:12px 16px;margin-bottom:18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .toolbar button{border:none;border-radius:8px;padding:9px 16px;font-weight:600;cursor:pointer}
+  .fillb{background:#6366f1;color:#fff}
+  .clearb{background:#e2e8f0;color:#334155}
+  .stat{margin-left:auto;font-size:0.85rem;color:#475569}
+  .eeoc-note{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px 12px;font-size:0.78rem;color:#64748b;margin-bottom:14px}
+</style>
+</head>
+<body>
+<div class="topbar"><span class="dot"></span> TechCorp Careers</div>
+<div class="wrap">
+
+  <div class="job-head">
+    <h1>Senior AI / Machine Learning Engineer</h1>
+    <div class="meta">San Francisco, CA (Hybrid) · Full-time · Engineering</div>
+  </div>
+
+  <div class="toolbar">
+    <button class="fillb" id="fillBtn">▶ Auto-Fill with My Profile</button>
+    <button class="clearb" id="clearBtn">Clear</button>
+    <span class="stat" id="stat">Filling on load…</span>
+  </div>
+
+  <form id="app" novalidate>
+
+    <fieldset>
+      <legend>Personal Information</legend>
+      <div class="row">
+        <div class="field"><label for="firstName">First Name <span class="req">*</span></label><input id="firstName" name="firstName" autocomplete="given-name"></div>
+        <div class="field"><label for="lastName">Last Name <span class="req">*</span></label><input id="lastName" name="lastName" autocomplete="family-name"></div>
+      </div>
+      <div class="row">
+        <div class="field"><label for="preferredName">Preferred Name</label><input id="preferredName" name="preferredName"></div>
+        <div class="field"><label for="pronouns">Pronouns</label><input id="pronouns" name="pronouns"></div>
+      </div>
+      <div class="field"><label for="email">Email Address <span class="req">*</span></label><input id="email" name="email" type="email" autocomplete="email"></div>
+      <div class="field"><label for="phone">Phone Number <span class="req">*</span></label><input id="phone" name="phone" type="tel" autocomplete="tel"></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Location</legend>
+      <div class="field"><label for="address">Street Address</label><input id="address" name="address" autocomplete="street-address"></div>
+      <div class="row">
+        <div class="field"><label for="city">City <span class="req">*</span></label><input id="city" name="city"></div>
+        <div class="field"><label for="state">State / Province</label><input id="state" name="state"></div>
+      </div>
+      <div class="row">
+        <div class="field"><label for="zip">Zip / Postal Code</label><input id="zip" name="zip"></div>
+        <div class="field"><label for="country">Country <span class="req">*</span></label>
+          <select id="country" name="country">
+            <option value="">Select…</option><option value="US">United States</option>
+            <option value="CA">Canada</option><option value="IN">India</option><option value="GB">United Kingdom</option>
+          </select>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Professional Background</legend>
+      <div class="field"><label for="currentTitle">Current Job Title <span class="req">*</span></label><input id="currentTitle" name="currentTitle"></div>
+      <div class="field"><label for="company">Current / Most Recent Company</label><input id="company" name="company"></div>
+      <div class="row">
+        <div class="field"><label for="experience">Years of Experience <span class="req">*</span></label>
+          <select id="experience" name="experience">
+            <option value="">Select…</option><option value="0-1">0–1 years</option><option value="1-2">1–2 years</option>
+            <option value="2">2 years</option><option value="3-5">3–5 years</option><option value="5+">5+ years</option>
+          </select>
+        </div>
+        <div class="field"><label for="workAuth">Work Authorization</label>
+          <select id="workAuth" name="workAuth">
+            <option value="">Select…</option><option value="citizen">US Citizen</option><option value="gc">Green Card</option>
+            <option value="h1b">H-1B</option><option value="opt">F-1 OPT</option><option value="other">Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="field"><label for="skills">Key Skills</label><input id="skills" name="skills"><small>Comma-separated</small></div>
+      <div class="field"><label for="linkedin">LinkedIn Profile URL</label><input id="linkedin" name="linkedin"></div>
+      <div class="field"><label for="github">GitHub Profile URL</label><input id="github" name="github"></div>
+      <div class="field"><label for="portfolio">Portfolio / Website</label><input id="portfolio" name="portfolio"></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Education</legend>
+      <div class="field"><label for="university">University / School <span class="req">*</span></label><input id="university" name="university"></div>
+      <div class="row">
+        <div class="field"><label for="degree">Degree</label>
+          <select id="degree" name="degree">
+            <option value="">Select…</option><option value="BS">Bachelor's</option>
+            <option value="MS">Master's</option><option value="PhD">PhD</option>
+          </select>
+        </div>
+        <div class="field"><label for="major">Major / Field of Study</label><input id="major" name="major"></div>
+      </div>
+      <div class="row">
+        <div class="field"><label for="gradYear">Graduation Year</label><input id="gradYear" name="gradYear"></div>
+        <div class="field"><label for="gpa">GPA (optional)</label><input id="gpa" name="gpa"></div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Application Questions</legend>
+      <div class="field"><label for="summary">Professional Summary</label><textarea id="summary" name="summary" rows="4" maxlength="500"></textarea><small>Max 500 characters</small></div>
+      <div class="field"><label for="coverLetter">Cover Letter</label><textarea id="coverLetter" name="coverLetter" rows="7"></textarea></div>
+      <div class="field"><label for="whyJoin">Why do you want to work at TechCorp? <span class="req">*</span></label><textarea id="whyJoin" name="whyJoin" rows="3"></textarea><small>This is a custom question → handled by AI fallback</small></div>
+      <div class="row">
+        <div class="field"><label for="relocation">Open to Relocation?</label>
+          <select id="relocation" name="relocation"><option value="">Select…</option><option value="yes">Yes</option><option value="no">No</option></select>
+        </div>
+        <div class="field"><label for="referralSource">How did you hear about us?</label>
+          <select id="referralSource" name="referralSource"><option value="">Select…</option><option value="linkedin">LinkedIn</option><option value="referral">Referral</option><option value="website">Company Website</option></select>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Voluntary EEOC Self-Identification</legend>
+      <div class="eeoc-note">🔒 These fields are stored only on your device and are <strong>never transmitted</strong> to any AI service. Completion is voluntary.</div>
+      <div class="row">
+        <div class="field"><label for="gender">Gender</label>
+          <select id="gender" name="gender"><option value="">Decline to answer</option><option value="male">Male</option><option value="female">Female</option><option value="nonbinary">Non-binary</option></select>
+        </div>
+        <div class="field"><label for="race">Race / Ethnicity</label>
+          <select id="race" name="race"><option value="">Decline to answer</option><option value="asian">Asian</option><option value="black">Black</option><option value="hispanic">Hispanic</option><option value="white">White</option></select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field"><label for="veteran">Veteran Status</label>
+          <select id="veteran" name="veteran"><option value="">Decline to answer</option><option value="no">Not a veteran</option><option value="protected">Protected veteran</option></select>
+        </div>
+        <div class="field"><label for="disability">Disability Status</label>
+          <select id="disability" name="disability"><option value="">Decline to answer</option><option value="no">No disability</option><option value="yes">Yes</option></select>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Account Security (should NOT be auto-filled)</legend>
+      <div class="eeoc-note">🛡 These verify no false positives — the autofiller must leave them empty.</div>
+      <div class="row">
+        <div class="field"><label for="password">Create Password</label><input id="password" name="password" type="password"></div>
+        <div class="field"><label for="ssn">SSN (verification)</label><input id="ssn" name="ssn"></div>
+      </div>
+    </fieldset>
+
+    <button type="submit" class="submit" onclick="event.preventDefault();alert('Demo form — submission disabled.')">Submit Application</button>
+  </form>
+</div>
+
+<script>
+// Demo profile only — replace with your own, or test through the real extension.
+const PROFILE={
+  fullName:"Alex Taylor",
+  firstName:"Alex", lastName:"Taylor", preferredName:"Alex",
+  pronouns:"they/them", email:"alex.taylor@example.com", phone:"+1 (555) 123-4567",
+  addressLine1:"", city:"San Francisco", state:"CA", zipCode:"", country:"United States",
+  currentTitle:"Software Engineer", currentCompany:"Example Corp",
+  yearsOfExp:"3",
+  skills:"JavaScript, TypeScript, React, Node.js, Python, SQL, Docker, AWS",
+  linkedInUrl:"https://linkedin.com/in/alextaylor", githubUrl:"https://github.com/alextaylor",
+  portfolioUrl:"https://alextaylor.example.com",
+  university:"State University", degree:"BS", major:"Computer Science",
+  graduationYear:"2022", visaStatus:"U.S. Citizen", relocation:"Yes",
+  summary:"Software engineer with 3 years of experience building web applications across the stack. Comfortable with React and Node.js front to back, and passionate about clean, well-tested code.",
+  referralSource:"LinkedIn",
+  raceEthnicity:"", veteranStatus:"", disabilityStatus:"", gender:"",
+  coverLetter:"Dear Hiring Manager,\n\nI'm excited to apply for this role. I'm a software engineer with 3 years of experience shipping production web applications, and I'd love to bring that experience to your team.\n\nSincerely,\nAlex Taylor"
+};
+
+function matchKey(t){
+  t=(t||"").toLowerCase();
+  if(/credit|card|cvv|\bssn\b|social security|password|captcha|\bsearch\b|why.*work|why do you want|whyjoin/.test(t)) return null;
+  if(/full[\s_-]?name|^name$/.test(t)) return "fullName";
+  if(/(first|given)[\s_-]?name|^first$/.test(t)) return "firstName";
+  if(/(last|family|sur)[\s_-]?name|^last$/.test(t)) return "lastName";
+  if(/preferred|goes.?by|nick/.test(t)) return "preferredName";
+  if(/pronoun/.test(t)) return "pronouns";
+  if(/e.?mail/.test(t)) return "email";
+  if(/phone|mobile|cell/.test(t)) return "phone";
+  if(/linkedin/.test(t)) return "linkedInUrl";
+  if(/github/.test(t)) return "githubUrl";
+  if(/portfolio|website/.test(t)) return "portfolioUrl";
+  if(/\bstreet\b|address/.test(t)) return "addressLine1";
+  if(/\bcity\b/.test(t)) return "city";
+  if(/state|province/.test(t)) return "state";
+  if(/zip|postal/.test(t)) return "zipCode";
+  if(/country/.test(t)) return "country";
+  if(/title|designation|\brole\b|\bposition\b|headline/.test(t)) return "currentTitle";
+  if(/company|employer|organization/.test(t)) return "currentCompany";
+  if(/years?\s*(of)?\s*(exp|experience)|experience/.test(t)) return "yearsOfExp";
+  if(/skill|competenc|technolog/.test(t)) return "skills";
+  if(/universit|college|school/.test(t)) return "university";
+  if(/degree/.test(t)) return "degree";
+  if(/major|field of study/.test(t)) return "major";
+  if(/grad(uation)?\s*(year|date)/.test(t)) return "graduationYear";
+  if(/\bgpa\b/.test(t)) return "gpa";
+  if(/visa|work auth|authoriz/.test(t)) return "visaStatus";
+  if(/reloc/.test(t)) return "relocation";
+  if(/cover\s*letter/.test(t)) return "coverLetter";
+  if(/summary|\bbio\b/.test(t)) return "summary";
+  if(/how did you hear|referral|source/.test(t)) return "referralSource";
+  if(/\brac|ethnic/.test(t)) return "raceEthnicity";
+  if(/veteran/.test(t)) return "veteranStatus";
+  if(/disab/.test(t)) return "disabilityStatus";
+  if(/gender|\bsex\b/.test(t)) return "gender";
+  return null;
+}
+function getLabel(el){
+  let p=[el.name,el.id,el.getAttribute("aria-label"),el.placeholder];
+  if(el.id){const l=document.querySelector('label[for="'+el.id+'"]');if(l)p.push(l.textContent);}
+  return p.filter(Boolean).join(" ");
+}
+function setVal(el,v){
+  const proto=el.tagName==="TEXTAREA"?HTMLTextAreaElement.prototype:HTMLInputElement.prototype;
+  Object.getOwnPropertyDescriptor(proto,"value").set.call(el,v);
+  el.dispatchEvent(new Event("input",{bubbles:true}));
+  el.dispatchEvent(new Event("change",{bubbles:true}));
+  el.style.outline="2px solid #22c55e"; el.style.background="#f0fdf4";
+  setTimeout(()=>{el.style.outline="";el.style.background="";},1500);
+}
+const SELMAP={"F-1 OPT":["opt"],"United States":["us","united states"],"MS":["ms","master"],
+  "Yes":["yes"],"Asian":["asian"],"Not a veteran":["no","not a veteran"],"No disability":["no"],
+  "2":["2 year",">2<","value=\"2\"","2"],"LinkedIn":["linkedin"]};
+function fillSelect(sel,val){
+  const cands=SELMAP[val]||[val.toLowerCase()];
+  for(const o of sel.options){if(!o.value)continue;const ot=(o.value+" "+o.textContent).toLowerCase();
+    if(cands.some(c=>ot.includes(c.trim()))){sel.value=o.value;sel.dispatchEvent(new Event("change",{bubbles:true}));
+      sel.style.outline="2px solid #22c55e";setTimeout(()=>sel.style.outline="",1500);return true;}}
+  return false;
+}
+function runFill(){
+  let filled=0,ai=0,guarded=0;
+  document.querySelectorAll("input,textarea").forEach(el=>{
+    if(el.type==="password"||el.type==="hidden"){if(el.value==="")guarded++;return;}
+    if(el.id==="ssn"){if(el.value==="")guarded++;return;}
+    const key=matchKey(getLabel(el));
+    if(!key){if(el.tagName==="TEXTAREA")ai++;return;}
+    let v=PROFILE[key]; if(!v)return;
+    const max=parseInt(el.getAttribute("maxlength")||0); if(max&&v.length>max)v=v.slice(0,max);
+    setVal(el,v); filled++;
+  });
+  document.querySelectorAll("select").forEach(sel=>{
+    const key=matchKey(getLabel(sel)); if(!key)return;
+    const v=PROFILE[key]; if(!v)return;
+    if(fillSelect(sel,v))filled++;
+  });
+  document.getElementById("stat").innerHTML="✅ Filled <b>"+filled+"</b> fields · 🤖 <b>"+ai+"</b> custom Q → AI · 🛡 <b>"+guarded+"</b> security fields left empty";
+}
+function runClear(){
+  document.querySelectorAll("input,textarea").forEach(e=>{if(e.type!=="hidden")e.value="";});
+  document.querySelectorAll("select").forEach(s=>s.value="");
+  document.getElementById("stat").textContent="Cleared.";
+}
+document.getElementById("fillBtn").addEventListener("click",runFill);
+document.getElementById("clearBtn").addEventListener("click",runClear);
+window.addEventListener("load",()=>setTimeout(runFill,400));
+</script>
+</body>
+</html>
