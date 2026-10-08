@@ -31,7 +31,7 @@
     "node": ">=18"
   },
   "scripts": {
-    "test": "node test.js",
+    "test": "node test.js && node --test 'test/*.test.js'",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "build": "node scripts/build.mjs",

@@ -39,6 +39,22 @@ export default [
     },
   },
 
+  // background.js pulls in redact.js with importScripts().
+  {
+    files: ["background.js"],
+    languageOptions: {
+      globals: { importScripts: "readonly", redactContactInfo: "readonly", isPlaceholder: "readonly" },
+    },
+  },
+  {
+    files: ["redact.js"],
+    languageOptions: { ecmaVersion: 2022, sourceType: "script", globals: { module: "writable" } },
+  },
+  {
+    files: ["test/**/*.js"],
+    languageOptions: { ecmaVersion: 2022, sourceType: "commonjs", globals: { ...globals.node } },
+  },
+
   // Defined in patterns.js, which the manifest loads before content.js.
   {
     files: ["content.js"],

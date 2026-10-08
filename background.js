@@ -1,3 +1,6 @@
+// Contact-detail redaction for resume import (redactContactInfo, isPlaceholder).
+importScripts("redact.js");
+
 const NVIDIA_URL = "https://integrate.api.nvidia.com/v1/chat/completions";
 const DEFAULT_MODEL = "google/gemma-4-31b-it";
 const PROFILE_MAX_CHARS = 3000; // guard against oversized prompts
@@ -296,6 +299,10 @@ async function aiParseResume(resumeText) {
     return { _error: "Text is too short to parse. Paste more resume content." };
   }
   try {
+    // Email, phone and street address are pulled out locally and never sent;
+    // the AI sees placeholders and we merge the real values back in below.
+    const { text: redacted, found: contact } = redactContactInfo(resumeText);
+
     const prompt = `Extract profile information from the following resume or profile text. Return ONLY a valid JSON object using exactly these keys (omit a key if the information is not clearly present — never guess or invent):
 
 firstName, lastName, preferredName, email, phone, addressLine1, addressLine2, city, state, zipCode, country, currentTitle, currentCompany, yearsOfExp, skills, languages, linkedInUrl, githubUrl, portfolioUrl, twitterUrl, university, degree, major, graduationYear, gpa, classYear, summary, visaStatus, expectedSalary, workArrangement, jobFunction, relocation
@@ -307,9 +314,10 @@ Rules:
 - expectedSalary: include currency symbol if present (e.g. "$120,000")
 - yearsOfExp: just the number as a string
 - graduationYear, gpa: strings
+- Contact details were replaced with placeholders like [EMAIL], [PHONE], [STREET_ADDRESS] and [CITY_STATE_ZIP]. Omit those keys; never output a placeholder.
 
 Resume/Profile text:
-${resumeText.slice(0, 5000)}
+${redacted.slice(0, 5000)}
 
 Return ONLY valid JSON. No explanation. No markdown.`;
 
@@ -324,10 +332,12 @@ Return ONLY valid JSON. No explanation. No markdown.`;
     // Validate: only string values, no nulls/undefined
     const safe = {};
     for (const [k, v] of Object.entries(parsed)) {
-      if (v !== null && v !== undefined && v !== "" && typeof v !== "object") {
+      if (v !== null && v !== undefined && v !== "" && typeof v !== "object" && !isPlaceholder(v)) {
         safe[k] = String(v).trim();
       }
     }
+    // Locally extracted contact details win over anything the model returned.
+    Object.assign(safe, contact);
 
     if (!Object.keys(safe).length) return { _error: "No profile fields could be extracted" };
     return { profile: safe };
