@@ -21,6 +21,7 @@ const staging = join(dist, "_staging");
 const INCLUDE = [
   "manifest.json",
   "background.js",
+  "patterns.js",
   "content.js",
   "popup.html",
   "popup.css",

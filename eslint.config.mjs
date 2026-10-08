@@ -39,6 +39,25 @@ export default [
     },
   },
 
+  // Defined in patterns.js, which the manifest loads before content.js.
+  {
+    files: ["content.js"],
+    languageOptions: {
+      globals: { FIELD_PATTERNS: "readonly", AUTOCOMPLETE_MAP: "readonly" },
+    },
+  },
+
+  // patterns.js: a browser content script that Node tests also require().
+  {
+    files: ["patterns.js"],
+    languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: "script",
+      globals: { module: "writable" },
+    },
+    rules: { "no-unused-vars": "off" },
+  },
+
   // Node tooling + tests.
   {
     files: ["scripts/**/*.{js,mjs}", "test.js"],

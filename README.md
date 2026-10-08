@@ -81,9 +81,10 @@ Two test pages you can open directly in your browser to see it work:
 - `test_application.html` — a realistic single job application.
 - `test_form.html` — a stress test with 50+ platform variations of every field.
 
-The field rules live in `FIELD_PATTERNS` inside `content.js` (mirrored in
-`test.js`). To teach it a new field or platform, add a pattern and a test case —
-`npm test` will tell you if the two ever drift out of sync.
+The field rules live in `FIELD_PATTERNS` in `patterns.js`, which the manifest
+loads before `content.js`. `test.js` requires the same file, so the tests run
+against the table that ships. To teach it a new field or platform, add a pattern
+there and a test case in `test.js`.
 
 ## License
 
