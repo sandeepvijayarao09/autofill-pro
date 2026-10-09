@@ -158,76 +158,28 @@ function handleFileSelected(file) {
 
 /**
  * Extract text from a File object.
- * For .txt: FileReader.readAsText
- * For .pdf: attempt lightweight text-stream extraction from binary
+ * .txt is read directly; .pdf goes through the vendored pdf.js
+ * (pdf-import.mjs), which handles compressed streams and embedded fonts.
  */
-function extractTextFromFile(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-
-    if (file.type === "text/plain" || file.name.endsWith(".txt")) {
-      reader.onload = e => resolve(e.target.result);
-      reader.onerror = () => reject(new Error("Could not read file"));
-      reader.readAsText(file);
-    } else if (file.name.endsWith(".pdf") || file.type === "application/pdf") {
-      reader.onload = e => {
-        try {
-          const text = extractPdfText(e.target.result);
-          if (text.length < 30) reject(new Error("Could not extract text from PDF — try pasting instead"));
-          else resolve(text);
-        } catch {
-          reject(new Error("Could not read PDF — try pasting your resume text"));
-        }
-      };
-      reader.onerror = () => reject(new Error("Could not read file"));
-      reader.readAsArrayBuffer(file);
-    } else {
-      reject(new Error("Unsupported file type — use .pdf or .txt"));
-    }
-  });
-}
-
-/** Lightweight PDF text extraction — works for text-layer PDFs (not scanned images). */
-function extractPdfText(arrayBuffer) {
-  const decoder = new TextDecoder("latin1");
-  const raw = decoder.decode(new Uint8Array(arrayBuffer));
-  let result = "";
-
-  // Method 1: Extract text between BT (begin text) and ET (end text) PDF operators
-  const blocks = raw.match(/BT[\s\S]*?ET/g) || [];
-  for (const block of blocks) {
-    // (text) Tj
-    const tj = block.match(/\(((?:[^\\)\\\\]|\\.)*)\)\s*Tj/g) || [];
-    for (const m of tj) {
-      const inner = m.match(/\(((?:[^\\)\\\\]|\\.)*)\)/)?.[1] || "";
-      result += decodePdfString(inner) + " ";
-    }
-    // [(text) ...] TJ
-    const tjArr = block.match(/\[[\s\S]*?\]\s*TJ/g) || [];
-    for (const m of tjArr) {
-      const pieces = m.match(/\(((?:[^\\)\\\\]|\\.)*)\)/g) || [];
-      for (const p of pieces) result += decodePdfString(p.slice(1, -1)) + " ";
-    }
+async function extractTextFromFile(file) {
+  const name = file.name.toLowerCase();
+  if (file.type === "text/plain" || name.endsWith(".txt")) {
+    return file.text();
   }
-
-  // Method 2: fallback — look for printable ASCII runs (works on some PDFs)
-  if (result.trim().length < 50) {
-    const printable = raw.match(/[\x20-\x7E]{4,}/g) || [];
-    result = printable.filter(s => /[a-zA-Z]{2,}/.test(s)).join(" ");
+  if (file.type === "application/pdf" || name.endsWith(".pdf")) {
+    if (!window.AutofillPdf) throw new Error("PDF reader did not load — try pasting your resume text");
+    let text;
+    try {
+      text = await window.AutofillPdf.extractText(await file.arrayBuffer());
+    } catch {
+      throw new Error("Could not read PDF — try pasting your resume text");
+    }
+    if (text.length < 30) {
+      throw new Error("No text found in this PDF (scanned image?) — try pasting instead");
+    }
+    return text;
   }
-
-  return result
-    .replace(/\\n/g, "\n").replace(/\\r/g, "\r")
-    .replace(/\\\\/g, "\\").replace(/\\'/g, "'")
-    .replace(/ {2,}/g, " ").replace(/\n{3,}/g, "\n\n")
-    .trim();
-}
-
-function decodePdfString(s) {
-  return s
-    .replace(/\\(\d{3})/g, (_, o) => String.fromCharCode(parseInt(o, 8)))
-    .replace(/\\\\/g, "\\").replace(/\\n/g, "\n").replace(/\\r/g, "\r")
-    .replace(/\\t/g, "\t").replace(/\\\(/g, "(").replace(/\\\)/g, ")");
+  throw new Error("Unsupported file type — use .pdf or .txt");
 }
 
 function showImportStatus(text, isError = false) {

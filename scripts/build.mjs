@@ -27,6 +27,9 @@ const INCLUDE = [
   "popup.html",
   "popup.css",
   "popup.js",
+  "pdf-import.mjs",
+  "pdf-text.mjs",
+  "vendor",
   "icons",
 ];
 

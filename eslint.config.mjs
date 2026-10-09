@@ -15,6 +15,7 @@ export default [
       "test_form.html",
       "test_application.html",
       "inject_profile.js",
+      "vendor/**",
     ],
   },
   js.configs.recommended,
@@ -49,6 +50,10 @@ export default [
   {
     files: ["redact.js"],
     languageOptions: { ecmaVersion: 2022, sourceType: "script", globals: { module: "writable" } },
+  },
+  {
+    files: ["test/**/*.mjs"],
+    languageOptions: { globals: { ...globals.node } },
   },
   {
     files: ["test/**/*.js"],
@@ -89,5 +94,9 @@ export default [
   {
     files: ["**/*.mjs"],
     languageOptions: { sourceType: "module" },
+  },
+  {
+    files: ["pdf-import.mjs"],
+    languageOptions: { globals: { ...globals.browser } },
   },
 ];

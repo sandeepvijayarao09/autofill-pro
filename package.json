@@ -31,16 +31,18 @@
     "node": ">=18"
   },
   "scripts": {
-    "test": "node test.js && node --test 'test/*.test.js'",
+    "test": "node test.js && node --test 'test/*.test.js' 'test/*.test.mjs'",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "build": "node scripts/build.mjs",
-    "icons": "node scripts/generate-icons.js"
+    "icons": "node scripts/generate-icons.js",
+    "vendor:pdfjs": "cp node_modules/pdfjs-dist/legacy/build/pdf.min.mjs node_modules/pdfjs-dist/legacy/build/pdf.worker.min.mjs node_modules/pdfjs-dist/LICENSE vendor/pdfjs/"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
     "canvas": "^3.2.3",
     "eslint": "^9.9.0",
-    "globals": "^15.9.0"
+    "globals": "^15.9.0",
+    "pdfjs-dist": "^6.4.299"
   }
 }
