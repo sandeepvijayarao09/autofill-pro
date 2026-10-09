@@ -1,7 +1,7 @@
 {
   "name": "autofill-pro",
   "version": "1.1.0",
-  "description": "Privacy-first browser extension that auto-fills job applications across 50+ ATS platforms. Pattern-matches 44 profile fields locally; optional AI fallback for custom questions. All data stays on your device.",
+  "description": "Browser extension that fills job applications. Matches 44 profile fields locally, tested against labels from 46 job sites and ATS platforms; optional AI (your own NVIDIA NIM key) for custom questions and resume import.",
   "type": "commonjs",
   "private": false,
   "license": "MIT",

@@ -4,8 +4,10 @@ A browser extension that fills out job applications and web forms for you.
 
 You enter your details once (or import them from your resume), and from then on
 a single click — or `Alt+Shift+F` — fills the whole form on any site. It
-recognizes 44 common fields across 50+ application platforms. Everything you type
-stays on your own device.
+recognizes 44 common fields, and its patterns are tested against field labels
+from 46 job sites and applicant-tracking systems (Greenhouse, Lever, Workday,
+iCIMS, Taleo, Ashby and more). Without an AI key, everything you type stays on
+your own device.
 
 > **It's yours.** Install it, type in *your* data, and it fills forms with *your*
 > data. Anyone you share it with does the same with theirs — no accounts, no
@@ -31,9 +33,13 @@ Click the AutoFill Pro icon to open the popup, then either:
   and click **Save Profile**, or
 - **Import your resume** — drop a PDF or paste your LinkedIn text at the top of
   the Profile tab and click **Import & Fill Profile**. Review what it pulled out,
-  then **Save**.
+  then **Save**. Import uses the AI parser, so it needs the API key described
+  below. The PDF is read locally, and your email, phone and street address are
+  removed from the text before it is sent; the rest of the resume text goes to
+  NVIDIA NIM.
 
-That's it. Your data is stored locally on your device and never sent anywhere.
+Your profile is stored locally in your browser. Nothing is sent anywhere unless
+you add an AI key (below).
 
 ## Use it
 
@@ -52,15 +58,19 @@ that can't be matched by a fixed field. If you want help with those:
 1. Get a free API key from [NVIDIA NIM](https://build.nvidia.com).
 2. Open the popup → **Settings** → paste the key → enable **AI matching**.
 
-When AI is on, only the *question text* (and non-sensitive profile details) are
-sent to draft an answer. Your date of birth, race/ethnicity, disability/veteran
-status, gender, phone, and salary are **never** sent. If you leave AI off,
-nothing ever leaves your device.
+With a key and AI on, these go to NVIDIA NIM: the labels of fields the patterns
+could not match and custom questions, together with your profile minus the
+sensitive fields; text that needs shortening to fit a character limit; and
+resume text on import, with contact details removed first. Your date of birth,
+race/ethnicity, gender, pronouns, disability/veteran status, phone, salary, visa
+status and clearance are **never** sent from your profile. Without a key,
+nothing leaves your device.
 
 ## Privacy in one line
 
 No server, no tracking, no accounts. Your profile lives in your browser's local
-storage and only you can see it. Full details: [privacy_policy.html](./privacy_policy.html).
+storage; the only outside service is NVIDIA NIM, and only if you add a key.
+Full details: [privacy_policy.html](./privacy_policy.html).
 
 ---
 
@@ -79,7 +89,8 @@ npm run build      # makes a clean dist/autofill-pro-v<version>.zip
 Two test pages you can open directly in your browser to see it work:
 
 - `test_application.html` — a realistic single job application.
-- `test_form.html` — a stress test with 50+ platform variations of every field.
+- `test_form.html` — a stress test with 565 form controls: label variations for
+  every field, platform-style layouts, frameworks and false-positive traps.
 
 The field rules live in `FIELD_PATTERNS` in `patterns.js`, which the manifest
 loads before `content.js`. `test.js` requires the same file, so the tests run

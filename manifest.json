@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "AutoFill Pro",
   "version": "1.1.0",
-  "description": "Fill job applications instantly. Pattern-matches 44 fields across all ATS platforms. AI fallback for custom questions. All data stays on your device.",
+  "description": "Fill job applications in one click. Matches 44 profile fields locally; optional AI (your own NVIDIA key) for custom questions.",
   "permissions": [
     "storage",
     "activeTab",

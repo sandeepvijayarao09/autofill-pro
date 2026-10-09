@@ -18,10 +18,10 @@
 <body>
 
 <h1>AutoFill Pro — Privacy Policy</h1>
-<p class="meta">Last updated: May 2026 &nbsp;·&nbsp; Effective immediately upon installation</p>
+<p class="meta">Last updated: October 2026 &nbsp;·&nbsp; Effective immediately upon installation</p>
 
 <div class="notice">
-  <strong>Short version:</strong> Your profile data never leaves your device unless you explicitly enable the AI feature. Even then, only unmatched field labels — never your personal values — are sent to the AI service. Sensitive fields (date of birth, race/ethnicity, disability, veteran status) are <em>never</em> transmitted under any circumstance.
+  <strong>Short version:</strong> Without an NVIDIA API key, nothing leaves your device. If you add a key and AI is on, the AI features send form questions, parts of your profile and (for resume import) your resume text to NVIDIA NIM. Your email, phone and street address are removed from resume text before it is sent. Date of birth, EEO data (race/ethnicity, gender, pronouns, disability, veteran status), phone, salary, visa status and security clearance are never sent from your profile.
 </div>
 
 <h2>1. What data we collect and store</h2>
@@ -35,16 +35,16 @@
 <p>We do not operate any server. No data is synced to any cloud service controlled by us. The extension has no backend.</p>
 
 <h2>2. What data leaves your device</h2>
-<p>Data is sent to an external service <strong>only</strong> when all of the following are true:</p>
+<p>Pattern-based filling runs entirely in your browser. Data is sent to an external service <strong>only</strong> when you have saved an NVIDIA API key in Settings and "AI matching" is on (it is on by default, but does nothing without a key). Requests go to <strong>NVIDIA's API</strong> (<code>integrate.api.nvidia.com</code>) and nowhere else. There are four cases:</p>
 <ul>
-  <li>You have explicitly enabled "AI matching" in Settings</li>
-  <li>You have provided an NVIDIA API key</li>
-  <li>The extension encounters form fields it cannot match using its built-in pattern library</li>
+  <li><strong>Fields the patterns cannot match.</strong> The field labels, placeholders and ids, plus your profile <em>minus</em> the fields in section 3, so that the AI can pick a value. This includes your name, email, address, work history, education, links and summary if you have filled them in.</li>
+  <li><strong>Custom questions</strong> ("Why do you want to work here?"). The question text plus the same filtered profile.</li>
+  <li><strong>Answers longer than a field's character limit.</strong> The text being filled, so it can be shortened to fit.</li>
+  <li><strong>Resume import</strong> (<em>Import &amp; Fill Profile</em>). Up to 5,000 characters of the text you pasted or that was read from your PDF. Before sending, the extension removes email addresses, phone numbers, street addresses and US city/state/ZIP lines on your device and fills those fields itself. Everything else in the resume (for example your name, employers, education and links) is sent as written. PDFs are read locally; the file itself is never uploaded.</li>
 </ul>
-<p>In that case, <strong>only the unmatched field labels</strong> (e.g. "Describe your leadership philosophy") and a sanitized subset of your profile are sent to <strong>NVIDIA's API</strong> (<code>integrate.api.nvidia.com</code>) to request a suggested answer.</p>
 
-<h2>3. What is NEVER transmitted</h2>
-<p>The following fields are permanently excluded from all external AI requests, regardless of settings:</p>
+<h2>3. What is never sent from your profile</h2>
+<p>These profile fields are removed from every AI request built from your profile:</p>
 <ul>
   <li>Date of birth</li>
   <li>Race / Ethnicity</li>
@@ -56,6 +56,7 @@
   <li>Expected salary</li>
   <li>Visa / work authorization status</li>
 </ul>
+<p>Resume import works on free text, not on these fields, so if your resume itself mentions one of them (other than the contact details removed above), that text is sent along with the rest.</p>
 
 <h2>4. Third-party services</h2>
 <p>When AI is enabled, form field data is processed by <strong>NVIDIA NIM API</strong>. Their data handling is governed by <a href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/" target="_blank" rel="noopener">NVIDIA's Privacy Policy</a>. AutoFill Pro does not share data with any other third party.</p>
