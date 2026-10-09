@@ -28,7 +28,7 @@
     "lever"
   ],
   "engines": {
-    "node": ">=18"
+    "node": ">=22"
   },
   "scripts": {
     "test": "node test.js && node --test 'test/*.test.js' 'test/*.test.mjs'",
