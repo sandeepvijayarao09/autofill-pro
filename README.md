@@ -2,6 +2,14 @@
 
 A browser extension that fills out job applications and web forms for you.
 
+[![CI](https://github.com/sandeepvijayarao09/autofill-pro/actions/workflows/ci.yml/badge.svg)](https://github.com/sandeepvijayarao09/autofill-pro/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+![AutoFill Pro filling a 14-field application form in one click](docs/screenshot-fill.png)
+
+<sub>The unpacked extension in Chrome for Testing, filling
+`test/fixtures/plain_application.html` from a fictional profile.</sub>
+
 You enter your details once (or import them from your resume), and from then on
 a single click — or `Alt+Shift+F` — fills the whole form on any site. It
 recognizes 44 common fields, and its patterns are tested against field labels
@@ -26,6 +34,8 @@ your own device.
 > Works in Chrome, Edge, Brave, and any other Chromium browser.
 
 ## Add your data
+
+<img src="docs/screenshot-popup.png" alt="The AutoFill Pro popup: resume import and the profile form" width="300" align="right">
 
 Click the AutoFill Pro icon to open the popup, then either:
 
@@ -81,7 +91,8 @@ tooling below is only if you want to modify or repackage it.
 
 ```bash
 npm install        # one-time: dev tooling (linter, icon generator)
-npm test           # runs the 1300-case field-matching test suite
+npm test           # 1300 field-matching cases + PDF import, redaction and
+                   # resume-import tests (node --test)
 npm run lint       # style/consistency check
 npm run build      # makes a clean dist/autofill-pro-v<version>.zip
 ```
